@@ -9,7 +9,15 @@ public class MemberProfile {
     private Long id;
     
     //외래키
+    @OneToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
+    @ManyToOne //N:1 hobby_id
+    @JoinColumn(name = "hobby_id")
+    private Hobby hobby;
+
+    
     //nickname
     @Column(nullable = false)
     private String nickname;

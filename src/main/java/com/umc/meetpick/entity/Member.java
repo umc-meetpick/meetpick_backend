@@ -7,6 +7,9 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Column;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.ArrayList;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Member {
@@ -47,6 +50,17 @@ public class Member {
     @Column(nullable = false)
     private MemberRole role;
 
+    // Member에서 review조회가 필요할 경우
+    @OneToMany(mappedBy = "writer")
+    private List<Review> writtenReviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "matchingMember")
+    private List<Review> receivedReviews = new ArrayList<>();
+
+    //report 신고 조회가 필요할 경우
+    // 작성한 신고들
+    @OneToMany(mappedBy = "writer")
+    private List<Report> writtenReports = new ArrayList<>();
 
     //enum
     public enum Gender{

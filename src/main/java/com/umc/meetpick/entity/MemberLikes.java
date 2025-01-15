@@ -1,8 +1,5 @@
 package com.umc.meetpick.entity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class MemberLikes {
@@ -12,4 +9,12 @@ public class MemberLikes {
     private Long id;
 
     //외래키 사용자,공고
+    @ManyToOne //N:1 emberprofile_id
+    @JoinColumn(name = "memberprofile_id")
+    private MemberProfile memberProfile;
+
+    @ManyToOne //N:1 request_id
+    @JoinColumn(name = "request_id")
+    private Request request;
+
 }

@@ -11,6 +11,15 @@ public class Notification {
     private Long id;
 
     //외래키
+    @OneToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @OneToOne //1:1 mapping_id 양방향
+    @JoinColumn(name = "mapping_id")
+    private MemberMapping memberMapping;
+
+
 
     //type
     @Enumerated(EnumType.STRING)  // enum 값을 문자열로 저장

@@ -9,6 +9,17 @@ public class Request {
     private Long id;
 
     //외래키
+    @ManyToOne //N:1 major_id
+    @JoinColumn(name = "major_id")
+    private Major major;
+
+    @ManyToOne //N:1 request_id
+    @JoinColumn(name = "hobby_id")
+    private Hobby hobby;
+
+    @ManyToOne //N:1 writer_id
+    @JoinColumn(name = "writer_id")
+    private MemberProfile memberprofile;
 
     //student_number
     @Column(nullable = false)

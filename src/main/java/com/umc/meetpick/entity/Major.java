@@ -9,6 +9,9 @@ public class Major {
     private Long id;
 
     //외래키
+    @OneToOne
+    @JoinColumn(name = "member_profile_id")
+    private MemberProfile memberProfile;
 
     @Column(nullable = false)
     private String name;

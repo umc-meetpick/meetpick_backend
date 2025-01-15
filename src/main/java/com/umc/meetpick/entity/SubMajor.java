@@ -9,6 +9,9 @@ public class SubMajor {
     private Long id;
 
     //외래키
+    @OneToOne
+    @JoinColumn(name = "major_id")
+    private Major major;
 
     //name
     @Column(nullable = false)
