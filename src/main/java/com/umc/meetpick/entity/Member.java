@@ -1,18 +1,27 @@
 package com.umc.meetpick.entity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Column;
+import com.umc.meetpick.enums.Gender;
+import com.umc.meetpick.enums.MemberRole;
+import com.umc.meetpick.enums.MemberStatus;
+import com.umc.meetpick.enums.SocialType;
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
-import jakarta.persistence.OneToMany;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@Builder
+@NoArgsConstructor
 @Entity
+@AllArgsConstructor
 public class Member {
+
     //id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +34,7 @@ public class Member {
 
     //birthday
     @Column(nullable = false)
-    private LocalDate birthday;
+    private Date birthday;
 
     //university
     @Column(nullable = false)
@@ -37,18 +46,22 @@ public class Member {
     private SocialType socialType;
 
     @Column(nullable = false)
-    private String socialId;
+    private Long socialId;
 
     //status
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MemberStatus status;
 
-
     //role
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MemberRole role;
+
+    //외래키
+    @OneToOne
+    @JoinColumn(name = "member_profile")
+    private MemberProfile memberProfile;
 
     // Member에서 review조회가 필요할 경우
     @OneToMany(mappedBy = "writer")
@@ -62,21 +75,5 @@ public class Member {
     @OneToMany(mappedBy = "writer")
     private List<Report> writtenReports = new ArrayList<>();
 
-    //enum
-    public enum Gender{
-        MALE, FEMALE
-    }
-
-    public enum SocialType{
-        KAKAO
-    }
-
-    public enum MemberRole {
-        USER, ADMIN
-    }
-
-    public enum MemberStatus {
-        ACTIVE, INACTIVE, WITHDRAWN
-    }
 
 }

@@ -2,7 +2,7 @@ package com.umc.meetpick.entity;
 import jakarta.persistence.*;
 
 @Entity
-public class Hobby {
+public class Hobby extends BaseTimeEntity {
 
     //id
     @Id
