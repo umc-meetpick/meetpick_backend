@@ -3,9 +3,11 @@ package com.umc.meetpick.common.init;
 import com.umc.meetpick.entity.Hobby;
 import com.umc.meetpick.entity.Major;
 import com.umc.meetpick.entity.SubMajor;
+import com.umc.meetpick.entity.University;
 import com.umc.meetpick.repository.HobbyRepository;
 import com.umc.meetpick.repository.MajorRepository;
 import com.umc.meetpick.repository.SubMajorRepository;
+import com.umc.meetpick.repository.UniversityRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,7 @@ public class DataInitializer implements CommandLineRunner {
     private final HobbyRepository hobbyRepository;
     private final MajorRepository majorRepository;
     private final SubMajorRepository subMajorRepository;
+    private final UniversityRepository universityRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -133,6 +136,24 @@ public class DataInitializer implements CommandLineRunner {
             subMajorRepository.save(new SubMajor("자유전공학부", convergenceAndSpecialization));
             subMajorRepository.save(new SubMajor("특성화 학과", convergenceAndSpecialization));
         }
+
+        if(universityRepository.count() == 0) {
+            universityRepository.save(new University("서울대학교"));
+            universityRepository.save(new University("고려대학교"));
+            universityRepository.save(new University("연세대학교"));
+            universityRepository.save(new University("한양대학교"));
+            universityRepository.save(new University("성균관대학교"));
+            universityRepository.save(new University("서강대학교"));
+            universityRepository.save(new University("중앙대학교"));
+            universityRepository.save(new University("경희대학교"));
+            universityRepository.save(new University("이화여자대학교"));
+            universityRepository.save(new University("한국외국어대학교"));
+            universityRepository.save(new University("서울시립대학교"));
+            universityRepository.save(new University("건국대학교"));
+            universityRepository.save(new University("동국대학교"));
+            universityRepository.save(new University("홍익대학교"));
+        }
+
     }
 }
 
