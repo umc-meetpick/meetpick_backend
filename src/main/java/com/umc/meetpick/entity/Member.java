@@ -63,7 +63,14 @@ public class Member {
     @JoinColumn(name = "member_profile")
     private MemberProfile memberProfile;
 
-    // Member에서 review조회가 필요할 경우
+    //외래키
+    @ManyToOne
+    @JoinColumn(name = "major_id")
+    private Major major;
+
+    //양방향 매핑 설정
+
+  /*  // Member에서 review조회가 필요할 경우
     @OneToMany(mappedBy = "writer")
     private List<Review> writtenReviews = new ArrayList<>();
 
@@ -73,7 +80,7 @@ public class Member {
     //report 신고 조회가 필요할 경우
     // 작성한 신고들
     @OneToMany(mappedBy = "writer")
-    private List<Report> writtenReports = new ArrayList<>();
+    private List<Report> writtenReports = new ArrayList<>();*/
 
 
 }

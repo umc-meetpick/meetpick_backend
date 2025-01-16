@@ -2,7 +2,7 @@ package com.umc.meetpick.entity;
 import jakarta.persistence.*;
 
 @Entity
-public class MemberLikes {
+public class MemberLikes extends BaseTimeEntity {
     //id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -10,8 +10,8 @@ public class MemberLikes {
 
     //외래키 사용자,공고
     @ManyToOne //N:1 emberprofile_id
-    @JoinColumn(name = "memberprofile_id")
-    private MemberProfile memberProfile;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne //N:1 request_id
     @JoinColumn(name = "request_id")

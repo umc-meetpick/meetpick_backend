@@ -1,9 +1,18 @@
 package com.umc.meetpick.entity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
+@Getter
+@Builder
+@NoArgsConstructor
 @Entity
-public class Report {
+@AllArgsConstructor
+public class Report extends BaseTimeEntity {
     //id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +30,7 @@ public class Report {
     @JoinColumn(name = "matching_id")
     private Member matchingMember;
 
-
     //content
     @Column(nullable = false)
     private String content;
-
-    //created_at
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
 }

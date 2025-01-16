@@ -1,8 +1,16 @@
 package com.umc.meetpick.entity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@Builder
+@NoArgsConstructor
 @Entity
-public class Hobby extends BaseTimeEntity {
+@AllArgsConstructor
+public class Hobby {
 
     //id
     @Id
@@ -14,4 +22,8 @@ public class Hobby extends BaseTimeEntity {
     //name
     @Column(nullable = false)
     private String name;
+
+    public Hobby(String name) {
+        this.name = name;
+    }
 }

@@ -1,8 +1,18 @@
 package com.umc.meetpick.entity;
+import com.umc.meetpick.enums.ContactType;
+import com.umc.meetpick.enums.MBTI;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@Builder
+@NoArgsConstructor
 @Entity
-public class MemberProfile {
+@AllArgsConstructor
+public class MemberProfile extends BaseTimeEntity {
 
     //id
     @Id
@@ -23,12 +33,12 @@ public class MemberProfile {
 
     //student_number
     @Column(nullable = false)
-    private String studentNumber;
+    private int studentNumber;
 
     //MBTI
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private mbtiType MBTI;
+    private MBTI MBTI;
 
     //contact
     @Enumerated(EnumType.STRING)
@@ -38,33 +48,4 @@ public class MemberProfile {
     //contactInfo
     @Column(nullable = false)
     private String contactInfo;
-    
-    public enum ContactType{
-        KAKAO_TALK_ID,    // 카카오톡ID
-        OPEN_CHAT_LINK,   // 오픈채팅링크
-        PHONE_NUMBER      // 전화번호
-    }
-
-    public enum mbtiType{
-        ISTJ,
-        ISFJ,
-        INFJ,
-        INTJ,
-
-        ISTP,
-        ISFP,
-        INFP,
-        INTP,
-
-        ESTP,
-        ESFP,
-        ENFP,
-        ENTP,
-
-        ESTJ,
-        ESFJ,
-        ENFJ,
-        ENTJ
-    }
-
 }

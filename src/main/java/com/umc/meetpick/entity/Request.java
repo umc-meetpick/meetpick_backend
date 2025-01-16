@@ -1,8 +1,12 @@
 package com.umc.meetpick.entity;
+import com.umc.meetpick.enums.FoodType;
+import com.umc.meetpick.enums.MBTI;
+import com.umc.meetpick.enums.NotificationType;
 import jakarta.persistence.*;
 
 @Entity
-public class Request {
+public class Request extends BaseTimeEntity {
+
     //id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,16 +23,16 @@ public class Request {
 
     @ManyToOne //N:1 writer_id
     @JoinColumn(name = "writer_id")
-    private MemberProfile memberprofile;
+    private Member writer;
 
     //student_number
     @Column(nullable = false)
-    private String studentNumber;
+    private Integer studentNumber;
 
     //personality
     @Enumerated(EnumType.STRING) //enum
     @Column(nullable = false)
-    private Personality personality;
+    private MBTI mbti;
 
     //min_age
     @Column(nullable = false)
@@ -38,7 +42,7 @@ public class Request {
     @Column(nullable = false)
     private Integer maxAge;
 
-    //min_time
+    //min_time -> 개선 할 수 있나
     @Column(nullable = false)
     private Integer minTime;
 
@@ -62,31 +66,13 @@ public class Request {
     //type
     @Enumerated(EnumType.STRING) //enum
     @Column(nullable = false)
-    private Type type;
+    private NotificationType type;
 
-
-    public enum Personality{
-        ISTP,
-        ISFP,
-        INTP
-        //값 나중에
-
-    }
-
-    public enum FoodType{
-
-        KOREAN,       // 한식
-        WESTERN,      // 양식
-        JAPANESE,     // 일식
-        CHINESE,      // 중식
-        VIETNAMESE,   // 베트남식
-        OTHER         // 기타
-
-    }
-
-    public enum Type{
-        type
-        //값 나중에
-
+    // 인원 수 초과 방지
+    public void addPerson() {
+        if (currentPeople + 1 > maxPeople) {
+            throw new IllegalArgumentException("현재 인원이 최대 인원을 초과할 수 없습니다.");
+        }
+        currentPeople++;
     }
 }

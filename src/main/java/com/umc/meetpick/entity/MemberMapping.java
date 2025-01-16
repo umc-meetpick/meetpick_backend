@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class MemberMapping {
+public class MemberMapping extends BaseTimeEntity {
     //id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,14 +25,4 @@ public class MemberMapping {
     //status
     @Column(nullable = false)
     private Boolean status;
-
-    //created_at
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    //updatedAt
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
-
 }
