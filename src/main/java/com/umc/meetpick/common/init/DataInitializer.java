@@ -8,8 +8,10 @@ import com.umc.meetpick.repository.HobbyRepository;
 import com.umc.meetpick.repository.MajorRepository;
 import com.umc.meetpick.repository.SubMajorRepository;
 import com.umc.meetpick.repository.UniversityRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,6 +21,14 @@ public class DataInitializer implements CommandLineRunner {
     private final MajorRepository majorRepository;
     private final SubMajorRepository subMajorRepository;
     private final UniversityRepository universityRepository;
+    private final JdbcTemplate jdbcTemplate;
+
+    /*@PostConstruct
+    public void init() {
+        // FULLTEXT INDEX 생성 쿼리 실행
+        String createIndexQuery = "CREATE FULLTEXT INDEX university_index ON university(universityName) WITH PARSER ngram(1)";
+        jdbcTemplate.execute(createIndexQuery);
+    } mysql 사용 시 사용하기 */
 
     @Override
     public void run(String... args) throws Exception {
@@ -152,7 +162,15 @@ public class DataInitializer implements CommandLineRunner {
             universityRepository.save(new University("건국대학교", "서울특별시 광진구 능동로 120"));
             universityRepository.save(new University("동국대학교", "서울특별시 중구 필동로 1길 30"));
             universityRepository.save(new University("홍익대학교", "서울특별시 마포구 와우산로 94"));
+            universityRepository.save(new University("세종대학교", "서울특별시 광진구 능동로 209"));
+            universityRepository.save(new University("숭실대학교", "서울특별시 동작구 상도로 369"));
+            universityRepository.save(new University("한성대학교", "서울특별시 성북구 삼선교로 16"));
+            universityRepository.save(new University("서울과학기술대학교", "서울특별시 노원구 공릉로 232"));
+            universityRepository.save(new University("서울시립대학교", "서울특별시 동대문구 서울시립대로 163"));
+            universityRepository.save(new University("한국항공대학교", "서울특별시 강서구 화곡로 76"));
+            universityRepository.save(new University("덕성여자대학교", "서울특별시 도봉구 덕성로 132"));
         }
+
     }
 }
 

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @NoArgsConstructor
-@Entity
+@Entity(name = "university")
 @AllArgsConstructor
 public class University {
     @Id
@@ -17,13 +17,13 @@ public class University {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String universityName;
 
     @Column(nullable = false)
     private String address;
 
     public University(String name, String address) {
-        this.name = name;
+        this.universityName = name;
         this.address = address;
     }
 }
