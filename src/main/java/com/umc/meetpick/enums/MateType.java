@@ -1,6 +1,6 @@
 package com.umc.meetpick.enums;
 
-public enum NotificationType{
+public enum MateType {
     STUDY,
     EXERCISE,
     MEAL

@@ -13,7 +13,7 @@ public class UniversityServiceImpl implements UniversityService {
 
     private final UniversityRepository universityRepository;
 
-    public List<University> getUniversityList() {
-        return universityRepository.findAll();
+    public List<University> getUniversityList(String keyword) {
+        return universityRepository.findByNameContaining(keyword);
     }
 }

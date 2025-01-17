@@ -18,11 +18,15 @@ public class MemberServiceImpl implements MemberService {
 
         Member selectedMember = memberRepository.findMemberById(random);
 
+        return MemberToMemberResponseDTO(selectedMember);
+    }
+
+    private MemberResponseDTO MemberToMemberResponseDTO(Member member){
         return MemberResponseDTO.builder()
-                .id(selectedMember.getId())
-                .nickname(selectedMember.getMemberProfile().getNickname())
-                .userImage(selectedMember.getMemberProfile().getProfileImage())
-                .university(selectedMember.getUniversity())
+                .id(member.getId())
+                .nickname(member.getMemberProfile().getNickname())
+                .userImage(member.getMemberProfile().getProfileImage())
+                .university(member.getUniversity())
                 .build();
     }
 }

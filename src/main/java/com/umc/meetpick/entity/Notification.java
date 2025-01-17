@@ -1,8 +1,6 @@
 package com.umc.meetpick.entity;
-import com.umc.meetpick.enums.NotificationType;
+import com.umc.meetpick.enums.MateType;
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
 
 @Entity
 public class Notification extends BaseTimeEntity {
@@ -24,7 +22,7 @@ public class Notification extends BaseTimeEntity {
     //type
     @Enumerated(EnumType.STRING)  // enum 값을 문자열로 저장
     @Column(nullable = false)
-    private NotificationType type;
+    private MateType type;
 
     //content
     @Column(nullable = false)
