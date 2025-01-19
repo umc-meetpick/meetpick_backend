@@ -25,8 +25,8 @@ public class RequestController {
         // Request -> NewRequestDTO로 변환
         RequestDTO.NewRequestDTO responseDTO = RequestDTO.NewRequestDTO.builder()
                 .writerId(createdRequest.getWriter().getId())
-                .majorName(createdRequest.getMajor().getName())
-                //.subMajorName(createdRequest.getSubMajor().getName())
+                //.majorName(createdRequest.getMajor().getName())
+                .subMajorName(createdRequest.getSubMajor().getName())
                 .hobbyName(createdRequest.getHobby().getName())
                 .studentNumber(createdRequest.getStudentNumber())
                 .mbti(createdRequest.getMbti())
@@ -36,7 +36,6 @@ public class RequestController {
                 .maxTime(createdRequest.getMaxTime())
                 .food(createdRequest.getFood())
                 .maxPeople(createdRequest.getMaxPeople())
-                .currentPeople(createdRequest.getCurrentPeople())
                 .type(createdRequest.getType())
                 .build();
 

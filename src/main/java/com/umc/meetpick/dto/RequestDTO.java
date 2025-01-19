@@ -17,8 +17,8 @@ public class RequestDTO {
     @AllArgsConstructor
     public static class NewRequestDTO {
         private Long writerId;
-        private String majorName;
-        //private String subMajorName;
+        //private String majorName;
+        private String subMajorName;
         private String hobbyName;
         private Integer studentNumber;
         private MBTI mbti;
@@ -28,7 +28,6 @@ public class RequestDTO {
         private Integer maxTime;
         private FoodType food;
         private Integer maxPeople;
-        private Integer currentPeople;
         private NotificationType type;
     }
 

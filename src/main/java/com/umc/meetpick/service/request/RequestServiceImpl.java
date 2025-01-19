@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class RequestServiceImpl implements RequestService {
     private final NewRequestRepository newRequestRepository;
     private final MemberRepository memberRepository;
-    private final MajorRepository majorRepository;
+    //private final MajorRepository majorRepository;
     private final SubMajorRepository subMajorRepository;
     private final HobbyRepository hobbyRepository;
 
@@ -22,21 +22,37 @@ public class RequestServiceImpl implements RequestService {
         Member writer = memberRepository.findById(newRequest.getWriterId())
                 .orElseThrow(()-> new EntityNotFoundException("사용자를 찾을 수 없습니다." + newRequest.getWriterId()));
         // 프론트로부터 받은 전공이 전공 테이블에 존재하는지 검증
-        Major major = majorRepository.findByName(newRequest.getMajorName())
-                .orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getMajorName()));
+//        Major major = majorRepository.findByName(newRequest.getMajorName())
+//                .orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getMajorName()));
+
         // 프론트로부터 받은 서브전공이 서브전공 테이블에 존재하는지 검증
-        //SubMajor subMajor = subMajorRepository.findByName(newRequest.getSubMajorName())
-                //.orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getMajorName()));
+        SubMajor subMajor = subMajorRepository.findByName(newRequest.getSubMajorName())
+                .orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getSubMajorName()));
 
         // 프론트로부터 받은 취미가 취미 테이블에 존재하는지 검증
         Hobby hobby = hobbyRepository.findByName(newRequest.getHobbyName())
                 .orElseThrow(()->new EntityNotFoundException("등록된 취미가 아닙니다." + newRequest.getHobbyName()));
 
+        // 나이 범위 검증
+        if (newRequest.getMinAge() >= newRequest.getMaxAge()) {
+            throw new IllegalArgumentException("나이 범위 에러");
+        }
+
+        // 시간 범위 검증
+        if (newRequest.getMinTime() >= newRequest.getMaxTime()) {
+            throw new IllegalArgumentException("시간 범위 에러");
+        }
+
+        // 동일 작성자 동일 타입 중복 요청 체크
+        if (newRequestRepository.existsByWriterIdAndType(writer.getId(), newRequest.getType())){
+            throw new IllegalArgumentException("이미 요청이 존재");
+        }
+
         // 새로운 Request 생성
         Request request = Request.builder()
                 .writer(writer)
-                .major(major)
-                //.subMajor(subMajor)
+                //.major(major)
+                .subMajor(subMajor)
                 .hobby(hobby)
                 .studentNumber(newRequest.getStudentNumber())
                 .mbti(newRequest.getMbti())
@@ -46,7 +62,7 @@ public class RequestServiceImpl implements RequestService {
                 .maxTime(newRequest.getMaxTime())
                 .food(newRequest.getFood())
                 .maxPeople(newRequest.getMaxPeople())
-                .currentPeople(newRequest.getCurrentPeople())
+                .currentPeople(0)
                 .type(newRequest.getType())
                 .build();
         return newRequestRepository.save(request);
