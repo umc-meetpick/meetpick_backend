@@ -3,8 +3,16 @@ import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.MBTI;
 import com.umc.meetpick.enums.NotificationType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@Builder
+@NoArgsConstructor
 @Entity
+@AllArgsConstructor
 public class Request extends BaseTimeEntity {
 
     //id
