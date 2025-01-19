@@ -3,11 +3,15 @@ package com.umc.meetpick.common.init;
 import com.umc.meetpick.entity.Hobby;
 import com.umc.meetpick.entity.Major;
 import com.umc.meetpick.entity.SubMajor;
+import com.umc.meetpick.entity.University;
 import com.umc.meetpick.repository.HobbyRepository;
 import com.umc.meetpick.repository.MajorRepository;
 import com.umc.meetpick.repository.SubMajorRepository;
+import com.umc.meetpick.repository.UniversityRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,6 +20,15 @@ public class DataInitializer implements CommandLineRunner {
     private final HobbyRepository hobbyRepository;
     private final MajorRepository majorRepository;
     private final SubMajorRepository subMajorRepository;
+    private final UniversityRepository universityRepository;
+    private final JdbcTemplate jdbcTemplate;
+
+    /*@PostConstruct
+    public void init() {
+        // FULLTEXT INDEX 생성 쿼리 실행
+        String createIndexQuery = "CREATE FULLTEXT INDEX university_index ON university(universityName) WITH PARSER ngram(1)";
+        jdbcTemplate.execute(createIndexQuery);
+    } mysql 사용 시 사용하기 */
 
     @Override
     public void run(String... args) throws Exception {
@@ -133,6 +146,31 @@ public class DataInitializer implements CommandLineRunner {
             subMajorRepository.save(new SubMajor("자유전공학부", convergenceAndSpecialization));
             subMajorRepository.save(new SubMajor("특성화 학과", convergenceAndSpecialization));
         }
+
+        if (universityRepository.count() == 0) {
+            universityRepository.save(new University("서울대학교", "서울특별시 관악구 관악로 1"));
+            universityRepository.save(new University("고려대학교", "서울특별시 성북구 안암로 145"));
+            universityRepository.save(new University("연세대학교", "서울특별시 서대문구 연세로 50"));
+            universityRepository.save(new University("한양대학교", "서울특별시 성동구 왕십리로 222"));
+            universityRepository.save(new University("성균관대학교", "서울특별시 종로구 성균관로 25-2"));
+            universityRepository.save(new University("서강대학교", "서울특별시 마포구 백범로 35"));
+            universityRepository.save(new University("중앙대학교", "서울특별시 동작구 흑석로 84"));
+            universityRepository.save(new University("경희대학교", "서울특별시 동대문구 경희대로 26"));
+            universityRepository.save(new University("이화여자대학교", "서울특별시 서대문구 이화여대길 52"));
+            universityRepository.save(new University("한국외국어대학교", "서울특별시 동대문구 이문로 107"));
+            universityRepository.save(new University("서울시립대학교", "서울특별시 동대문구 서울시립대로 163"));
+            universityRepository.save(new University("건국대학교", "서울특별시 광진구 능동로 120"));
+            universityRepository.save(new University("동국대학교", "서울특별시 중구 필동로 1길 30"));
+            universityRepository.save(new University("홍익대학교", "서울특별시 마포구 와우산로 94"));
+            universityRepository.save(new University("세종대학교", "서울특별시 광진구 능동로 209"));
+            universityRepository.save(new University("숭실대학교", "서울특별시 동작구 상도로 369"));
+            universityRepository.save(new University("한성대학교", "서울특별시 성북구 삼선교로 16"));
+            universityRepository.save(new University("서울과학기술대학교", "서울특별시 노원구 공릉로 232"));
+            universityRepository.save(new University("서울시립대학교", "서울특별시 동대문구 서울시립대로 163"));
+            universityRepository.save(new University("한국항공대학교", "서울특별시 강서구 화곡로 76"));
+            universityRepository.save(new University("덕성여자대학교", "서울특별시 도봉구 덕성로 132"));
+        }
+
     }
 }
 

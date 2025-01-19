@@ -19,7 +19,7 @@ public class MemberProfile extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne //N:1 hobby_id
+    @ManyToOne
     @JoinColumn(name = "hobby_id")
     private Hobby hobby;
 

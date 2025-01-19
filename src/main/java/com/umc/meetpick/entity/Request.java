@@ -1,7 +1,7 @@
 package com.umc.meetpick.entity;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.MBTI;
-import com.umc.meetpick.enums.NotificationType;
+import com.umc.meetpick.enums.MateType;
 import jakarta.persistence.*;
 
 @Entity
@@ -66,7 +66,7 @@ public class Request extends BaseTimeEntity {
     //type
     @Enumerated(EnumType.STRING) //enum
     @Column(nullable = false)
-    private NotificationType type;
+    private MateType type;
 
     // 인원 수 초과 방지
     public void addPerson() {
