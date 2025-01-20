@@ -3,8 +3,16 @@ import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.MBTI;
 import com.umc.meetpick.enums.MateType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@Builder
+@NoArgsConstructor
 @Entity
+@AllArgsConstructor
 public class Request extends BaseTimeEntity {
 
     //id
@@ -13,9 +21,13 @@ public class Request extends BaseTimeEntity {
     private Long id;
 
     //외래키
-    @ManyToOne //N:1 major_id
-    @JoinColumn(name = "major_id")
-    private Major major;
+//    @ManyToOne //N:1 major_id
+//    @JoinColumn(name = "major_id")
+//    private Major major;
+
+    @ManyToOne
+    @JoinColumn(name = "subMajor_id")
+    private SubMajor subMajor;
 
     @ManyToOne //N:1 request_id
     @JoinColumn(name = "hobby_id")
