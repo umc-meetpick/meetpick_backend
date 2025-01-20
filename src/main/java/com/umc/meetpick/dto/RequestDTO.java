@@ -1,10 +1,8 @@
 package com.umc.meetpick.dto;
 
-import com.umc.meetpick.entity.Hobby;
-import com.umc.meetpick.entity.Major;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.MBTI;
-import com.umc.meetpick.enums.NotificationType;
+import com.umc.meetpick.enums.MateType;  // MateType import 추가
 import lombok.*;
 
 
@@ -28,7 +26,7 @@ public class RequestDTO {
         private Integer maxTime;
         private FoodType food;
         private Integer maxPeople;
-        private NotificationType type;
+        private MateType type;
     }
 
 }
