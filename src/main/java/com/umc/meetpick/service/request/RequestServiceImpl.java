@@ -17,7 +17,7 @@ public class RequestServiceImpl implements RequestService {
     private final HobbyRepository hobbyRepository;
 
     @Override
-    public Request createNewRequest(RequestDTO.NewRequestDTO newRequest) {
+    public RequestDTO.NewRequestDTO createNewRequest(RequestDTO.NewRequestDTO newRequest) {
         // 작성자가 실제 존재하는지 검증
         Member writer = memberRepository.findById(newRequest.getWriterId())
                 .orElseThrow(()-> new EntityNotFoundException("사용자를 찾을 수 없습니다." + newRequest.getWriterId()));
@@ -65,6 +65,21 @@ public class RequestServiceImpl implements RequestService {
                 .currentPeople(0)
                 .type(newRequest.getType())
                 .build();
-        return newRequestRepository.save(request);
+        Request savedRequest = newRequestRepository.save(request);
+
+        return RequestDTO.NewRequestDTO.builder()
+                .writerId(savedRequest.getWriter().getId())
+                .subMajorName(savedRequest.getSubMajor().getName())
+                .hobbyName(savedRequest.getHobby().getName())
+                .studentNumber(savedRequest.getStudentNumber())
+                .mbti(savedRequest.getMbti())
+                .minAge(savedRequest.getMinAge())
+                .maxAge(savedRequest.getMaxAge())
+                .minTime(savedRequest.getMinTime())
+                .maxTime(savedRequest.getMaxTime())
+                .food(savedRequest.getFood())
+                .maxPeople(savedRequest.getMaxPeople())
+                .type(savedRequest.getType())
+                .build();
     }
 }

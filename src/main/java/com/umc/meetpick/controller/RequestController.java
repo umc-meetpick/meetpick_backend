@@ -21,24 +21,7 @@ public class RequestController {
 
     @PostMapping("/add")
     public ApiResponse<RequestDTO.NewRequestDTO> createRequest(@RequestBody RequestDTO.NewRequestDTO newRequest) {
-        Request createdRequest = requestService.createNewRequest(newRequest);
-        // Request -> NewRequestDTO로 변환
-        RequestDTO.NewRequestDTO responseDTO = RequestDTO.NewRequestDTO.builder()
-                .writerId(createdRequest.getWriter().getId())
-                //.majorName(createdRequest.getMajor().getName())
-                .subMajorName(createdRequest.getSubMajor().getName())
-                .hobbyName(createdRequest.getHobby().getName())
-                .studentNumber(createdRequest.getStudentNumber())
-                .mbti(createdRequest.getMbti())
-                .minAge(createdRequest.getMinAge())
-                .maxAge(createdRequest.getMaxAge())
-                .minTime(createdRequest.getMinTime())
-                .maxTime(createdRequest.getMaxTime())
-                .food(createdRequest.getFood())
-                .maxPeople(createdRequest.getMaxPeople())
-                .type(createdRequest.getType())
-                .build();
-
+        RequestDTO.NewRequestDTO responseDTO = requestService.createNewRequest(newRequest);
         return ApiResponse.onSuccess(responseDTO);
     }
 
