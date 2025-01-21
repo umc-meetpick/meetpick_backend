@@ -5,4 +5,5 @@ import com.umc.meetpick.entity.Request;
 
 public interface RequestService {
     RequestDTO.NewRequestDTO createNewRequest(RequestDTO.NewRequestDTO request);
+    RequestDTO.JoinRequestDTO createJoinRequest(RequestDTO.JoinRequestDTO request);
 }
