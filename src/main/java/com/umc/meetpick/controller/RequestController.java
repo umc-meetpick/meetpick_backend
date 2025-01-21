@@ -25,4 +25,9 @@ public class RequestController {
         return ApiResponse.onSuccess(responseDTO);
     }
 
+    @PostMapping("/joinRequest")
+    public ApiResponse<RequestDTO.JoinRequestDTO> joinRequest(@RequestBody RequestDTO.JoinRequestDTO joinRequest) {
+        //RequestDTO.JoinRequestDTO responseDTO = requestService.
+    }
+
 }

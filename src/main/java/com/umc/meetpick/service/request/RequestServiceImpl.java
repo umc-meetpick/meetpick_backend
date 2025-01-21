@@ -82,4 +82,12 @@ public class RequestServiceImpl implements RequestService {
                 .type(savedRequest.getType())
                 .build();
     }
+
+    @Override
+    public RequestDTO.JoinRequestDTO createJoinRequest(RequestDTO.JoinRequestDTO newJoinRequest) {
+        // requestId가 존재하는지 판단
+        Request request = requestRepository.findById(newJoinRequest.getRequesterId())
+                .orElseThrow(()-> new EntityNotFoundException("사용자를 찾을 수 없습니다." + newRequest.getWriterId()));
+
+    }
 }
