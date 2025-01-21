@@ -1,5 +1,7 @@
 package com.umc.meetpick.service.request;
 
+import com.umc.meetpick.common.exception.handler.GeneralHandler;
+import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.RequestDTO;
 import com.umc.meetpick.entity.*;
 import com.umc.meetpick.repository.*;
@@ -7,12 +9,17 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class RequestServiceImpl implements RequestService {
     private final NewRequestRepository newRequestRepository;
     private final MemberRepository memberRepository;
-    //private final MajorRepository majorRepository;
+    private final RequestSubMajorRepository requestSubMajorRepository;
     private final SubMajorRepository subMajorRepository;
 
     @Override
@@ -23,10 +30,6 @@ public class RequestServiceImpl implements RequestService {
         // 프론트로부터 받은 전공이 전공 테이블에 존재하는지 검증
 //        Major major = majorRepository.findByName(newRequest.getMajorName())
 //                .orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getMajorName()));
-
-        // 프론트로부터 받은 서브전공이 서브전공 테이블에 존재하는지 검증
-        SubMajor subMajor = subMajorRepository.findByName(newRequest.getSubMajorName())
-                .orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getSubMajorName()));
 
         // 나이 범위 검증
         if (newRequest.getMinAge() >= newRequest.getMaxAge()) {
@@ -47,7 +50,6 @@ public class RequestServiceImpl implements RequestService {
         Request request = Request.builder()
                 .writer(writer)
                 //.major(major)
-                .subMajor(subMajor)
                 .studentNumber(newRequest.getStudentNumber())
                 .mbti(newRequest.getMbti())
                 .minAge(newRequest.getMinAge())
@@ -59,11 +61,18 @@ public class RequestServiceImpl implements RequestService {
                 .currentPeople(0)
                 .type(newRequest.getType())
                 .build();
+
         Request savedRequest = newRequestRepository.save(request);
+
+        Set<RequestSubMajor> subMajorNames = newRequest.getSubMajorName().stream()
+                .map(name -> createRequestSubMajor(name, savedRequest))  // 함수 사용
+                .collect(Collectors.toSet());
+
+        requestSubMajorRepository.saveAll(subMajorNames);  // 여러 개의 엔티티를 한번에 저장
+
 
         return RequestDTO.NewRequestDTO.builder()
                 .writerId(savedRequest.getWriter().getId())
-                .subMajorName(savedRequest.getSubMajor().getName())
                 .studentNumber(savedRequest.getStudentNumber())
                 .mbti(savedRequest.getMbti())
                 .minAge(savedRequest.getMinAge())
@@ -74,5 +83,17 @@ public class RequestServiceImpl implements RequestService {
                 .maxPeople(savedRequest.getMaxPeople())
                 .type(savedRequest.getType())
                 .build();
+    }
+
+    private RequestSubMajor createRequestSubMajor(String name, Request request) {
+
+        SubMajor subMajor = subMajorRepository.findByName(name).orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
+
+        RequestSubMajor requestSubMajor = RequestSubMajor.builder()
+                .subMajor(subMajor)
+                .request(request)
+                .build();
+
+        return requestSubMajorRepository.save(requestSubMajor);
     }
 }

@@ -18,7 +18,7 @@ public class RequestDTO {
     public static class NewRequestDTO {
         private Long writerId;
         //private String majorName;
-        private String subMajorName;
+        private Set<String> subMajorName;
         private String isHobbySame;
         private Integer studentNumber;
         private Set<MBTI> mbti;

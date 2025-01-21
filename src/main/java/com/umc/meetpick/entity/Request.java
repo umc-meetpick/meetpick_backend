@@ -28,10 +28,6 @@ public class Request extends BaseTimeEntity {
 //    @JoinColumn(name = "major_id")
 //    private Major major;
 
-    @ManyToOne
-    @JoinColumn(name = "subMajor_id")
-    private SubMajor subMajor;
-
     // 취미가 같아야 하는지 체크
     @Column(nullable = false)
     private boolean isHobbySame;
