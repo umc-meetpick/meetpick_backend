@@ -1,11 +1,12 @@
 package com.umc.meetpick.dto;
 
+import com.umc.meetpick.enums.FoodType;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
+
 import com.umc.meetpick.entity.Request;  // Request 엔티티 import
 
 @Getter
@@ -16,7 +17,7 @@ public class MatchRequestDto {
     private String writerUniv;     // 작성자 대학교
     private Integer studentNumber; // 학번
     private String mbti;          // MBTI
-    private String food;          // 선호하는 음식
+    private Set<FoodType> food;          // 선호하는 음식
     private String mateType;      // 미팅 타입
     private LocalDateTime createdAt; // 작성 시간
 
@@ -27,8 +28,8 @@ public class MatchRequestDto {
                 .writerId(request.getWriter().getId())
                 .writerUniv(request.getWriter().getUniversity())
                 .studentNumber(request.getStudentNumber())
-                .mbti(request.getMbti().name())
-                .food(request.getFood().name())
+                .mbti(request.getMbti().toString())
+                .food(request.getFood())
                 .mateType(request.getType().name())
                 .createdAt(request.getCreatedAt())
                 .build();
