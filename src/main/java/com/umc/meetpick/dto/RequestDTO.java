@@ -5,6 +5,8 @@ import com.umc.meetpick.enums.MBTI;
 import com.umc.meetpick.enums.MateType;  // MateType import 추가
 import lombok.*;
 
+import java.util.Set;
+
 
 public class RequestDTO {
 
@@ -17,14 +19,14 @@ public class RequestDTO {
         private Long writerId;
         //private String majorName;
         private String subMajorName;
-        private String hobbyName;
+        private String isHobbySame;
         private Integer studentNumber;
-        private MBTI mbti;
+        private Set<MBTI> mbti;
         private Integer minAge;
         private Integer maxAge;
         private Integer minTime;
         private Integer maxTime;
-        private FoodType food;
+        private Set<FoodType> food;
         private Integer maxPeople;
         private MateType type;
     }

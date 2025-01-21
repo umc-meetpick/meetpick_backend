@@ -14,7 +14,6 @@ public class RequestServiceImpl implements RequestService {
     private final MemberRepository memberRepository;
     //private final MajorRepository majorRepository;
     private final SubMajorRepository subMajorRepository;
-    private final HobbyRepository hobbyRepository;
 
     @Override
     public RequestDTO.NewRequestDTO createNewRequest(RequestDTO.NewRequestDTO newRequest) {
@@ -28,10 +27,6 @@ public class RequestServiceImpl implements RequestService {
         // 프론트로부터 받은 서브전공이 서브전공 테이블에 존재하는지 검증
         SubMajor subMajor = subMajorRepository.findByName(newRequest.getSubMajorName())
                 .orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getSubMajorName()));
-
-        // 프론트로부터 받은 취미가 취미 테이블에 존재하는지 검증
-        Hobby hobby = hobbyRepository.findByName(newRequest.getHobbyName())
-                .orElseThrow(()->new EntityNotFoundException("등록된 취미가 아닙니다." + newRequest.getHobbyName()));
 
         // 나이 범위 검증
         if (newRequest.getMinAge() >= newRequest.getMaxAge()) {
@@ -53,7 +48,6 @@ public class RequestServiceImpl implements RequestService {
                 .writer(writer)
                 //.major(major)
                 .subMajor(subMajor)
-                .hobby(hobby)
                 .studentNumber(newRequest.getStudentNumber())
                 .mbti(newRequest.getMbti())
                 .minAge(newRequest.getMinAge())
@@ -70,7 +64,6 @@ public class RequestServiceImpl implements RequestService {
         return RequestDTO.NewRequestDTO.builder()
                 .writerId(savedRequest.getWriter().getId())
                 .subMajorName(savedRequest.getSubMajor().getName())
-                .hobbyName(savedRequest.getHobby().getName())
                 .studentNumber(savedRequest.getStudentNumber())
                 .mbti(savedRequest.getMbti())
                 .minAge(savedRequest.getMinAge())
