@@ -1,6 +1,7 @@
 package com.umc.meetpick.repository;
 
 import com.umc.meetpick.entity.Request;  // Request 엔티티
+import com.umc.meetpick.enums.MateType;
 import org.springframework.data.domain.Page;  // 페이징
 import org.springframework.data.domain.Pageable;  // 페이징
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,8 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             @Param("memberId") Long memberId,
             Pageable pageable
     );
+
+    Page<Request> findAllByType(@Param("type")MateType type, Pageable pageable);
+
+
 }

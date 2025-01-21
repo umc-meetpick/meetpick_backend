@@ -6,6 +6,8 @@ import com.umc.meetpick.enums.SocialType;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class Member {
 
     //birthday
     @Column(nullable = false)
-    private Date birthday;
+    private LocalDate birthday;
 
     //university
     @Column(nullable = false)
@@ -67,6 +69,11 @@ public class Member {
     @ManyToOne
     @JoinColumn(name = "major_id")
     private Major major;
+
+    public int getAge() {
+        LocalDate currentDate = LocalDate.now();
+        return Period.between(birthday, currentDate).getYears();
+    }
 
     //양방향 매핑 설정
 

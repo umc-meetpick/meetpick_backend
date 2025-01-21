@@ -1,8 +1,5 @@
 package com.umc.meetpick.entity;
-import com.umc.meetpick.enums.FoodType;
-import com.umc.meetpick.enums.Hobby;
-import com.umc.meetpick.enums.MBTI;
-import com.umc.meetpick.enums.MateType;
+import com.umc.meetpick.enums.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +28,10 @@ public class Request extends BaseTimeEntity {
     // 취미가 같아야 하는지 체크
     @Column(nullable = false)
     private boolean isHobbySame;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Gender gender;
 
     @ManyToOne //N:1 writer_id
     @JoinColumn(name = "writer_id")
