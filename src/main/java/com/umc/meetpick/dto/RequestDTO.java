@@ -1,7 +1,5 @@
 package com.umc.meetpick.dto;
 
-import com.umc.meetpick.entity.Hobby;
-import com.umc.meetpick.entity.Major;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.MBTI;
 import com.umc.meetpick.enums.MateType;
@@ -37,8 +35,9 @@ public class RequestDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class JoinRequestDTO {
-        private Long requesterId;
+        private Long requestId;
         private Long postUserId;
+        private Boolean status;
     }
 
 }

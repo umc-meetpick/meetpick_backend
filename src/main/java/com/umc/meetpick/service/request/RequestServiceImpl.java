@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class RequestServiceImpl implements RequestService {
-    private final NewRequestRepository newRequestRepository;
+    private final RequestRepository requestRepository;
     private final MemberRepository memberRepository;
     //private final MajorRepository majorRepository;
     private final SubMajorRepository subMajorRepository;
     private final HobbyRepository hobbyRepository;
+    private final MemberMappingRepository memberMappingRepository;
 
     @Override
     public RequestDTO.NewRequestDTO createNewRequest(RequestDTO.NewRequestDTO newRequest) {
@@ -44,7 +45,7 @@ public class RequestServiceImpl implements RequestService {
         }
 
         // 동일 작성자 동일 타입 중복 요청 체크
-        if (newRequestRepository.existsByWriterIdAndType(writer.getId(), newRequest.getType())){
+        if (requestRepository.existsByWriterIdAndType(writer.getId(), newRequest.getType())){
             throw new IllegalArgumentException("이미 요청이 존재");
         }
 
@@ -65,7 +66,7 @@ public class RequestServiceImpl implements RequestService {
                 .currentPeople(0)
                 .type(newRequest.getType())
                 .build();
-        Request savedRequest = newRequestRepository.save(request);
+        Request savedRequest = requestRepository.save(request);
 
         return RequestDTO.NewRequestDTO.builder()
                 .writerId(savedRequest.getWriter().getId())
@@ -86,8 +87,27 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public RequestDTO.JoinRequestDTO createJoinRequest(RequestDTO.JoinRequestDTO newJoinRequest) {
         // requestId가 존재하는지 판단
-        Request request = requestRepository.findById(newJoinRequest.getRequesterId())
-                .orElseThrow(()-> new EntityNotFoundException("사용자를 찾을 수 없습니다." + newRequest.getWriterId()));
+        Request request = requestRepository.findById(newJoinRequest.getRequestId())
+                .orElseThrow(()-> new EntityNotFoundException("잘못된 매칭에 대한 요청" + newJoinRequest.getRequestId()));
 
+        request.addPerson();
+
+        // 유저 join으로 찾기
+        Member member = memberRepository.findById(newJoinRequest.getPostUserId())
+                .orElseThrow(() -> new EntityNotFoundException("매칭 신청 유저 오류" + newJoinRequest.getPostUserId()));
+
+        // MemberMapping 생성
+        MemberMapping memberMapping = MemberMapping.builder()
+                .member(member)
+                .request(request)
+                .status(false)
+                .build();
+        MemberMapping savedMapping = memberMappingRepository.save(memberMapping);
+
+        return RequestDTO.JoinRequestDTO.builder()
+                .requestId(savedMapping.getRequest().getId())
+                .postUserId(savedMapping.getMember().getId())
+                .status(savedMapping.getStatus())
+                .build();
     }
 }
