@@ -1,15 +1,17 @@
 package com.umc.meetpick.common.init;
 
-import com.umc.meetpick.entity.Major;
-import com.umc.meetpick.entity.SubMajor;
-import com.umc.meetpick.entity.University;
-import com.umc.meetpick.repository.MajorRepository;
-import com.umc.meetpick.repository.SubMajorRepository;
-import com.umc.meetpick.repository.UniversityRepository;
+import com.umc.meetpick.entity.*;
+import com.umc.meetpick.enums.Gender;
+import com.umc.meetpick.enums.MemberRole;
+import com.umc.meetpick.enums.MemberStatus;
+import com.umc.meetpick.enums.SocialType;
+import com.umc.meetpick.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 @Component
 @AllArgsConstructor
@@ -17,7 +19,9 @@ public class DataInitializer implements CommandLineRunner {
     private final MajorRepository majorRepository;
     private final SubMajorRepository subMajorRepository;
     private final UniversityRepository universityRepository;
+    private final MemberRepository memberRepository;
     private final JdbcTemplate jdbcTemplate;
+    private final RequestRepository requestRepository;
 
     /*@PostConstruct
     public void init() {
@@ -38,6 +42,39 @@ public class DataInitializer implements CommandLineRunner {
         Major artsAndPhysical = majorRepository.findById(6L).orElse(majorRepository.save(new Major("예술·체육 계열")));
         Major agricultureAndLife = majorRepository.findById(7L).orElse(majorRepository.save(new Major("농·생명 계열")));
         Major convergenceAndSpecialization = majorRepository.findById(8L).orElse(majorRepository.save(new Major("융합/특성화 계열")));
+
+        // 사용자 기본값 저장
+        if (memberRepository.count() == 0) {
+            memberRepository.save(Member.builder()
+                    .gender(Gender.MALE)
+                    .birthday(new java.util.Date(1995, 6, 15))
+                    .university("서울대학교")
+                    .socialType(SocialType.KAKAO)
+                    .socialId(1234567890L)
+                    .status(MemberStatus.ACTIVE)
+                    .role(MemberRole.MEMBER)
+                    .build());
+
+            memberRepository.save(Member.builder()
+                    .gender(Gender.FEMALE)
+                    .birthday(new java.util.Date(1998, 4, 20))
+                    .university("연세대학교")
+                    .socialType(SocialType.KAKAO)
+                    .socialId(9876543210L)
+                    .status(MemberStatus.ACTIVE)
+                    .role(MemberRole.MEMBER)
+                    .build());
+
+            memberRepository.save(Member.builder()
+                    .gender(Gender.MALE)
+                    .birthday(new java.util.Date(2000, 11, 10))
+                    .university("고려대학교")
+                    .socialType(SocialType.KAKAO)
+                    .socialId(1122334455L)
+                    .status(MemberStatus.ACTIVE)
+                    .role(MemberRole.MEMBER)
+                    .build());
+        }
 
         if (subMajorRepository.count() == 0) {
             // SubMajor(전공 학과) 저장
