@@ -1,5 +1,6 @@
 package com.umc.meetpick.entity;
 import com.umc.meetpick.enums.FoodType;
+import com.umc.meetpick.enums.Hobby;
 import com.umc.meetpick.enums.MBTI;
 import com.umc.meetpick.enums.MateType;
 import jakarta.persistence.*;
@@ -7,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Getter
 @Builder
@@ -25,13 +28,9 @@ public class Request extends BaseTimeEntity {
 //    @JoinColumn(name = "major_id")
 //    private Major major;
 
-    @ManyToOne
-    @JoinColumn(name = "subMajor_id")
-    private SubMajor subMajor;
-
-    @ManyToOne //N:1 request_id
-    @JoinColumn(name = "hobby_id")
-    private Hobby hobby;
+    // 취미가 같아야 하는지 체크
+    @Column(nullable = false)
+    private boolean isHobbySame;
 
     @ManyToOne //N:1 writer_id
     @JoinColumn(name = "writer_id")
@@ -42,9 +41,11 @@ public class Request extends BaseTimeEntity {
     private Integer studentNumber;
 
     //personality
-    @Enumerated(EnumType.STRING) //enum
-    @Column(nullable = false)
-    private MBTI mbti;
+    @Enumerated(EnumType.STRING) // enum 값들을 문자열로 저장
+    @ElementCollection(fetch = FetchType.LAZY) // Set을 저장할 때 @ElementCollection 사용
+    @CollectionTable(name = "request_mbti", joinColumns = @JoinColumn(name = "request_id"))
+    @Column(name = "mbti") // MBTI 값이 저장될 컬럼 이름
+    private Set<MBTI> mbti;
 
     //min_age
     @Column(nullable = false)
@@ -62,10 +63,12 @@ public class Request extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer maxTime;
 
-    //food
-    @Enumerated(EnumType.STRING) //enum
-    @Column(nullable = false)
-    private FoodType food;
+    // 음식
+    @Enumerated(EnumType.STRING) // enum 값을 문자열로 저장
+    @ElementCollection(fetch = FetchType.LAZY) // Set을 저장할 때 @ElementCollection 사용
+    @CollectionTable(name = "request_food", joinColumns = @JoinColumn(name = "request_id"))
+    @Column(name = "food") // FoodType 값이 저장될 컬럼 이름
+    private Set<FoodType> food;
 
     //max_people
     @Column(nullable = false)

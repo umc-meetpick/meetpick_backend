@@ -1,0 +1,13 @@
+name: UMC Dev CI/CD
+
+on:
+  pull_request:
+    types: [closed] # PR이 닫힐 때 트리거
+  workflow_dispatch: # 수동 실행도 가능하도록 허용
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'develop' # PR이 머지된 경우에만 실행
+
+    #AWS 작성 필요

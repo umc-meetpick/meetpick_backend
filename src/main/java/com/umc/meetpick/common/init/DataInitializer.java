@@ -1,14 +1,11 @@
 package com.umc.meetpick.common.init;
 
-import com.umc.meetpick.entity.Hobby;
 import com.umc.meetpick.entity.Major;
 import com.umc.meetpick.entity.SubMajor;
 import com.umc.meetpick.entity.University;
-import com.umc.meetpick.repository.HobbyRepository;
 import com.umc.meetpick.repository.MajorRepository;
 import com.umc.meetpick.repository.SubMajorRepository;
 import com.umc.meetpick.repository.UniversityRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,7 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class DataInitializer implements CommandLineRunner {
-    private final HobbyRepository hobbyRepository;
     private final MajorRepository majorRepository;
     private final SubMajorRepository subMajorRepository;
     private final UniversityRepository universityRepository;
@@ -32,25 +28,6 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        if (hobbyRepository.count() == 0) {
-            // 취미 데이터 삽입
-            hobbyRepository.save(new Hobby("축구"));
-            hobbyRepository.save(new Hobby("독서"));
-            hobbyRepository.save(new Hobby("요리"));
-            hobbyRepository.save(new Hobby("영화 감상"));
-            hobbyRepository.save(new Hobby("게임"));
-            hobbyRepository.save(new Hobby("음악 감상"));
-            hobbyRepository.save(new Hobby("여행"));
-            hobbyRepository.save(new Hobby("사진 촬영"));
-            hobbyRepository.save(new Hobby("미술"));
-            hobbyRepository.save(new Hobby("수집"));
-            hobbyRepository.save(new Hobby("글쓰기"));
-            hobbyRepository.save(new Hobby("봉사 활동"));
-            hobbyRepository.save(new Hobby("스키"));
-            hobbyRepository.save(new Hobby("낚시"));
-            hobbyRepository.save(new Hobby("댄스"));
-        }
 
         // Major(전공) 저장
         Major engineering = majorRepository.findById(1L).orElse(majorRepository.save(new Major("공학 계열")));

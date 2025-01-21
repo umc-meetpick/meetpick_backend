@@ -1,4 +1,5 @@
 package com.umc.meetpick.entity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,20 +11,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class Hobby {
+public class RequestSubMajor {
 
-    //id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //외래키
+    @ManyToOne
+    @JoinColumn(name = "request_id")
+    private Request request;
 
-    //name
-    @Column(nullable = false)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "subMajor_id")
+    private SubMajor subMajor;
 
-    public Hobby(String name) {
-        this.name = name;
-    }
 }

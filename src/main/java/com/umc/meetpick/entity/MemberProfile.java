@@ -1,5 +1,6 @@
 package com.umc.meetpick.entity;
 import com.umc.meetpick.enums.ContactType;
+import com.umc.meetpick.enums.Hobby;
 import com.umc.meetpick.enums.MBTI;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,8 +20,8 @@ public class MemberProfile extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "hobby_id")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Hobby hobby;
 
     //nickname
