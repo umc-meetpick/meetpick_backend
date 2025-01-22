@@ -124,4 +124,15 @@ public class RequestServiceImpl implements RequestService {
                 .build();
 
     }
+
+    @Override
+    public void deleteRequest(Long requestId, Long userId){
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 매칭에 대한 요청"));
+
+        if (!request.getWriter().getId().equals(userId)) {
+            throw new IllegalArgumentException("삭제 권한 없음");
+        }
+        requestRepository.delete(request);
+    }
 }

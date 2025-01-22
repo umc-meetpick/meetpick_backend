@@ -83,6 +83,9 @@ public class Request extends BaseTimeEntity {
     @Column(nullable = false)
     private MateType type;
 
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
+    private Set<RequestSubMajor> subMajors;
+
     // 인원 수 초과 방지
     public void addPerson() {
         if (currentPeople + 1 > maxPeople) {
