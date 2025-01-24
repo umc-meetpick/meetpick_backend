@@ -9,15 +9,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-// 새로운 매칭 요청 만드는 controller
-@Tag(name = "새로운 매칭 요청 관련 API", description = "새로운 매칭 요청 관련 API입니다")
+// 매칭 관련 controller
+@Tag(name = "매칭 관련 API", description = "매칭 관련 API입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/request")
 public class RequestController {
     private final RequestService requestService;
 
-    @Operation(summary = "매칭 요청 추가")
+    @Operation(summary = "매칭 추가")
     @PostMapping("/add")
     public ApiResponse<RequestDTO.NewRequestDTO> createRequest(@RequestBody RequestDTO.NewRequestDTO newRequest) {
         RequestDTO.NewRequestDTO responseDTO = requestService.createNewRequest(newRequest);
@@ -36,6 +36,13 @@ public class RequestController {
     public ApiResponse<String> deleteRequest(@PathVariable Long requestId, @RequestParam Long userId) {
         requestService.deleteRequest(requestId, userId);
         return ApiResponse.onSuccess("삭제 성공");
+    }
+
+    @Operation(summary = "매칭에 좋아요 누르기")
+    @PostMapping("/like/{requestId}")
+    public ApiResponse<RequestDTO.LikeRequestDTO> likeRequest(@PathVariable Long requestId, @RequestParam Long userId) {
+        RequestDTO.LikeRequestDTO responseDTO = requestService.likeRequest(requestId, userId);
+        return ApiResponse.onSuccess(responseDTO);
     }
 
 

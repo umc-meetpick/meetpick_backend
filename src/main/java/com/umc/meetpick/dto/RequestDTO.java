@@ -42,4 +42,14 @@ public class RequestDTO {
         private Boolean status;
     }
 
+    // 매칭에 좋아요 누르기
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class LikeRequestDTO {
+        private Long requestId;
+        private Long postUserId;
+    }
+
 }
