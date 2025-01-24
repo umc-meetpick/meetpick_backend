@@ -158,4 +158,16 @@ public class RequestServiceImpl implements RequestService {
                 .postUserId(savedMemberLikes.getMember().getId())
                 .build();
     }
+
+    @Override
+    public void deleteLikeRequest(Long requestId, Long userId){
+
+        MemberLikes memberLikes = memberLikesRepository.findByRequestId(requestId)
+                .orElseThrow(()->new IllegalArgumentException("찜하기 찾을 수 없음"));
+
+        if (!memberLikes.getMember().getId().equals(userId)) {
+            throw new IllegalArgumentException("취소 권한 없음");
+        }
+        memberLikesRepository.delete(memberLikes);
+    }
 }
