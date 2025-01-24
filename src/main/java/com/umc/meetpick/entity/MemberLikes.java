@@ -1,7 +1,15 @@
 package com.umc.meetpick.entity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@Builder
+@NoArgsConstructor
 @Entity
+@AllArgsConstructor
 public class MemberLikes extends BaseTimeEntity {
     //id
     @Id

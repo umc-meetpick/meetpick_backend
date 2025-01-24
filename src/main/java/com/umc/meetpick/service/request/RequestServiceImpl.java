@@ -23,6 +23,7 @@ public class RequestServiceImpl implements RequestService {
     private final RequestSubMajorRepository requestSubMajorRepository;
     private final SubMajorRepository subMajorRepository;
     private final MemberMappingRepository memberMappingRepository;
+    private final MemberLikesRepository memberLikesRepository;
 
     @Override
     public RequestDTO.NewRequestDTO createNewRequest(RequestDTO.NewRequestDTO newRequest) {
@@ -134,5 +135,27 @@ public class RequestServiceImpl implements RequestService {
             throw new IllegalArgumentException("삭제 권한 없음");
         }
         requestRepository.delete(request);
+    }
+
+    // 매칭에 좋아요 등록
+    @Override
+    public RequestDTO.LikeRequestDTO likeRequest(Long requestId, Long userId) {
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭에 대한 요청"));
+
+        Member member = memberRepository.findById(userId)
+                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 유저의 신청"));
+
+        MemberLikes memberLikes = MemberLikes.builder()
+                .member(member)
+                .request(request)
+                .build();
+
+        MemberLikes savedMemberLikes = memberLikesRepository.save(memberLikes);
+
+        return RequestDTO.LikeRequestDTO.builder()
+                .requestId(savedMemberLikes.getRequest().getId())
+                .postUserId(savedMemberLikes.getMember().getId())
+                .build();
     }
 }
