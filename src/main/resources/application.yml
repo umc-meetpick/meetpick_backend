@@ -1,16 +1,26 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:mysql://localhost:3306/meetpick?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root # MySQL 사용자 이름
+    password: yoo54485788@ # MySQL 비밀번호
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: update  
-  h2:
+      ddl-auto: update
+    show-sql: true           # SQL 쿼리 로깅 활성화
+    properties:
+      hibernate.format_sql: true # SQL 포맷팅 활성화
+  h2: # H2 설정 제거
     console:
-      enabled: true
-      path: /h2-console
-      settings:
-        web-allow-others: true  # 원격 연결 허용 설정
+      enabled: false
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug            # Hibernate SQL 로깅
+        type:
+          descriptor: trace   # Hibernate 매핑 관련 로깅
+kakao:
+  client_id: f637c459ef6d71c3f370cc02b25b9139
+  redirect_uri: http://localhost:8080/callback

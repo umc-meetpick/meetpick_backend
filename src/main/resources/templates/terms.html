@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 - 약관 동의</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .terms {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        button {
+            margin: 10px 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #aaa;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>회원가입</h1>
+    <form action="/terms" method="post">
+        <!-- memberId를 동적으로 렌더링 -->
+        <input type="hidden" name="memberId" th:value="${memberId}">
+        <div class="terms">
+            <label><input type="checkbox" id="allTerms"> 약관 전체 동의</label>
+            <label><input type="checkbox" class="term"> (필수) 만 18세 이상입니다.</label>
+            <label><input type="checkbox" class="term"> (필수) 서비스 이용 약관 <a href="#">보기</a></label>
+            <label><input type="checkbox" class="term"> (필수) 개인정보 수집 / 이용 동의 <a href="#">보기</a></label>
+            <label><input type="checkbox" class="term"> (선택) 마케팅 수신 동의</label>
+        </div>
+        <div>
+            <button type="button" id="prevBtn">이전</button>
+            <button type="submit" id="nextBtn" disabled>다음</button>
+        </div>
+    </form>
+</div>
+<script>
+    const allTerms = document.getElementById('allTerms');
+    const terms = document.querySelectorAll('.term');
+    const nextBtn = document.getElementById('nextBtn');
+
+    allTerms.addEventListener('change', () => {
+        terms.forEach(term => term.checked = allTerms.checked);
+        updateButton();
+    });
+
+    terms.forEach(term => term.addEventListener('change', () => {
+        allTerms.checked = Array.from(terms).every(term => term.checked);
+        updateButton();
+    }));
+
+    function updateButton() {
+        const allRequiredChecked = Array.from(terms).slice(0, 3).every(term => term.checked);
+        nextBtn.disabled = !allRequiredChecked;
+    }
+</script>
+</body>
+</html>
