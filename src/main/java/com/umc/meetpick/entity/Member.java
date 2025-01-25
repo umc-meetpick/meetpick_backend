@@ -70,13 +70,13 @@ public class Member {
 
     //양방향 매핑 설정
 
-  /*  // Member에서 review조회가 필요할 경우
+ // Member에서 review조회가 필요할 경우
     @OneToMany(mappedBy = "writer")
     private List<Review> writtenReviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "matchingMember")
     private List<Review> receivedReviews = new ArrayList<>();
-
+  /*
     //report 신고 조회가 필요할 경우
     // 작성한 신고들
     @OneToMany(mappedBy = "writer")
