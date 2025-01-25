@@ -31,7 +31,11 @@ public class MemberMapping extends BaseTimeEntity {
     @JoinColumn(name = "request_id")
     private Request request;
 
-    //status
+    //status - 매칭 완료 여부 - 거절 or 승낙시 true로
     @Column(nullable = false)
     private Boolean status;
+
+    // 매칭 승낙 여부
+    @Column
+    private Boolean isAccepted;
 }
