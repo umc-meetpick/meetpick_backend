@@ -36,5 +36,5 @@ public class Report extends BaseTimeEntity {
 
     // 신고 유형
     @Column(nullable = false)
-    private Long reportType;
+    private String reportType;
 }
