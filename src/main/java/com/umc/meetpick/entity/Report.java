@@ -33,4 +33,8 @@ public class Report extends BaseTimeEntity {
     //content
     @Column(nullable = false)
     private String content;
+
+    // 신고 유형
+    @Column(nullable = false)
+    private Long reportType;
 }
