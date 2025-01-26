@@ -52,4 +52,15 @@ public class RequestDTO {
         private Long postUserId;
     }
 
+    // 매칭 승낙 or 거절
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class isAcceptedDTO{
+        private Boolean isAccepted;
+        private Long requestId;
+        private Boolean status;
+    }
+
 }

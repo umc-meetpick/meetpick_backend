@@ -46,4 +46,10 @@ public class RequestController {
     }
 
 
+    @Operation(summary = "매칭 신청 승낙하기" )
+    @PatchMapping("/accept/{requestId}")
+    public ApiResponse<RequestDTO.isAcceptedDTO> acceptRequest(@PathVariable Long requestId, @RequestParam Long userId, Boolean isAccepted) {
+        RequestDTO.isAcceptedDTO responseDTO = requestService.acceptRequest(requestId, userId, isAccepted);
+        return ApiResponse.onSuccess(responseDTO);
+    }
 }

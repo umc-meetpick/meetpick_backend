@@ -1,9 +1,6 @@
 package com.umc.meetpick.entity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
+@Setter
 public class MemberMapping extends BaseTimeEntity {
     //id
     @Id

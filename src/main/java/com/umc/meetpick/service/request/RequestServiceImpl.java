@@ -158,4 +158,35 @@ public class RequestServiceImpl implements RequestService {
                 .postUserId(savedMemberLikes.getMember().getId())
                 .build();
     }
+
+    @Override
+    public RequestDTO.isAcceptedDTO acceptRequest(Long requestId, Long userId, Boolean isAccepted) {
+
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭"));
+
+        MemberMapping memberMapping = memberMappingRepository.findByRequest(request)
+                .orElseThrow(()-> new EntityNotFoundException("신청을 찾을 수 없음"));
+
+        if(!memberMapping.getRequest().getWriter().getId().equals(userId)) {
+            throw new IllegalArgumentException("권한 없음");
+        }
+
+        if(memberMapping.getStatus()){
+            throw new IllegalArgumentException("이미 수락 or 거절됨");
+        }
+
+        memberMapping.setStatus(true);
+        memberMapping.setIsAccepted(isAccepted);
+
+        MemberMapping updatedMapping = memberMappingRepository.save(memberMapping);
+
+        return RequestDTO.isAcceptedDTO.builder()
+                .requestId(updatedMapping.getRequest().getId())
+                .isAccepted(updatedMapping.getIsAccepted())
+                .status(updatedMapping.getStatus())
+                .build();
+
+
+    }
 }

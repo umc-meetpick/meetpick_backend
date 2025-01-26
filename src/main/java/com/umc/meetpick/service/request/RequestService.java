@@ -8,4 +8,5 @@ public interface RequestService {
     RequestDTO.JoinRequestDTO createJoinRequest(RequestDTO.JoinRequestDTO request);
     void deleteRequest(Long requestId, Long userId);
     RequestDTO.LikeRequestDTO likeRequest(Long requestId, Long userId);
+    RequestDTO.isAcceptedDTO acceptRequest(Long requestId, Long userId, Boolean isAccepted);
 }
