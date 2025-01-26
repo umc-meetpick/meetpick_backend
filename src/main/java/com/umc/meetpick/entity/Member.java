@@ -1,14 +1,11 @@
 package com.umc.meetpick.entity;
-import com.umc.meetpick.enums.Gender;
-import com.umc.meetpick.enums.MemberRole;
-import com.umc.meetpick.enums.MemberStatus;
-import com.umc.meetpick.enums.SocialType;
+import com.umc.meetpick.entity.MemberProfiles.FoodProfile;
+import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
+import com.umc.meetpick.enums.*;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,10 +19,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Member {
 
-    //id
+    // id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
+    // 이름
+    @Column(nullable = false)
+    private String name;
 
     //gender
     @Enumerated(EnumType.STRING)  // enum 값을 문자열로 저장
@@ -36,9 +38,14 @@ public class Member {
     @Column(nullable = false)
     private Date birthday;
 
-    //university
+    // 학번
     @Column(nullable = false)
-    private String university;
+    private int studentNumber;
+
+    //university
+    @Enumerated(EnumType.STRING)  // enum 값을 문자열로 저장
+    @Column(nullable = false)
+    private University university;
 
     //socialType
     @Enumerated(EnumType.STRING)  // enum 값을 문자열로 저장
@@ -58,15 +65,14 @@ public class Member {
     @Column(nullable = false)
     private MemberRole role;
 
-    //외래키
     @OneToOne
     @JoinColumn(name = "member_profile")
     private MemberProfile memberProfile;
 
     //외래키
-    @ManyToOne
-    @JoinColumn(name = "major_id")
-    private Major major;
+    @OneToOne
+    @JoinColumn(name = "food_profile")
+    private FoodProfile foodProfile;
 
     //양방향 매핑 설정
 

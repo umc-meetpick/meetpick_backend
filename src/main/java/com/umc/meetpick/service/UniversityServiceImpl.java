@@ -1,6 +1,5 @@
 package com.umc.meetpick.service;
 
-import com.umc.meetpick.entity.University;
 import com.umc.meetpick.repository.UniversityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
