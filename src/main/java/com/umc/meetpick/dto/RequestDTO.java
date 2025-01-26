@@ -2,7 +2,7 @@ package com.umc.meetpick.dto;
 
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.MBTI;
-import com.umc.meetpick.enums.MateType;  // MateType import 추가
+import com.umc.meetpick.enums.MateType;
 import lombok.*;
 
 import java.util.Set;
@@ -29,6 +29,27 @@ public class RequestDTO {
         private Set<FoodType> food;
         private Integer maxPeople;
         private MateType type;
+    }
+
+    // 매칭에 참여하기
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class JoinRequestDTO {
+        private Long requestId;
+        private Long postUserId;
+        private Boolean status;
+    }
+
+    // 매칭에 좋아요 누르기
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class LikeRequestDTO {
+        private Long requestId;
+        private Long postUserId;
     }
 
 }

@@ -17,16 +17,19 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class RequestServiceImpl implements RequestService {
+    private final RequestRepository requestRepository;
     private final NewRequestRepository newRequestRepository;
     private final MemberRepository memberRepository;
     private final RequestSubMajorRepository requestSubMajorRepository;
     private final SubMajorRepository subMajorRepository;
+    private final MemberMappingRepository memberMappingRepository;
+    private final MemberLikesRepository memberLikesRepository;
 
     @Override
     public RequestDTO.NewRequestDTO createNewRequest(RequestDTO.NewRequestDTO newRequest) {
         // 작성자가 실제 존재하는지 검증
         Member writer = memberRepository.findById(newRequest.getWriterId())
-                .orElseThrow(()-> new EntityNotFoundException("사용자를 찾을 수 없습니다." + newRequest.getWriterId()));
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다." + newRequest.getWriterId()));
         // 프론트로부터 받은 전공이 전공 테이블에 존재하는지 검증
 //        Major major = majorRepository.findByName(newRequest.getMajorName())
 //                .orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getMajorName()));
@@ -42,7 +45,7 @@ public class RequestServiceImpl implements RequestService {
         }
 
         // 동일 작성자 동일 타입 중복 요청 체크
-        if (newRequestRepository.existsByWriterIdAndType(writer.getId(), newRequest.getType())){
+        if (requestRepository.existsByWriterIdAndType(writer.getId(), newRequest.getType())) {
             throw new IllegalArgumentException("이미 요청이 존재");
         }
 
@@ -70,7 +73,6 @@ public class RequestServiceImpl implements RequestService {
 
         requestSubMajorRepository.saveAll(subMajorNames);  // 여러 개의 엔티티를 한번에 저장
 
-
         return RequestDTO.NewRequestDTO.builder()
                 .writerId(savedRequest.getWriter().getId())
                 .studentNumber(savedRequest.getStudentNumber())
@@ -84,7 +86,6 @@ public class RequestServiceImpl implements RequestService {
                 .type(savedRequest.getType())
                 .build();
     }
-
     private RequestSubMajor createRequestSubMajor(String name, Request request) {
 
         SubMajor subMajor = subMajorRepository.findByName(name).orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
@@ -95,5 +96,78 @@ public class RequestServiceImpl implements RequestService {
                 .build();
 
         return requestSubMajorRepository.save(requestSubMajor);
+    }
+
+    @Override
+    public RequestDTO.JoinRequestDTO createJoinRequest(RequestDTO.JoinRequestDTO newJoinRequest) {
+        // requestId가 존재하는지 판단
+        Request request = requestRepository.findById(newJoinRequest.getRequestId())
+                .orElseThrow(()-> new EntityNotFoundException("잘못된 매칭에 대한 요청" + newJoinRequest.getRequestId()));
+
+        request.addPerson();
+
+        // 유저 join으로 찾기
+        Member member = memberRepository.findById(newJoinRequest.getPostUserId())
+                .orElseThrow(() -> new EntityNotFoundException("매칭 신청 유저 오류" + newJoinRequest.getPostUserId()));
+
+        // MemberMapping 생성
+        MemberMapping memberMapping = MemberMapping.builder()
+                .member(member)
+                .request(request)
+                .status(false)
+                .build();
+        MemberMapping savedMapping = memberMappingRepository.save(memberMapping);
+
+        return RequestDTO.JoinRequestDTO.builder()
+                .requestId(savedMapping.getRequest().getId())
+                .postUserId(savedMapping.getMember().getId())
+                .status(savedMapping.getStatus())
+                .build();
+
+    }
+
+    @Override
+    public void deleteRequest(Long requestId, Long userId){
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 매칭에 대한 요청"));
+
+        if (!request.getWriter().getId().equals(userId)) {
+            throw new IllegalArgumentException("삭제 권한 없음");
+        }
+        requestRepository.delete(request);
+    }
+
+    // 매칭에 좋아요 등록
+    @Override
+    public RequestDTO.LikeRequestDTO likeRequest(Long requestId, Long userId) {
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭에 대한 요청"));
+
+        Member member = memberRepository.findById(userId)
+                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 유저의 신청"));
+
+        MemberLikes memberLikes = MemberLikes.builder()
+                .member(member)
+                .request(request)
+                .build();
+
+        MemberLikes savedMemberLikes = memberLikesRepository.save(memberLikes);
+
+        return RequestDTO.LikeRequestDTO.builder()
+                .requestId(savedMemberLikes.getRequest().getId())
+                .postUserId(savedMemberLikes.getMember().getId())
+                .build();
+    }
+
+    @Override
+    public void deleteLikeRequest(Long requestId, Long userId){
+
+        MemberLikes memberLikes = memberLikesRepository.findByRequestId(requestId)
+                .orElseThrow(()->new IllegalArgumentException("찜하기 찾을 수 없음"));
+
+        if (!memberLikes.getMember().getId().equals(userId)) {
+            throw new IllegalArgumentException("취소 권한 없음");
+        }
+        memberLikesRepository.delete(memberLikes);
     }
 }

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -83,6 +84,12 @@ public class Request extends BaseTimeEntity {
     @Enumerated(EnumType.STRING) //enum
     @Column(nullable = false)
     private MateType type;
+
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
+    private Set<RequestSubMajor> subMajors;
+
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
+    private List<MemberLikes> memberLikes;
 
     // 인원 수 초과 방지
     public void addPerson() {

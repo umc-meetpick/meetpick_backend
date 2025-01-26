@@ -1,14 +1,17 @@
 package com.umc.meetpick.repository;
 
+import com.umc.meetpick.enums.MateType;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import com.umc.meetpick.entity.Request;  // Request 엔티티
 import com.umc.meetpick.enums.MateType;
 import org.springframework.data.domain.Page;  // 페이징
 import org.springframework.data.domain.Pageable;  // 페이징
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
+// 매칭 관련 Repository
+@Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
     // 특정 사용자에게 온 매칭 요청 목록을 페이징하여 조회
     @Query("SELECT r FROM Request r " +
@@ -22,5 +25,6 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     Page<Request> findAllByType(@Param("type")MateType type, Pageable pageable);
 
+    boolean existsByWriterIdAndType(Long writerId, MateType type);
 
 }
