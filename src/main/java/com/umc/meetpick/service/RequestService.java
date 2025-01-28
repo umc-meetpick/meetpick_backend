@@ -2,7 +2,6 @@ package com.umc.meetpick.service;
 
 import com.umc.meetpick.dto.MatchRequestDto;
 import com.umc.meetpick.dto.MatchRequestListDto;
-import com.umc.meetpick.entity.Request;
 import com.umc.meetpick.repository.RequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

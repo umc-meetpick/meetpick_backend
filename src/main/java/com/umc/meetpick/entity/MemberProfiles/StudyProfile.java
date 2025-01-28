@@ -3,9 +3,9 @@ package com.umc.meetpick.entity.MemberProfiles;
 import com.umc.meetpick.entity.Personality;
 import com.umc.meetpick.entity.mapping.food.FoodProfileSubMajor;
 import com.umc.meetpick.enums.FoodType;
+import com.umc.meetpick.enums.Gender;
 import com.umc.meetpick.enums.MBTI;
 import com.umc.meetpick.enums.StudentNumber;
-import com.umc.meetpick.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -23,7 +23,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-public class FoodProfile {
+public class StudyProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

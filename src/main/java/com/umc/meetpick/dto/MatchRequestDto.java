@@ -7,8 +7,6 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import com.umc.meetpick.entity.Request;  // Request 엔티티 import
-
 @Getter
 @Builder
 public class MatchRequestDto {

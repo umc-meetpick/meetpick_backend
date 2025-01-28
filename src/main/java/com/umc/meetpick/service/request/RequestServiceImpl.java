@@ -4,13 +4,14 @@ import com.umc.meetpick.common.exception.handler.GeneralHandler;
 import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.RequestDTO;
 import com.umc.meetpick.entity.*;
+import com.umc.meetpick.entity.mapping.MemberLikes;
+import com.umc.meetpick.entity.mapping.exercise.MemberExerciseMapping;
+import com.umc.meetpick.entity.mapping.RequestSubMajor;
 import com.umc.meetpick.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -111,12 +112,12 @@ public class RequestServiceImpl implements RequestService {
                 .orElseThrow(() -> new EntityNotFoundException("매칭 신청 유저 오류" + newJoinRequest.getPostUserId()));
 
         // MemberMapping 생성
-        MemberMapping memberMapping = MemberMapping.builder()
+        MemberExerciseMapping memberExerciseMapping = MemberExerciseMapping.builder()
                 .member(member)
                 .request(request)
                 .status(false)
                 .build();
-        MemberMapping savedMapping = memberMappingRepository.save(memberMapping);
+        MemberExerciseMapping savedMapping = memberMappingRepository.save(memberExerciseMapping);
 
         return RequestDTO.JoinRequestDTO.builder()
                 .requestId(savedMapping.getRequest().getId())

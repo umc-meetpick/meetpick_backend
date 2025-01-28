@@ -4,7 +4,6 @@ import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.enums.*;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;

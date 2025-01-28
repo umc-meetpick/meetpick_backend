@@ -1,11 +1,7 @@
 package com.umc.meetpick.entity.MemberProfiles;
 
 import com.umc.meetpick.entity.Personality;
-import com.umc.meetpick.entity.mapping.food.FoodProfileSubMajor;
-import com.umc.meetpick.enums.FoodType;
-import com.umc.meetpick.enums.MBTI;
-import com.umc.meetpick.enums.StudentNumber;
-import com.umc.meetpick.enums.Gender;
+import com.umc.meetpick.enums.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -23,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-public class FoodProfile {
+public class ExerciseProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +30,7 @@ public class FoodProfile {
     private Gender gender;
 
     @OneToMany
-    private List<FoodProfileSubMajor> foodProfileSubMajorList = new ArrayList<>();
+    private List<ExerciseProfile> exerciseProfileList = new ArrayList<>();
 
     @Column(nullable = true)
     private StudentNumber studentNumber;
@@ -57,13 +53,15 @@ public class FoodProfile {
     private Set<Integer> times = new HashSet<>();
 
     @ElementCollection
-    private Set<FoodType> foodTypes = new HashSet<>();
+    private Set<ExerciseType> exerciseTypes = new HashSet<>();
 
     private int maxPeople;
 
     private int currentPeople;
 
     private String comment;
+
+    private Boolean isSchool;
 
     // 문자열로 mbti 받고 해당 하는 mbti 리스트 가져오는 함수
     public Set<MBTI> getMbtis(String mbti) {
