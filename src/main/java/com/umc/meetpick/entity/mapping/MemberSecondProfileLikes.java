@@ -1,4 +1,7 @@
-package com.umc.meetpick.entity;
+package com.umc.meetpick.entity.mapping;
+import com.umc.meetpick.entity.BaseTimeEntity;
+import com.umc.meetpick.entity.Member;
+import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class MemberLikes extends BaseTimeEntity {
+public class MemberSecondProfileLikes extends BaseTimeEntity {
     //id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +25,7 @@ public class MemberLikes extends BaseTimeEntity {
     private Member member;
 
     @ManyToOne //N:1 request_id
-    @JoinColumn(name = "request_id")
-    private Request request;
+    @JoinColumn
+    private MemberSecondProfile memberSecondProfile;
 
 }

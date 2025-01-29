@@ -4,23 +4,23 @@ import com.umc.meetpick.common.exception.handler.GeneralHandler;
 import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.RequestDTO;
 import com.umc.meetpick.entity.*;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.repository.*;
+import com.umc.meetpick.repository.member.MemberLikesRepository;
+import com.umc.meetpick.repository.member.MemberMappingRepository;
+import com.umc.meetpick.repository.member.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class RequestServiceImpl implements RequestService {
-    private final RequestRepository requestRepository;
     private final NewRequestRepository newRequestRepository;
     private final MemberRepository memberRepository;
-    private final RequestSubMajorRepository requestSubMajorRepository;
     private final SubMajorRepository subMajorRepository;
     private final MemberMappingRepository memberMappingRepository;
     private final MemberLikesRepository memberLikesRepository;
@@ -111,12 +111,12 @@ public class RequestServiceImpl implements RequestService {
                 .orElseThrow(() -> new EntityNotFoundException("매칭 신청 유저 오류" + newJoinRequest.getPostUserId()));
 
         // MemberMapping 생성
-        MemberMapping memberMapping = MemberMapping.builder()
+        MemberSecondProfileMapping memberSecondProfileMapping = MemberSecondProfileMapping.builder()
                 .member(member)
                 .request(request)
                 .status(false)
                 .build();
-        MemberMapping savedMapping = memberMappingRepository.save(memberMapping);
+        MemberSecondProfileMapping savedMapping = memberMappingRepository.save(memberSecondProfileMapping);
 
         return RequestDTO.JoinRequestDTO.builder()
                 .requestId(savedMapping.getRequest().getId())

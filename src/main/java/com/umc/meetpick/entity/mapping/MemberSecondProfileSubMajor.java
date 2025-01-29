@@ -1,5 +1,7 @@
-package com.umc.meetpick.entity;
+package com.umc.meetpick.entity.mapping;
 
+import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
+import com.umc.meetpick.entity.SubMajor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,18 +13,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class RequestSubMajor {
+public class MemberSecondProfileSubMajor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "request_id")
-    private Request request;
+    @JoinColumn
+    private MemberSecondProfile memberSecondProfile;
 
     @ManyToOne
-    @JoinColumn(name = "subMajor_id")
+    @JoinColumn
     private SubMajor subMajor;
 
 }

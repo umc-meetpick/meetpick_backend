@@ -1,6 +1,6 @@
 package com.umc.meetpick.service;
 
-import com.umc.meetpick.entity.University;
+import com.umc.meetpick.enums.University;
 
 import java.util.List;
 
