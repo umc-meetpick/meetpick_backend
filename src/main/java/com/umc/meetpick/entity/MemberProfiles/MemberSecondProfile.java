@@ -31,7 +31,6 @@ public class MemberSecondProfile {
     @OneToOne(mappedBy = "Member")
     private Member member;
 
-
     @Enumerated(EnumType.STRING)  // null 시 상관 없음
     @Column(nullable = true)
     private Gender gender;

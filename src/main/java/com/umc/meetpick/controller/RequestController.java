@@ -44,5 +44,12 @@ public class RequestController {
         return ApiResponse.onSuccess(responseDTO);
     }
 
+    @Operation(summary = "매칭 좋아요 취소")
+    @DeleteMapping("/like/{requestId}")
+    public ApiResponse<String> deleteLikeRequest(@PathVariable Long requestId, @RequestParam Long userId) {
+        requestService.deleteLikeRequest(requestId, userId);
+        return ApiResponse.onSuccess("삭제 성공");
+    }
+
 
 }
