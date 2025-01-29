@@ -1,8 +1,7 @@
-package com.umc.meetpick.entity.mapping.food;
+package com.umc.meetpick.entity.mapping;
 import com.umc.meetpick.entity.BaseTimeEntity;
 import com.umc.meetpick.entity.Member;
-import com.umc.meetpick.entity.MemberProfiles.ExerciseProfile;
-import com.umc.meetpick.entity.MemberProfiles.FoodProfile;
+import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.Notification;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class MemberFoodMapping extends BaseTimeEntity {
+public class MemberSecondProfileMapping extends BaseTimeEntity {
     //id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +31,7 @@ public class MemberFoodMapping extends BaseTimeEntity {
 
     @ManyToOne //N:1 request_id
     @JoinColumn
-    private FoodProfile foodProfile;
+    private MemberSecondProfile memberSecondProfile;
 
     //status
     @Column(nullable = false)

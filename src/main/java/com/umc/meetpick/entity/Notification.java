@@ -1,5 +1,5 @@
 package com.umc.meetpick.entity;
-import com.umc.meetpick.entity.mapping.exercise.MemberExerciseMapping;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.enums.MateType;
 import jakarta.persistence.*;
 
@@ -18,7 +18,7 @@ public class Notification extends BaseTimeEntity {
 
     @OneToOne //1:1 mapping_id 양방향
     @JoinColumn(name = "mapping_id")
-    private MemberExerciseMapping memberExerciseMapping;
+    private MemberSecondProfileMapping memberSecondProfileMapping;
 
     //type
     @Enumerated(EnumType.STRING)  // enum 값을 문자열로 저장

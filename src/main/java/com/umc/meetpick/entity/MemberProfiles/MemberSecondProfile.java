@@ -1,11 +1,10 @@
 package com.umc.meetpick.entity.MemberProfiles;
 
+import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.Personality;
-import com.umc.meetpick.entity.mapping.food.FoodProfileSubMajor;
-import com.umc.meetpick.enums.FoodType;
-import com.umc.meetpick.enums.Gender;
-import com.umc.meetpick.enums.MBTI;
-import com.umc.meetpick.enums.StudentNumber;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
+import com.umc.meetpick.enums.*;
+import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -23,18 +22,22 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-public class StudyProfile {
+public class MemberSecondProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(mappedBy = "Member")
+    private Member member;
+
 
     @Enumerated(EnumType.STRING)  // null 시 상관 없음
     @Column(nullable = true)
     private Gender gender;
 
     @OneToMany
-    private List<FoodProfileSubMajor> foodProfileSubMajorList = new ArrayList<>();
+    private List<MemberSecondProfile> memberSecondProfileList = new ArrayList<>();
 
     @Column(nullable = true)
     private StudentNumber studentNumber;
@@ -53,17 +56,28 @@ public class StudyProfile {
 
     boolean isHobbySame;
 
-    @ElementCollection
-    private Set<Integer> times = new HashSet<>();
-
-    @ElementCollection
-    private Set<FoodType> foodTypes = new HashSet<>();
+    @OneToMany
+    private List<MemberSecondProfileTimes> memberSecondProfileTimes = new ArrayList<>();
 
     private int maxPeople;
 
     private int currentPeople;
 
     private String comment;
+
+    @ElementCollection
+    @Column(nullable = true)
+    private Set<ExerciseType> exerciseTypes = new HashSet<>();
+
+    @Column(nullable = true)
+    private Boolean isSchool;
+
+    @ElementCollection
+    @Column(nullable = true)
+    private Set<FoodType> foodTypes = new HashSet<>();
+
+    @Column(nullable = false)
+    private MateType mateType;
 
     // 문자열로 mbti 받고 해당 하는 mbti 리스트 가져오는 함수
     public Set<MBTI> getMbtis(String mbti) {

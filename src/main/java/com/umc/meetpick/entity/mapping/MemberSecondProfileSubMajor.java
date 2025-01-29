@@ -1,6 +1,6 @@
-package com.umc.meetpick.entity.mapping.food;
+package com.umc.meetpick.entity.mapping;
 
-import com.umc.meetpick.entity.MemberProfiles.FoodProfile;
+import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.SubMajor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class FoodProfileSubMajor {
+public class MemberSecondProfileSubMajor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class FoodProfileSubMajor {
 
     @ManyToOne
     @JoinColumn
-    private FoodProfile foodProfile;
+    private MemberSecondProfile memberSecondProfile;
 
     @ManyToOne
     @JoinColumn

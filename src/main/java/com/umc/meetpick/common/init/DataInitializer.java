@@ -3,22 +3,18 @@ package com.umc.meetpick.common.init;
 import com.umc.meetpick.entity.*;
 import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.*;
+import com.umc.meetpick.repository.member.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.Set;
 
 @Component
 @AllArgsConstructor
 public class DataInitializer implements CommandLineRunner {
     private final MajorRepository majorRepository;
     private final SubMajorRepository subMajorRepository;
-    private final UniversityRepository universityRepository;
     private final MemberRepository memberRepository;
-    private final JdbcTemplate jdbcTemplate;
-    private final RequestRepository requestRepository;
 
     /*@PostConstruct
     public void init() {

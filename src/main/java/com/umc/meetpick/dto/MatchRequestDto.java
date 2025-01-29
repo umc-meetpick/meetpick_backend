@@ -20,7 +20,7 @@ public class MatchRequestDto {
     private LocalDateTime createdAt; // 작성 시간
 
     //RequestEntity->DTO
-    public static MatchRequestDto from(Request request) {
+    /*public static MatchRequestDto from(Request request) {
         return MatchRequestDto.builder()
                 .requestId(request.getId())
                 .writerId(request.getWriter().getId())
@@ -31,5 +31,5 @@ public class MatchRequestDto {
                 .mateType(request.getType().name())
                 .createdAt(request.getCreatedAt())
                 .build();
-    }
+    }*/
 }

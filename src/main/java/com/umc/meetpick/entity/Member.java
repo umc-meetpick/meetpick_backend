@@ -1,6 +1,6 @@
 package com.umc.meetpick.entity;
-import com.umc.meetpick.entity.MemberProfiles.FoodProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
+import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.enums.*;
 import jakarta.persistence.*;
 
@@ -71,7 +71,7 @@ public class Member {
     //외래키
     @OneToOne
     @JoinColumn(name = "food_profile")
-    private FoodProfile foodProfile;
+    private MemberSecondProfile memberSecondProfile;
 
     //양방향 매핑 설정
 

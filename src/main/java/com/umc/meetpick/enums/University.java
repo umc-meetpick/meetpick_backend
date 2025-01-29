@@ -1,5 +1,8 @@
 package com.umc.meetpick.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum University {
     SEOUL_NATIONAL_UNIVERSITY("서울대학교", "서울특별시 관악구 관악로 1"),
     KOREA_UNIVERSITY("고려대학교", "서울특별시 성북구 안암로 145"),
@@ -31,13 +34,16 @@ public enum University {
         this.address = address;
     }
 
-    // getter 메서드
-    public String getUniversityName() {
-        return universityName;
+    // 검색 후 일치하는 목록 반환
+    public static List<University> search(String keyword) {
+        List<University> result = new ArrayList<>();
+        for (University university : University.values()) {
+            if (university.name().toLowerCase().contains(keyword.toLowerCase())) {
+                result.add(university);
+            }
+        }
+        return result;
     }
 
-    public String getAddress() {
-        return address;
-    }
 }
 
