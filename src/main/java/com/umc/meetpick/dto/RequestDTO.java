@@ -1,11 +1,11 @@
 package com.umc.meetpick.dto;
 
-import com.umc.meetpick.entity.Hobby;
-import com.umc.meetpick.entity.Major;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.MBTI;
 import com.umc.meetpick.enums.MateType;
 import lombok.*;
+
+import java.util.Set;
 
 
 public class RequestDTO {
@@ -18,17 +18,38 @@ public class RequestDTO {
     public static class NewRequestDTO {
         private Long writerId;
         //private String majorName;
-        private String subMajorName;
-        private String hobbyName;
+        private Set<String> subMajorName;
+        private String isHobbySame;
         private Integer studentNumber;
-        private MBTI mbti;
+        private Set<MBTI> mbti;
         private Integer minAge;
         private Integer maxAge;
         private Integer minTime;
         private Integer maxTime;
-        private FoodType food;
+        private Set<FoodType> food;
         private Integer maxPeople;
         private MateType type;
+    }
+
+    // 매칭에 참여하기
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class JoinRequestDTO {
+        private Long requestId;
+        private Long postUserId;
+        private Boolean status;
+    }
+
+    // 매칭에 좋아요 누르기
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class LikeRequestDTO {
+        private Long requestId;
+        private Long postUserId;
     }
 
 }

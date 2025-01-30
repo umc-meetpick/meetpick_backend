@@ -1,14 +1,9 @@
 package com.umc.meetpick.common.init;
 
-import com.umc.meetpick.entity.Hobby;
-import com.umc.meetpick.entity.Major;
-import com.umc.meetpick.entity.SubMajor;
-import com.umc.meetpick.entity.University;
-import com.umc.meetpick.repository.HobbyRepository;
-import com.umc.meetpick.repository.MajorRepository;
-import com.umc.meetpick.repository.SubMajorRepository;
-import com.umc.meetpick.repository.UniversityRepository;
-import jakarta.annotation.PostConstruct;
+import com.umc.meetpick.entity.*;
+import com.umc.meetpick.enums.*;
+import com.umc.meetpick.repository.*;
+import com.umc.meetpick.repository.member.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,11 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class DataInitializer implements CommandLineRunner {
-    private final HobbyRepository hobbyRepository;
     private final MajorRepository majorRepository;
     private final SubMajorRepository subMajorRepository;
-    private final UniversityRepository universityRepository;
-    private final JdbcTemplate jdbcTemplate;
+    private final MemberRepository memberRepository;
 
     /*@PostConstruct
     public void init() {
@@ -33,25 +26,6 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        if (hobbyRepository.count() == 0) {
-            // 취미 데이터 삽입
-            hobbyRepository.save(new Hobby("축구"));
-            hobbyRepository.save(new Hobby("독서"));
-            hobbyRepository.save(new Hobby("요리"));
-            hobbyRepository.save(new Hobby("영화 감상"));
-            hobbyRepository.save(new Hobby("게임"));
-            hobbyRepository.save(new Hobby("음악 감상"));
-            hobbyRepository.save(new Hobby("여행"));
-            hobbyRepository.save(new Hobby("사진 촬영"));
-            hobbyRepository.save(new Hobby("미술"));
-            hobbyRepository.save(new Hobby("수집"));
-            hobbyRepository.save(new Hobby("글쓰기"));
-            hobbyRepository.save(new Hobby("봉사 활동"));
-            hobbyRepository.save(new Hobby("스키"));
-            hobbyRepository.save(new Hobby("낚시"));
-            hobbyRepository.save(new Hobby("댄스"));
-        }
-
         // Major(전공) 저장
         Major engineering = majorRepository.findById(1L).orElse(majorRepository.save(new Major("공학 계열")));
         Major science = majorRepository.findById(2L).orElse(majorRepository.save(new Major("자연과학 계열")));
@@ -61,6 +35,39 @@ public class DataInitializer implements CommandLineRunner {
         Major artsAndPhysical = majorRepository.findById(6L).orElse(majorRepository.save(new Major("예술·체육 계열")));
         Major agricultureAndLife = majorRepository.findById(7L).orElse(majorRepository.save(new Major("농·생명 계열")));
         Major convergenceAndSpecialization = majorRepository.findById(8L).orElse(majorRepository.save(new Major("융합/특성화 계열")));
+
+        // 사용자 기본값 저장
+        if (memberRepository.count() == 0) {
+            memberRepository.save(Member.builder()
+                    .gender(Gender.MALE)
+                    .birthday(new java.util.Date(1995, 6, 15))
+                    .university(University.SEOUL_NATIONAL_UNIVERSITY)
+                    .socialType(SocialType.KAKAO)
+                    .socialId(1234567890L)
+                    .status(MemberStatus.ACTIVE)
+                    .role(MemberRole.MEMBER)
+                    .build());
+
+            memberRepository.save(Member.builder()
+                    .gender(Gender.FEMALE)
+                    .birthday(new java.util.Date(1998, 4, 20))
+                    .university(University.CHUNGANG_UNIVERSITY)
+                    .socialType(SocialType.KAKAO)
+                    .socialId(9876543210L)
+                    .status(MemberStatus.ACTIVE)
+                    .role(MemberRole.MEMBER)
+                    .build());
+
+            memberRepository.save(Member.builder()
+                    .gender(Gender.MALE)
+                    .birthday(new java.util.Date(2000, 11, 10))
+                    .university(University.KOREA_UNIVERSITY)
+                    .socialType(SocialType.KAKAO)
+                    .socialId(1122334455L)
+                    .status(MemberStatus.ACTIVE)
+                    .role(MemberRole.MEMBER)
+                    .build());
+        }
 
         if (subMajorRepository.count() == 0) {
             // SubMajor(전공 학과) 저장
@@ -145,30 +152,6 @@ public class DataInitializer implements CommandLineRunner {
             subMajorRepository.save(new SubMajor("정보보안학과", convergenceAndSpecialization));
             subMajorRepository.save(new SubMajor("자유전공학부", convergenceAndSpecialization));
             subMajorRepository.save(new SubMajor("특성화 학과", convergenceAndSpecialization));
-        }
-
-        if (universityRepository.count() == 0) {
-            universityRepository.save(new University("서울대학교", "서울특별시 관악구 관악로 1"));
-            universityRepository.save(new University("고려대학교", "서울특별시 성북구 안암로 145"));
-            universityRepository.save(new University("연세대학교", "서울특별시 서대문구 연세로 50"));
-            universityRepository.save(new University("한양대학교", "서울특별시 성동구 왕십리로 222"));
-            universityRepository.save(new University("성균관대학교", "서울특별시 종로구 성균관로 25-2"));
-            universityRepository.save(new University("서강대학교", "서울특별시 마포구 백범로 35"));
-            universityRepository.save(new University("중앙대학교", "서울특별시 동작구 흑석로 84"));
-            universityRepository.save(new University("경희대학교", "서울특별시 동대문구 경희대로 26"));
-            universityRepository.save(new University("이화여자대학교", "서울특별시 서대문구 이화여대길 52"));
-            universityRepository.save(new University("한국외국어대학교", "서울특별시 동대문구 이문로 107"));
-            universityRepository.save(new University("서울시립대학교", "서울특별시 동대문구 서울시립대로 163"));
-            universityRepository.save(new University("건국대학교", "서울특별시 광진구 능동로 120"));
-            universityRepository.save(new University("동국대학교", "서울특별시 중구 필동로 1길 30"));
-            universityRepository.save(new University("홍익대학교", "서울특별시 마포구 와우산로 94"));
-            universityRepository.save(new University("세종대학교", "서울특별시 광진구 능동로 209"));
-            universityRepository.save(new University("숭실대학교", "서울특별시 동작구 상도로 369"));
-            universityRepository.save(new University("한성대학교", "서울특별시 성북구 삼선교로 16"));
-            universityRepository.save(new University("서울과학기술대학교", "서울특별시 노원구 공릉로 232"));
-            universityRepository.save(new University("서울시립대학교", "서울특별시 동대문구 서울시립대로 163"));
-            universityRepository.save(new University("한국항공대학교", "서울특별시 강서구 화곡로 76"));
-            universityRepository.save(new University("덕성여자대학교", "서울특별시 도봉구 덕성로 132"));
         }
 
     }
