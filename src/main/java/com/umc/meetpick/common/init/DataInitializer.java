@@ -1,10 +1,7 @@
 package com.umc.meetpick.common.init;
 
 import com.umc.meetpick.entity.*;
-import com.umc.meetpick.enums.Gender;
-import com.umc.meetpick.enums.MemberRole;
-import com.umc.meetpick.enums.MemberStatus;
-import com.umc.meetpick.enums.SocialType;
+import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -48,7 +45,7 @@ public class DataInitializer implements CommandLineRunner {
             memberRepository.save(Member.builder()
                     .gender(Gender.MALE)
                     .birthday(new java.util.Date(1995, 6, 15))
-                    .university("서울대학교")
+                    .university(University.SEOUL_NATIONAL_UNIVERSITY)
                     .socialType(SocialType.KAKAO)
                     .socialId(1234567890L)
                     .status(MemberStatus.ACTIVE)
@@ -58,7 +55,7 @@ public class DataInitializer implements CommandLineRunner {
             memberRepository.save(Member.builder()
                     .gender(Gender.FEMALE)
                     .birthday(new java.util.Date(1998, 4, 20))
-                    .university("연세대학교")
+                    .university(University.CHUNGANG_UNIVERSITY)
                     .socialType(SocialType.KAKAO)
                     .socialId(9876543210L)
                     .status(MemberStatus.ACTIVE)
@@ -68,7 +65,7 @@ public class DataInitializer implements CommandLineRunner {
             memberRepository.save(Member.builder()
                     .gender(Gender.MALE)
                     .birthday(new java.util.Date(2000, 11, 10))
-                    .university("고려대학교")
+                    .university(University.KOREA_UNIVERSITY)
                     .socialType(SocialType.KAKAO)
                     .socialId(1122334455L)
                     .status(MemberStatus.ACTIVE)
@@ -159,30 +156,6 @@ public class DataInitializer implements CommandLineRunner {
             subMajorRepository.save(new SubMajor("정보보안학과", convergenceAndSpecialization));
             subMajorRepository.save(new SubMajor("자유전공학부", convergenceAndSpecialization));
             subMajorRepository.save(new SubMajor("특성화 학과", convergenceAndSpecialization));
-        }
-
-        if (universityRepository.count() == 0) {
-            universityRepository.save(new University("서울대학교", "서울특별시 관악구 관악로 1"));
-            universityRepository.save(new University("고려대학교", "서울특별시 성북구 안암로 145"));
-            universityRepository.save(new University("연세대학교", "서울특별시 서대문구 연세로 50"));
-            universityRepository.save(new University("한양대학교", "서울특별시 성동구 왕십리로 222"));
-            universityRepository.save(new University("성균관대학교", "서울특별시 종로구 성균관로 25-2"));
-            universityRepository.save(new University("서강대학교", "서울특별시 마포구 백범로 35"));
-            universityRepository.save(new University("중앙대학교", "서울특별시 동작구 흑석로 84"));
-            universityRepository.save(new University("경희대학교", "서울특별시 동대문구 경희대로 26"));
-            universityRepository.save(new University("이화여자대학교", "서울특별시 서대문구 이화여대길 52"));
-            universityRepository.save(new University("한국외국어대학교", "서울특별시 동대문구 이문로 107"));
-            universityRepository.save(new University("서울시립대학교", "서울특별시 동대문구 서울시립대로 163"));
-            universityRepository.save(new University("건국대학교", "서울특별시 광진구 능동로 120"));
-            universityRepository.save(new University("동국대학교", "서울특별시 중구 필동로 1길 30"));
-            universityRepository.save(new University("홍익대학교", "서울특별시 마포구 와우산로 94"));
-            universityRepository.save(new University("세종대학교", "서울특별시 광진구 능동로 209"));
-            universityRepository.save(new University("숭실대학교", "서울특별시 동작구 상도로 369"));
-            universityRepository.save(new University("한성대학교", "서울특별시 성북구 삼선교로 16"));
-            universityRepository.save(new University("서울과학기술대학교", "서울특별시 노원구 공릉로 232"));
-            universityRepository.save(new University("서울시립대학교", "서울특별시 동대문구 서울시립대로 163"));
-            universityRepository.save(new University("한국항공대학교", "서울특별시 강서구 화곡로 76"));
-            universityRepository.save(new University("덕성여자대학교", "서울특별시 도봉구 덕성로 132"));
         }
 
     }

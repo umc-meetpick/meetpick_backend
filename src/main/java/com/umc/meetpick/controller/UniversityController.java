@@ -1,7 +1,6 @@
 package com.umc.meetpick.controller;
 
 import com.umc.meetpick.common.response.ApiResponse;
-import com.umc.meetpick.entity.University;
 import com.umc.meetpick.service.UniversityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,5 +1,6 @@
-package com.umc.meetpick.entity;
+package com.umc.meetpick.entity.MemberProfiles;
 
+import com.umc.meetpick.enums.FoodType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,21 +10,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @NoArgsConstructor
-@Entity(name = "university")
+@Entity
 @AllArgsConstructor
-public class University {
+public class FoodProfile extends MemberProfile {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String universityName;
-
-    @Column(nullable = false)
-    private String address;
-
-    public University(String name, String address) {
-        this.universityName = name;
-        this.address = address;
-    }
+    private FoodType foodType;
 }
