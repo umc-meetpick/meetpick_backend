@@ -173,4 +173,34 @@ public class RequestServiceImpl implements RequestService {
         }
         memberLikesRepository.delete(memberLikes);
     }
+
+    // 매칭 요청에 대한 수락 or 거절
+    @Override
+    public RequestDTO.isAcceptedDTO acceptRequest(Long requestId, Long userId, Boolean isAccepted) {
+
+        MemberSecondProfile request = memberSecondProfileRepository.findById(requestId)
+                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭"));
+
+        MemberSecondProfileMapping memberSecondProfileMapping = memberMappingRepository.findByMemberSecondProfile(request)
+                .orElseThrow(()-> new EntityNotFoundException("신청을 찾을 수 없음"));
+
+        if(!memberSecondProfileMapping.getMemberSecondProfile().getMember().getId().equals(userId)) {
+            throw new IllegalArgumentException("권한 없음");
+        }
+
+        if(memberSecondProfileMapping.getStatus()){
+            throw new IllegalArgumentException("이미 수락 or 거절됨");
+        }
+
+        memberSecondProfileMapping.setStatus(true);
+        memberSecondProfileMapping.setIsAccepted(isAccepted);
+
+        MemberSecondProfileMapping updatedMapping = memberMappingRepository.save(memberSecondProfileMapping);
+
+        return RequestDTO.isAcceptedDTO.builder()
+                .requestId(updatedMapping.getMemberSecondProfile().getId())
+                .isAccepted(updatedMapping.getIsAccepted())
+                .status(updatedMapping.getStatus())
+                .build();
+    }
 }

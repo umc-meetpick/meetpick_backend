@@ -1,6 +1,7 @@
 package com.umc.meetpick.repository.member;
 
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.enums.MateType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
