@@ -1,10 +1,12 @@
 package com.umc.meetpick.dto;
 
-import com.umc.meetpick.enums.FoodType;
-import com.umc.meetpick.enums.MBTI;
-import com.umc.meetpick.enums.MateType;
+import com.umc.meetpick.entity.Personality;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
+import com.umc.meetpick.enums.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -18,16 +20,20 @@ public class RequestDTO {
     public static class NewRequestDTO {
         private Long writerId;
         //private String majorName;
-        private Set<String> subMajorName;
-        private String isHobbySame;
-        private Integer studentNumber;
+        private Gender gender;
+        private List<MemberSecondProfileSubMajor> subMajorName;
+        private StudentNumber studentNumber;
+        private int minAge;
+        private int maxAge;
+        private Set<Personality> personality;
         private Set<MBTI> mbti;
-        private Integer minAge;
-        private Integer maxAge;
-        private Integer minTime;
-        private Integer maxTime;
+        private boolean isHobbySame;
+        private List<MemberSecondProfileTimesDTO> memberSecondProfileTimes;
+        private int maxPeople;
+        private String comment;
+        private Set<ExerciseType> exerciseTypes;
+        private Boolean isSchool;
         private Set<FoodType> food;
-        private Integer maxPeople;
         private MateType type;
     }
 

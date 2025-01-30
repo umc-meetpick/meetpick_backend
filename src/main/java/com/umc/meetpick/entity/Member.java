@@ -1,12 +1,10 @@
 package com.umc.meetpick.entity;
-import com.umc.meetpick.entity.MemberProfiles.FoodProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
+import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.enums.*;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -38,7 +36,7 @@ public class Member {
 
     //birthday
     @Column(nullable = false)
-    private LocalDate birthday;
+    private Date birthday;
 
     // 학번
     @Column(nullable = false)
@@ -68,18 +66,12 @@ public class Member {
     private MemberRole role;
 
     @OneToOne
-    @JoinColumn(name = "member_profile")
+    @JoinColumn(name = "member_profile_id")
     private MemberProfile memberProfile;
 
     //외래키
-    @OneToOne
-    @JoinColumn(name = "food_profile")
-    private FoodProfile foodProfile;
-
-    public int getAge() {
-        LocalDate currentDate = LocalDate.now();
-        return Period.between(birthday, currentDate).getYears();
-    }
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
+    private MemberSecondProfile memberSecondProfile;
 
     //양방향 매핑 설정
 

@@ -2,8 +2,6 @@ package com.umc.meetpick.service;
 
 import com.umc.meetpick.dto.MatchRequestDto;
 import com.umc.meetpick.dto.MatchRequestListDto;
-import com.umc.meetpick.entity.Request;
-import com.umc.meetpick.repository.RequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +16,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)  // 읽기 전용 트랜잭션 설정
 public class RequestService {
 
-    private final RequestRepository requestRepository;
+    /*private final RequestRepository requestRepository;
 
     public MatchRequestListDto getMatchRequests(Long memberId, Pageable pageable) {
         // 1. 페이징된 Request 엔티티 조회
@@ -36,5 +34,5 @@ public class RequestService {
                 .totalElements(requests.getTotalElements())
                 .hasNext(requests.hasNext())
                 .build();
-    }
+    }*/
 }
