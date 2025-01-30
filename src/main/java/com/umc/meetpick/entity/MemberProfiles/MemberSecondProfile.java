@@ -2,16 +2,14 @@ package com.umc.meetpick.entity.MemberProfiles;
 
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.Personality;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
 import com.umc.meetpick.enums.*;
 import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
@@ -28,15 +27,16 @@ public class MemberSecondProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "Member")
+    @OneToOne
+    @JoinColumn(name = "member_id",nullable = false)
     private Member member;
 
     @Enumerated(EnumType.STRING)  // null 시 상관 없음
     @Column(nullable = true)
     private Gender gender;
 
-    @OneToMany
-    private List<MemberSecondProfile> memberSecondProfileList = new ArrayList<>();
+    @OneToMany(mappedBy = "memberSecondProfile", cascade = CascadeType.ALL)
+    private List<MemberSecondProfileSubMajor> memberSecondProfileMajorList;
 
     @Column(nullable = true)
     private StudentNumber studentNumber;
@@ -48,10 +48,11 @@ public class MemberSecondProfile {
     private int maxAge;
 
     @Column(nullable = true)
-    private Personality personality;
+    @ElementCollection
+    private Set<Personality> personality = new HashSet<>();
 
     @ElementCollection
-    private Set<MBTI> mbtis = new HashSet<>();
+    private Set<MBTI> mbti = new HashSet<>();
 
     boolean isHobbySame;
 
@@ -82,6 +83,14 @@ public class MemberSecondProfile {
     public Set<MBTI> getMbtis(String mbti) {
         // 이후 구현
         return Set.of();
+    }
+
+    // 인원 수 초과 방지
+    public void addPerson() {
+        if (currentPeople + 1 > maxPeople) {
+            throw new IllegalArgumentException("현재 인원이 최대 인원을 초과할 수 없습니다.");
+        }
+        currentPeople++;
     }
 
 }

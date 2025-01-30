@@ -3,7 +3,7 @@ package com.umc.meetpick.service.report;
 import com.umc.meetpick.dto.ReportDTO;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.Report;
-import com.umc.meetpick.repository.MemberRepository;
+import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.ReportRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
