@@ -15,6 +15,7 @@ public enum SuccessCode implements BaseCode {
 
     // 회원가입 응답
     _SIGNUP_SUCCESS(HttpStatus.OK, "SIGNUP200", "회원가입 성공입니다."),
+    _VERIFY_SUCCESS(HttpStatus.OK, "VERIFY200", "대학교 인증 성공입니다."),
     _LOGIN_SUCCESS(HttpStatus.OK, "LOGIN200", "로그인 성공입니다."),
     ;
 
