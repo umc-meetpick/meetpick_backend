@@ -65,12 +65,11 @@ public class Member {
     private MemberRole role;
 
     @OneToOne
-    @JoinColumn(name = "member_profile")
+    @JoinColumn(name = "member_profile_id")
     private MemberProfile memberProfile;
 
     //외래키
-    @OneToOne
-    @JoinColumn(name = "food_profile")
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private MemberSecondProfile memberSecondProfile;
 
     //양방향 매핑 설정
