@@ -1,7 +1,9 @@
 package com.umc.meetpick.enums;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public enum University {
     SEOUL_NATIONAL_UNIVERSITY("서울대학교", "서울특별시 관악구 관악로 1"),
@@ -35,11 +37,15 @@ public enum University {
     }
 
     // 검색 후 일치하는 목록 반환
-    public static List<University> search(String keyword) {
-        List<University> result = new ArrayList<>();
+    // TODO 나중에 리팩토링
+    public static List<Map<String, String>> search(String keyword) {
+        List<Map<String, String>> result = new ArrayList<>();
         for (University university : University.values()) {
-            if (university.name().toLowerCase().contains(keyword.toLowerCase())) {
-                result.add(university);
+            if (university.universityName.contains(keyword)) {
+                Map<String, String> map = new HashMap<>();
+                map.put("universityName", university.universityName);
+                map.put("address", university.address);
+                result.add(map);
             }
         }
         return result;

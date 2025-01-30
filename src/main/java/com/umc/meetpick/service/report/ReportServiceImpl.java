@@ -18,6 +18,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public ReportDTO.PostReportDTO postReport(ReportDTO.PostReportDTO newReport) {
+
         Member reportedMember = memberRepository.findById(newReport.getReportedId())
                 .orElseThrow(() -> new EntityNotFoundException("신고 대상자 아이디 에러"));
 

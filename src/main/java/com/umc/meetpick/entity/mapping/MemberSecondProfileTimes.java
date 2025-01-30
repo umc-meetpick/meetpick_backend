@@ -27,6 +27,7 @@ public class MemberSecondProfileTimes {
     private Week week;
 
     @ElementCollection
+    @Builder.Default
     private Set<Integer> times = new HashSet<>();
 
     @ManyToOne

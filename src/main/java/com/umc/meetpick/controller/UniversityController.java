@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Tag(name = "대학교 관련 API", description = "대학교 관련 API입니다")
@@ -21,7 +22,7 @@ public class UniversityController {
 
     @Operation(summary = "대학교 이름으로 조회 API")
     @GetMapping("/list/{universityName}")
-    public ApiResponse<List<University>> getUniversityByName(@PathVariable("universityName") String universityName) {
+    public ApiResponse<List<Map<String, String>>> getUniversityByName(@PathVariable("universityName") String universityName) {
         return ApiResponse.onSuccess(universityService.getUniversityList(universityName));
     }
 

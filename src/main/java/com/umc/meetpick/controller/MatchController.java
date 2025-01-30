@@ -6,7 +6,6 @@ import com.umc.meetpick.dto.MatchResponseDto;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.service.MatchingService;
-import com.umc.meetpick.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,9 +22,9 @@ import java.util.List;
 @RequestMapping("/api/matches") // URL 경로 설정
 public class MatchController {
 
-    private final RequestService requestService;
     private final MatchingService matchingService;
 
+    // 작동 됨
     @Operation(summary = "매칭 요청 목록 조회", description = "사용자에게 온 매칭 요청 목록을 페이징하여 조회합니다.") // [변경 2]
     @GetMapping
     public ApiResponse<MatchRequestListDto> getMatchRequests(
@@ -34,7 +33,7 @@ public class MatchController {
             @Parameter(description = "페이지 정보 (기본값: 10개, 생성일 기준 정렬)") // [변경 4]
             @PageableDefault(size = 10, sort = "createdAt") Pageable pageable
     ) {
-        MatchRequestListDto response = requestService.getMatchRequests(memberId, pageable);
+        MatchRequestListDto response = matchingService.getMatchRequests(memberId, pageable);
         return ApiResponse.onSuccess(response);
     }
 

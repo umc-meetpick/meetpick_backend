@@ -7,10 +7,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder
@@ -38,10 +35,6 @@ public class Member {
     @Column(nullable = false)
     private Date birthday;
 
-    // 학번
-    @Column(nullable = false)
-    private int studentNumber;
-
     //university
     @Enumerated(EnumType.STRING)  // enum 값을 문자열로 저장
     @Column(nullable = false)
@@ -66,12 +59,15 @@ public class Member {
     private MemberRole role;
 
     @OneToOne
+    @Setter
     @JoinColumn(name = "member_profile_id")
     private MemberProfile memberProfile;
 
     //외래키
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
+    @Setter
     private MemberSecondProfile memberSecondProfile;
+
 
     //양방향 매핑 설정
 

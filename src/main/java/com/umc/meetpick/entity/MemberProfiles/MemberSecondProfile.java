@@ -1,5 +1,6 @@
 package com.umc.meetpick.entity.MemberProfiles;
 
+import com.umc.meetpick.entity.BaseTimeEntity;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.Personality;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
@@ -21,7 +22,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-public class MemberSecondProfile {
+public class MemberSecondProfile extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,13 +50,16 @@ public class MemberSecondProfile {
 
     @Column(nullable = true)
     @ElementCollection
+    @Builder.Default
     private Set<Personality> personality = new HashSet<>();
 
     @ElementCollection
+    @Builder.Default
     private Set<MBTI> mbti = new HashSet<>();
 
     boolean isHobbySame;
 
+    @Builder.Default
     @OneToMany
     private List<MemberSecondProfileTimes> memberSecondProfileTimes = new ArrayList<>();
 
@@ -67,6 +71,7 @@ public class MemberSecondProfile {
 
     @ElementCollection
     @Column(nullable = true)
+    @Builder.Default
     private Set<ExerciseType> exerciseTypes = new HashSet<>();
 
     @Column(nullable = true)
@@ -74,6 +79,7 @@ public class MemberSecondProfile {
 
     @ElementCollection
     @Column(nullable = true)
+    @Builder.Default
     private Set<FoodType> foodTypes = new HashSet<>();
 
     @Column(nullable = false)

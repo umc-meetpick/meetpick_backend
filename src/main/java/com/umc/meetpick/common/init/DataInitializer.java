@@ -40,6 +40,7 @@ public class DataInitializer implements CommandLineRunner {
         if (memberRepository.count() == 0) {
             memberRepository.save(Member.builder()
                     .gender(Gender.MALE)
+                    .name("개똥이")
                     .birthday(new java.util.Date(1995, 6, 15))
                     .university(University.SEOUL_NATIONAL_UNIVERSITY)
                     .socialType(SocialType.KAKAO)
@@ -50,6 +51,7 @@ public class DataInitializer implements CommandLineRunner {
 
             memberRepository.save(Member.builder()
                     .gender(Gender.FEMALE)
+                    .name("말똥이")
                     .birthday(new java.util.Date(1998, 4, 20))
                     .university(University.CHUNGANG_UNIVERSITY)
                     .socialType(SocialType.KAKAO)
@@ -60,6 +62,7 @@ public class DataInitializer implements CommandLineRunner {
 
             memberRepository.save(Member.builder()
                     .gender(Gender.MALE)
+                    .name("소똥이")
                     .birthday(new java.util.Date(2000, 11, 10))
                     .university(University.KOREA_UNIVERSITY)
                     .socialType(SocialType.KAKAO)

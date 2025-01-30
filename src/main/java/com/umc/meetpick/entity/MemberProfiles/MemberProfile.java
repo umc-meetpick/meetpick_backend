@@ -47,7 +47,7 @@ public class MemberProfile extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.LAZY)
-    private Set<FoodType> food;
+    private Set<Hobby> hobbies;
 
     //contact
     @Enumerated(EnumType.STRING)

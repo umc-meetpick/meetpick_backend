@@ -1,23 +1,28 @@
 package com.umc.meetpick.service;
 
+
+import com.umc.meetpick.dto.MatchRequestDto;
+import com.umc.meetpick.dto.MatchRequestListDto;
 import com.umc.meetpick.dto.MatchResponseDto;
 import com.umc.meetpick.entity.Member;
-import com.umc.meetpick.entity.Request;
+import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.enums.MateType;
-import com.umc.meetpick.repository.RequestRepository;
+import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class MatchingServiceImpl implements MatchingService {
 
-    private final RequestRepository requestRepository;
+    private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final int recommendationNumber = 5;
     private final int minCondition = 3;
     private int page = 0;
@@ -30,14 +35,15 @@ public class MatchingServiceImpl implements MatchingService {
         List<MatchResponseDto> matchResponseDtoList = new ArrayList<>();
 
         while(matchResponseDtoList.size() < recommendationNumber){
-            List<Request> requestList = getMatchingType(mateType);
 
-            requestList.forEach(request -> {
+            List<MemberSecondProfile> requestList = getMatchingType(mateType);
+
+            /*requestList.forEach(memberSecondProfile -> {
 
                 int conditionMatching = 0;
 
                 // 나이 조건 체크
-                if((request.getMinTime() <= member.getAge() && request.getMaxTime() >= member.getAge()) || request.getMinAge() == null){
+                if((memberSecondProfile.getMinTime() <= member.getAge() && request.getMaxTime() >= member.getAge()) || request.getMinAge() == null){
                     conditionMatching++;
                 }
 
@@ -61,17 +67,37 @@ public class MatchingServiceImpl implements MatchingService {
             if (matchResponseDtoList.size() < recommendationNumber) {
                 page++;
                 pageable = PageRequest.of(page, pageSize);
-            }
+            }*/
         }
 
         return matchResponseDtoList;
     }
 
-    private List<Request> getMatchingType(MateType mateType){
-        return requestRepository.findAllByType(mateType, pageable).getContent();
+    public MatchRequestListDto getMatchRequests(Long memberId, Pageable pageable) {
+
+        // 1. 페이징된 Request 엔티티 조회
+        // TODO 만약 요청이 하나도 없는 경우 예외 처리하기
+        Page<MemberSecondProfile> requests = memberSecondProfileRepository.findMemberSecondProfileByMemberId(memberId, pageable);
+
+        // 2. Request 엔티티를 DTO로 변환
+        List<MatchRequestDto> matchRequests = requests.getContent().stream()
+                .map(MatchRequestDto::from)
+                .collect(Collectors.toList());
+
+        // 3. 최종 응답 DTO 생성
+        return MatchRequestListDto.builder()
+                .requests(matchRequests)
+                .totalPages(requests.getTotalPages())
+                .totalElements(requests.getTotalElements())
+                .hasNext(requests.hasNext())
+                .build();
     }
 
-    private MatchResponseDto requestToMatchResponseDto(Member member, Request request){
+    private List<MemberSecondProfile> getMatchingType(MateType mateType){
+        return memberSecondProfileRepository.findMemberSecondProfilesByMateType(mateType, pageable).getContent();
+    }
+
+    /*private MatchResponseDto requestToMatchResponseDto(Member member, Request request){
         return MatchResponseDto.builder()
                 .memberId(member.getId())
                 .hobby(member.getMemberProfile().getHobby())
@@ -80,5 +106,5 @@ public class MatchingServiceImpl implements MatchingService {
                 .gender(request.getGender())
                 .hobby(request.getWriter().getMemberProfile().getHobby()) // 수정: writer를 memberProfile로 변경
                 .build();
-    }
+    }*/
 }
