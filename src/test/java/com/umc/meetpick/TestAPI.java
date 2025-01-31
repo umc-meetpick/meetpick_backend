@@ -96,6 +96,6 @@ public class TestAPI {
 
     @Test
     void testAPI3(){
-        System.out.println(matchingService.getAlarms(memberRepository.findMemberById(5L), MateType.ALL).get(0).getContent());
+        System.out.println(matchingService.getAlarms(5L, MateType.ALL).get(0).getContent());
     }
 }

@@ -11,6 +11,7 @@ import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
+import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 public class MatchingServiceImpl implements MatchingService {
 
     private final MemberSecondProfileRepository memberSecondProfileRepository;
+    private final MemberRepository memberRepository;
     private final MemberMappingRepository memberMappingRepository;
     private final int minCondition = 3;
     private int page = 0;
@@ -36,13 +38,15 @@ public class MatchingServiceImpl implements MatchingService {
     private Pageable pageable = PageRequest.of(page, pageSize);
 
     @Override
-    public List<MatchResponseDto> match(Member member, MateType mateType){
+    public List<MatchResponseDto> match(Long memberId, MateType mateType){
+
+        Member member = memberRepository.findMemberById(memberId);
 
         List<MatchResponseDto> matchResponseDtoList = new ArrayList<>();
 
         int recommendationNumber = 5;
 
-        while(matchResponseDtoList.size() < recommendationNumber) {
+        while(page < 5) {
 
             List<MemberSecondProfile> requestList = getMatchingType(mateType);
 
@@ -109,7 +113,9 @@ public class MatchingServiceImpl implements MatchingService {
 
     // TODO 디자인 패턴 적용 및 내용 수정
     @Override
-    public List<AlarmResponseDto> getAlarms(Member member, MateType mateType) {
+    public List<AlarmResponseDto> getAlarms(Long memberId, MateType mateType) {
+
+        Member member = memberRepository.findMemberById(memberId);
 
         // TODO 인덱싱 추가하기 & 예외처리 & pageable 처리 다르게 하기 (무한스크롤)
         List<MemberSecondProfileMapping> memberSecondProfileMappings = memberMappingRepository.findAllByMemberSecondProfile_MemberOrderByCreatedAt(member, pageable).getContent();

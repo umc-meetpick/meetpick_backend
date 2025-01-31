@@ -4,5 +4,5 @@ import com.umc.meetpick.dto.MemberResponseDTO;
 import com.umc.meetpick.enums.MateType;
 
 public interface MemberService {
-    public MemberResponseDTO getRandomMember(MateType mateType);
+    MemberResponseDTO getRandomMember(MateType mateType);
 }

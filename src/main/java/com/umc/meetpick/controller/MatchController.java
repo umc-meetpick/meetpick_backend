@@ -42,16 +42,16 @@ public class MatchController {
     @Operation(summary = "추천 매칭 목록 조회", description = "사용자에게 적절한 메이트를 추천해줍니다") // [변경 2]
     @GetMapping("recommendation")
     public ApiResponse<List<MatchResponseDto>> getRecommendation(
-            @PathParam("mateType") MateType mateType, Member member)
+            @PathParam("mateType") MateType mateType, Long memberId)
     {
-        return ApiResponse.onSuccess(matchingService.match(member, mateType));
+        return ApiResponse.onSuccess(matchingService.match(memberId, mateType));
     }
 
     @Operation(summary = "알람 목록 받아오기", description = "알람을 받아옵니다") // [변경 2]
     @GetMapping("alarm")
     public ApiResponse<List<AlarmResponseDto>> getAlarm(
-            @PathParam("mateType") MateType mateType, Member member)
+            @PathParam("mateType") MateType mateType, Long memberId)
     {
-        return ApiResponse.onSuccess(matchingService.getAlarms(member, mateType));
+        return ApiResponse.onSuccess(matchingService.getAlarms(memberId, mateType));
     }
 }

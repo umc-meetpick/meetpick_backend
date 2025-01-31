@@ -11,9 +11,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface MatchingService {
-    List<MatchResponseDto> match(Member member, MateType mateType);
+    List<MatchResponseDto> match(Long memberId, MateType mateType);
 
     MatchRequestListDto getMatchRequests(Long memberId, Pageable pageable);
 
-    List<AlarmResponseDto> getAlarms(Member member, MateType mateType);
+    List<AlarmResponseDto> getAlarms(Long memberId, MateType mateType);
 }

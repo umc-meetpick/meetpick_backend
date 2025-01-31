@@ -53,10 +53,9 @@ public class MemberSecondProfile extends BaseTimeEntity {
     @Column(nullable = true)
     private Integer maxAge;
 
-    @Column(nullable = true)
-    @ElementCollection
-    @Builder.Default
-    private Set<Personality> personality = new HashSet<>();
+    @OneToOne
+    @JoinColumn
+    private Personality personality;
 
     @ElementCollection
     @Builder.Default
@@ -88,6 +87,7 @@ public class MemberSecondProfile extends BaseTimeEntity {
     private Set<FoodType> foodTypes = new HashSet<>();
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private MateType mateType;
 
     // 문자열로 mbti 받고 해당 하는 mbti 리스트 가져오는 함수

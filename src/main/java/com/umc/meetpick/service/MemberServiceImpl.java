@@ -26,7 +26,8 @@ public class MemberServiceImpl implements MemberService {
 
         long randomId = (long) (Math.random()*memberSecondProfileRepository.count());
 
-        MemberSecondProfile memberProfile = memberSecondProfileRepository.findMemberSecondProfileByIdAndMateType(randomId, mateType).orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
+        // TODO ID 바꾸기
+        MemberSecondProfile memberProfile = memberSecondProfileRepository.findMemberSecondProfileByIdAndMateType(1L, mateType).orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
 
         return MemberProfileToMemberProfileResponseDTO(memberProfile);
     }
@@ -39,7 +40,7 @@ public class MemberServiceImpl implements MemberService {
             return MemberResponseDTO.builder()
                     .id(member.getId())
                     .studentNumber(memberProfile.getStudentNumber())
-                    .major(memberProfile.getMajor().toString())
+                    .major(memberProfile.getMajor().getName())
                     .nickname(memberProfile.getNickname())
                     .university(member.getUniversity().toString())
                     .userImage(memberProfile.getProfileImage())
