@@ -18,6 +18,8 @@ public interface MemberSecondProfileRepository extends JpaRepository<MemberSecon
 
     boolean existsByMemberIdAndMateType(Long writerId, MateType mateType);
 
+    boolean existsByMemberId(Long writerid);
+
     Page<MemberSecondProfile> findMemberSecondProfilesByMateType(@Param("memberId") MateType mateType, Pageable pageable);
 
     @Query("SELECT m FROM MemberSecondProfile m " +

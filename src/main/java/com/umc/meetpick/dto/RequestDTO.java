@@ -21,11 +21,11 @@ public class RequestDTO {
         private Long writerId;
         //private String majorName;
         private Gender gender;
-        private List<MemberSecondProfileSubMajor> subMajorName;
+        private List<String> subMajorName;
         private StudentNumber studentNumber;
         private int minAge;
         private int maxAge;
-        private Set<Personality> personality;
+        private List<String> personality;
         private Set<MBTI> mbti;
         private boolean isHobbySame;
         private List<MemberSecondProfileTimesDTO> memberSecondProfileTimes;
