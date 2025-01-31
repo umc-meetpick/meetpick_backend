@@ -5,6 +5,7 @@ import com.umc.meetpick.enums.*;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 
 import lombok.*;
@@ -67,6 +68,16 @@ public class Member {
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     @Setter
     private MemberSecondProfile memberSecondProfile;
+
+    // 나이 계산 함수
+    public int getAge() {
+        // Date를 LocalDate로 변환
+        LocalDate birthDate = new java.sql.Date(birthday.getTime()).toLocalDate();
+        LocalDate currentDate = LocalDate.now();
+
+        // 현재 날짜와 생일을 기준으로 나이 계산
+        return Period.between(birthDate, currentDate).getYears();
+    }
 
 
     //양방향 매핑 설정

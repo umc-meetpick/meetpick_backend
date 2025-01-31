@@ -1,5 +1,6 @@
 package com.umc.meetpick.service;
 
+import com.umc.meetpick.dto.AlarmResponseDto;
 import com.umc.meetpick.dto.MatchRequestDto;
 import com.umc.meetpick.dto.MatchRequestListDto;
 import com.umc.meetpick.dto.MatchResponseDto;
@@ -13,4 +14,6 @@ public interface MatchingService {
     List<MatchResponseDto> match(Member member, MateType mateType);
 
     MatchRequestListDto getMatchRequests(Long memberId, Pageable pageable);
+
+    List<AlarmResponseDto> getAlarms(Member member, MateType mateType);
 }

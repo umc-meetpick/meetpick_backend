@@ -64,6 +64,8 @@ public class TestAPI {
                 .status(false)
                 .build();
 
+        System.out.println(memberSecondProfileFactories.get(1).getMember().getId());
+
         memberMappingRepository.save(mapping);
 
     }
@@ -80,7 +82,7 @@ public class TestAPI {
 
     }*/
 
-    @Test
+    /*@Test
     void testAPI2(){
 
         System.out.println(reportService.postReport(ReportDTO.PostReportDTO.builder()
@@ -90,5 +92,10 @@ public class TestAPI {
                 .reportType("욕설")
                 .build()));
 
+    }*/
+
+    @Test
+    void testAPI3(){
+        System.out.println(matchingService.getAlarms(memberRepository.findMemberById(5L), MateType.ALL).get(0).getContent());
     }
 }

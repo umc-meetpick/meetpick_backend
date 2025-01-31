@@ -10,6 +10,7 @@ import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Null;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -43,10 +44,14 @@ public class MemberSecondProfile extends BaseTimeEntity {
     private StudentNumber studentNumber;
 
     @Min(18)
-    private int minAge;
-
     @Max(28)
-    private int maxAge;
+    @Column(nullable = true)
+    private Integer minAge;
+
+    @Min(18)
+    @Max(28)
+    @Column(nullable = true)
+    private Integer maxAge;
 
     @Column(nullable = true)
     @ElementCollection

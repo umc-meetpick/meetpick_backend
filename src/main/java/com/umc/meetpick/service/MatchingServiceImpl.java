@@ -1,12 +1,16 @@
 package com.umc.meetpick.service;
 
 
+import com.umc.meetpick.dto.AlarmResponseDto;
 import com.umc.meetpick.dto.MatchRequestDto;
 import com.umc.meetpick.dto.MatchRequestListDto;
 import com.umc.meetpick.dto.MatchResponseDto;
 import com.umc.meetpick.entity.Member;
+import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.enums.MateType;
+import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +18,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,10 +29,10 @@ import java.util.stream.Collectors;
 public class MatchingServiceImpl implements MatchingService {
 
     private final MemberSecondProfileRepository memberSecondProfileRepository;
-    private final int recommendationNumber = 5;
+    private final MemberMappingRepository memberMappingRepository;
     private final int minCondition = 3;
     private int page = 0;
-    private int pageSize = 100;
+    private final int pageSize = 100;
     private Pageable pageable = PageRequest.of(page, pageSize);
 
     @Override
@@ -34,32 +40,35 @@ public class MatchingServiceImpl implements MatchingService {
 
         List<MatchResponseDto> matchResponseDtoList = new ArrayList<>();
 
-        while(matchResponseDtoList.size() < recommendationNumber){
+        int recommendationNumber = 5;
+
+        while(matchResponseDtoList.size() < recommendationNumber) {
 
             List<MemberSecondProfile> requestList = getMatchingType(mateType);
 
-            /*requestList.forEach(memberSecondProfile -> {
+            //TODO 추천 로직 변경하기
+            requestList.forEach(memberSecondProfile -> {
 
                 int conditionMatching = 0;
 
                 // 나이 조건 체크
-                if((memberSecondProfile.getMinTime() <= member.getAge() && request.getMaxTime() >= member.getAge()) || request.getMinAge() == null){
+                if((memberSecondProfile.getMinAge() <= member.getAge() && memberSecondProfile.getMaxAge() >= member.getAge()) || memberSecondProfile.getMaxAge() == null){
                     conditionMatching++;
                 }
 
                 // 성별 조건 체크
-                if(request.getGender() == member.getGender() || request.getGender() == null){
+                if(memberSecondProfile.getGender() == member.getGender() || memberSecondProfile.getGender() == null){
                     conditionMatching++;
                 }
 
                 // MBTI 조건 체크
-                if(request.getMbti() != null && request.getMbti().contains(member.getMemberProfile().getMBTI()) || request.getMbti() == null){
+                if(memberSecondProfile.getMbti() == null || memberSecondProfile.getMbti().contains(member.getMemberProfile().getMBTI())){
                     conditionMatching++;
                 }
 
                 // 조건이 충족되면 matchResponseDtoList에 추가
                 if(conditionMatching >= minCondition){
-                    matchResponseDtoList.add(requestToMatchResponseDto(member, request));
+                    matchResponseDtoList.add(requestToMatchResponseDto(member, memberSecondProfile));
                 }
             });
 
@@ -67,12 +76,13 @@ public class MatchingServiceImpl implements MatchingService {
             if (matchResponseDtoList.size() < recommendationNumber) {
                 page++;
                 pageable = PageRequest.of(page, pageSize);
-            }*/
+            }
         }
 
         return matchResponseDtoList;
     }
 
+    @Override
     public MatchRequestListDto getMatchRequests(Long memberId, Pageable pageable) {
 
         // 1. 페이징된 Request 엔티티 조회
@@ -97,14 +107,63 @@ public class MatchingServiceImpl implements MatchingService {
         return memberSecondProfileRepository.findMemberSecondProfilesByMateType(mateType, pageable).getContent();
     }
 
-    /*private MatchResponseDto requestToMatchResponseDto(Member member, Request request){
+    // TODO 디자인 패턴 적용 및 내용 수정
+    @Override
+    public List<AlarmResponseDto> getAlarms(Member member, MateType mateType) {
+
+        // TODO 인덱싱 추가하기 & 예외처리 & pageable 처리 다르게 하기 (무한스크롤)
+        List<MemberSecondProfileMapping> memberSecondProfileMappings = memberMappingRepository.findAllByMemberSecondProfile_MemberOrderByCreatedAt(member, pageable).getContent();
+
+        return memberSecondProfileMappings.stream()
+                .map(mapping -> {
+                    MemberSecondProfile memberSecondProfile = mapping.getMemberSecondProfile();
+                    return AlarmResponseDto.builder()
+                            .mateType(memberSecondProfile.getMateType())
+                            .content("새로운 알림을 확인해보세요!")
+                            .createdAt(getTime(mapping.getCreatedAt()))
+                            .mappingId(mapping.getId())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    private String getTime(LocalDateTime localDateTime) {
+        if (localDateTime == null) {
+            return "알 수 없음";
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        Duration duration = Duration.between(localDateTime, now);
+
+        long seconds = duration.getSeconds();
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days = hours / 24;
+
+        if (seconds < 60) {
+            return seconds + "초 전";
+        } else if (minutes < 60) {
+            return minutes + "분 전";
+        } else if (hours < 24) {
+            return hours + "시간 전";
+        } else if (days < 7) {
+            return days + "일 전";
+        } else {
+            return localDateTime.toLocalDate().toString(); // "YYYY-MM-DD" 형식
+        }
+    }
+
+    private MatchResponseDto requestToMatchResponseDto(Member member, MemberSecondProfile memberSecondProfile){
+
+        MemberProfile memberProfile = member.getMemberProfile();
+
+        // TODO MateType에 따라서 다른 로직 구성하기
         return MatchResponseDto.builder()
                 .memberId(member.getId())
-                .hobby(member.getMemberProfile().getHobby())
-                .requestId(request.getId())
-                .foodType(request.getFood())
-                .gender(request.getGender())
-                .hobby(request.getWriter().getMemberProfile().getHobby()) // 수정: writer를 memberProfile로 변경
+                .hobby(memberProfile.getHobbies())
+                .requestId(memberSecondProfile.getId())
+                .foodType(memberSecondProfile.getFoodTypes())
+                .gender(memberSecondProfile.getGender())
                 .build();
-    }*/
+    }
 }
