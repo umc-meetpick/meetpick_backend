@@ -1,12 +1,11 @@
 package com.umc.meetpick.controller;
 
 import com.umc.meetpick.common.response.ApiResponse;
-import com.umc.meetpick.dto.AlarmResponseDto;
-import com.umc.meetpick.dto.MatchRequestListDto;
-import com.umc.meetpick.dto.MatchResponseDto;
+import com.umc.meetpick.dto.*;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.service.MatchingService;
+import com.umc.meetpick.service.request.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,6 +24,7 @@ import java.util.List;
 public class MatchController {
 
     private final MatchingService matchingService;
+    private final RequestService requestService;
 
     // 작동 됨
     @Operation(summary = "매칭 요청 목록 조회", description = "사용자에게 온 매칭 요청 목록을 페이징하여 조회합니다.") // [변경 2]
@@ -33,7 +33,9 @@ public class MatchController {
             @Parameter(description = "조회할 사용자의 ID", required = true) // [변경 3]
             @RequestParam Long memberId,
             @Parameter(description = "페이지 정보 (기본값: 10개, 생성일 기준 정렬)") // [변경 4]
-            @PageableDefault(size = 10, sort = "createdAt") Pageable pageable
+            @PageableDefault(size = 10) Pageable pageable
+
+            //TODO sort 가 안돼서 일단 뺐습니다! 나중에 다시 추가할게요!
     ) {
         MatchRequestListDto response = matchingService.getMatchRequests(memberId, pageable);
         return ApiResponse.onSuccess(response);
@@ -53,5 +55,19 @@ public class MatchController {
             @PathParam("mateType") MateType mateType, Long memberId)
     {
         return ApiResponse.onSuccess(matchingService.getAlarms(memberId, mateType));
+    }
+
+    @Operation(summary = "매칭이 완료된 리스트 받아오기", description = "매칭 완료된 리스트 받아옴") // [변경 2]
+    @GetMapping("completed-match")
+    public ApiResponse<List<MatchRequestDto>> getCompletedMatch(
+            @PathParam("mateType") MateType mateType, Long memberId)
+    {
+        return ApiResponse.onSuccess(matchingService.getCompletedMatches(memberId, mateType));
+    }
+
+    @Operation(summary = "찜한 목록 가져오기")
+    @GetMapping("/like/{memberId}")
+    public ApiResponse<List<MatchResponseDto>> getLikeRequest(@PathVariable("memberId") Long memberId, @PathParam("mateType") MateType mateType) {
+        return ApiResponse.onSuccess(requestService.getLikes(memberId, mateType));
     }
 }

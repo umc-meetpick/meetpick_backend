@@ -1,4 +1,5 @@
 package com.umc.meetpick.entity;
+import com.umc.meetpick.enums.ReportType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,5 +37,5 @@ public class Report extends BaseTimeEntity {
 
     // 신고 유형
     @Column(nullable = false)
-    private String reportType;
+    private ReportType reportType;
 }
