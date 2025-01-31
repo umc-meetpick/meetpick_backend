@@ -18,9 +18,9 @@ public class RequestController {
 
     @Operation(summary = "매칭 추가")
     @PostMapping("/add")
-    public ApiResponse<RequestDTO.NewRequestDTO> createRequest(@RequestBody RequestDTO.NewRequestDTO newRequest) {
+    public ApiResponse<String> createRequest(@RequestBody RequestDTO.NewRequestDTO newRequest) {
         RequestDTO.NewRequestDTO responseDTO = requestService.createNewRequest(newRequest);
-        return ApiResponse.onSuccess(responseDTO);
+        return ApiResponse.onSuccess("등록 성공");
     }
 
     @Operation(summary = "매칭에 참가 신청")

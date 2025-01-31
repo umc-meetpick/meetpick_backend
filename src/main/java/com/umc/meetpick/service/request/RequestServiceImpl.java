@@ -9,6 +9,7 @@ import com.umc.meetpick.entity.mapping.MemberSecondProfileLikes;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
+import com.umc.meetpick.enums.PersonalityEnum;
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,6 +30,7 @@ public class RequestServiceImpl implements RequestService {
     private final MemberLikesRepository memberLikesRepository;
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
+    private final PersonalityRepository personalityRepository;
 
     @Override
     public RequestDTO.NewRequestDTO createNewRequest(RequestDTO.NewRequestDTO newRequest) {
@@ -49,6 +51,25 @@ public class RequestServiceImpl implements RequestService {
             throw new IllegalArgumentException("이미 요청이 존재");
         }
 
+        // 동일 작성자인 경우
+        if (memberSecondProfileRepository.existsByMemberId(writer.getId())){
+            throw new IllegalArgumentException("하나의 요청만 가능합니다.");
+        }
+
+        // Personality 변환 및 저장
+        if (newRequest.getPersonality().size() != 4) {
+            throw new IllegalArgumentException("personality는 4개가 입력되어야 함");
+        }
+
+        Personality personality = new Personality(
+                PersonalityEnum.valueOf(newRequest.getPersonality().get(0)), // groupA
+                PersonalityEnum.valueOf(newRequest.getPersonality().get(1)), // groupB
+                PersonalityEnum.valueOf(newRequest.getPersonality().get(2)), // groupC
+                PersonalityEnum.valueOf(newRequest.getPersonality().get(3))  // groupD
+        );
+
+        Personality savedPersonality = personalityRepository.save(personality);
+
         // 새로운 MemberSecondProfile 생성
         MemberSecondProfile newMemberSecondProfile = MemberSecondProfile.builder()
                 .member(writer)
@@ -59,7 +80,13 @@ public class RequestServiceImpl implements RequestService {
                 .maxAge(newRequest.getMaxAge())
                 .maxPeople(newRequest.getMaxPeople())
                 .currentPeople(0)
+                .personality(savedPersonality)
+                .isHobbySame(newRequest.isHobbySame())
+                .comment(newRequest.getComment())
                 .mateType(newRequest.getType())
+                .foodTypes(newRequest.getFood())
+                .exerciseTypes(newRequest.getExerciseTypes())
+                .isSchool(newRequest.getIsSchool())
                 .build();
 
         MemberSecondProfile savedProfile = memberSecondProfileRepository.save(newMemberSecondProfile);
@@ -75,10 +102,11 @@ public class RequestServiceImpl implements RequestService {
 
         memberSecondProfileTimesRepository.saveAll(timesList);
 
-        List<MemberSecondProfileSubMajor> subMajorNames = newRequest.getSubMajorName().stream()
-                .map(dto -> {
+        // List<String>으로 받은 세부전공을 엔티티도 변환
+        List<MemberSecondProfileSubMajor> subMajorList = newRequest.getSubMajorName().stream()
+                .map(name -> {
                     // 프론트에서 받은 subMajorName으로 SubMajor entity 찾기
-                    SubMajor subMajor = subMajorRepository.findByName(dto.getSubMajor().getName())
+                    SubMajor subMajor = subMajorRepository.findByName(name)
                             .orElseThrow(()-> new EntityNotFoundException("등록 전공 아님"));
 
                     // MemberSecondProfileSubMajor 생성
