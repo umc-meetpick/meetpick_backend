@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AlarmResponseDto {
-    MateType mateType;
+    String mateType;
     String content;
     String createdAt;
     Long mappingId;

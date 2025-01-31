@@ -9,6 +9,8 @@ import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
+import com.umc.meetpick.enums.FoodType;
+import com.umc.meetpick.enums.Hobby;
 import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.repository.member.MemberRepository;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -124,7 +127,7 @@ public class MatchingServiceImpl implements MatchingService {
                 .map(mapping -> {
                     MemberSecondProfile memberSecondProfile = mapping.getMemberSecondProfile();
                     return AlarmResponseDto.builder()
-                            .mateType(memberSecondProfile.getMateType())
+                            .mateType(memberSecondProfile.getMateType().getKoreanName())
                             .content("새로운 알림을 확인해보세요!")
                             .createdAt(getTime(mapping.getCreatedAt()))
                             .mappingId(mapping.getId())
@@ -132,6 +135,36 @@ public class MatchingServiceImpl implements MatchingService {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<MatchRequestDto> getCompletedMatches(Long memberId, MateType mateType) {
+        Member member = memberRepository.findMemberById(memberId);
+
+        //TODO 완성된거만 뽑도록 바꾸기
+
+        return memberMappingRepository.findAllByMemberSecondProfile_MemberOrderByCreatedAt(member, pageable)
+                .getContent()
+                .stream()
+                .map(mapping -> {
+                    MemberSecondProfile memberSecondProfile = mapping.getMemberSecondProfile();
+
+                    // 날짜 변환
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    String formattedDate = memberSecondProfile.getCreatedAt().format(formatter);
+
+                    return MatchRequestDto.builder()
+                            .memberProfileId(memberSecondProfile.getId())
+                            .writerId(memberSecondProfile.getMember().getId())
+                            .studentNumber(memberSecondProfile.getMember().getMemberProfile().getStudentNumber())
+                            .major(memberSecondProfile.getMember().getMemberProfile().getMajor().getName())
+                            .age(memberSecondProfile.getMember().getAge())
+                            .mateType(memberSecondProfile.getMateType().getKoreanName())
+                            .createdAt(formattedDate)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
 
     private String getTime(LocalDateTime localDateTime) {
         if (localDateTime == null) {
@@ -166,10 +199,14 @@ public class MatchingServiceImpl implements MatchingService {
         // TODO MateType에 따라서 다른 로직 구성하기
         return MatchResponseDto.builder()
                 .memberId(member.getId())
-                .hobby(memberProfile.getHobbies())
+                .foodType(memberSecondProfile.getFoodTypes().stream()
+                        .map(FoodType::getKoreanName)
+                        .collect(Collectors.toSet()))
+                .hobby(memberProfile.getHobbies().stream()
+                        .map(Hobby::getKoreanName)
+                        .collect(Collectors.toSet()))
                 .requestId(memberSecondProfile.getId())
-                .foodType(memberSecondProfile.getFoodTypes())
-                .gender(memberSecondProfile.getGender())
+                .gender(memberSecondProfile.getGender().getKoreanName())
                 .build();
     }
 }

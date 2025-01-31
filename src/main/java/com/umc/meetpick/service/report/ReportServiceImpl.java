@@ -9,6 +9,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.umc.meetpick.enums.ReportType.fromKoreanName;
+
 @Service
 @RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService {
@@ -29,7 +31,7 @@ public class ReportServiceImpl implements ReportService {
                 .writer(reporterMember)
                 .matchingMember(reportedMember)
                 .content(newReport.getContent())
-                .reportType(newReport.getReportType())
+                .reportType(fromKoreanName(newReport.getReportType()))
                 .build();
 
         Report savedReport = reportRepository.save(report);
@@ -38,7 +40,7 @@ public class ReportServiceImpl implements ReportService {
                 .reportedId(savedReport.getMatchingMember().getId())
                 .reporterId(savedReport.getWriter().getId())
                 .content(savedReport.getContent())
-                .reportType(savedReport.getReportType())
+                .reportType(savedReport.getReportType().getKoreanName())
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.umc.meetpick.dto;
 
+import com.umc.meetpick.enums.ReportType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

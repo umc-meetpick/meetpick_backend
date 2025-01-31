@@ -18,9 +18,9 @@ public class MatchResponseDto {
     long memberId;
     long requestId;
     int memberNumber;
-    Gender gender;
-    Set<FoodType> foodType;
-    Set<Hobby> hobby;
+    String gender;
+    Set<String> foodType;
+    Set<String> hobby;
     MateType mateType;
 
 }

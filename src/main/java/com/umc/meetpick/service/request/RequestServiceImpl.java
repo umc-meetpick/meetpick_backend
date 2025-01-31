@@ -2,14 +2,22 @@ package com.umc.meetpick.service.request;
 
 import com.umc.meetpick.common.exception.handler.GeneralHandler;
 import com.umc.meetpick.common.response.status.ErrorCode;
+import com.umc.meetpick.dto.MatchResponseDto;
 import com.umc.meetpick.dto.RequestDTO;
 import com.umc.meetpick.entity.*;
+import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileLikes;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
+
 import com.umc.meetpick.enums.PersonalityEnum;
+
+import com.umc.meetpick.enums.FoodType;
+import com.umc.meetpick.enums.Hobby;
+import com.umc.meetpick.enums.MateType;
+
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -231,4 +239,35 @@ public class RequestServiceImpl implements RequestService {
                 .status(updatedMapping.getStatus())
                 .build();
     }
+
+    //TODO 다시 코딩
+    @Override
+    public List<MatchResponseDto> getLikes(Long memberId, MateType mateType) {
+        List<MemberSecondProfileLikes> memberSecondProfileLikes =
+                memberLikesRepository.findAllByMember(memberRepository.findMemberById(memberId));
+
+        return memberSecondProfileLikes.stream()
+                .map(like -> {
+                    MemberSecondProfile memberSecondProfile = like.getMemberSecondProfile();
+                    Member member = memberSecondProfile.getMember();
+                    MemberProfile memberProfile = member.getMemberProfile();
+
+                    return MatchResponseDto.builder()
+                            .memberId(member.getId())
+                            .requestId(memberSecondProfile.getId())
+                            .memberNumber(memberProfile.getStudentNumber())
+                            .gender(member.getGender().getKoreanName())
+                            .foodType(memberSecondProfile.getFoodTypes().stream()
+                                    .map(FoodType::getKoreanName)
+                                    .collect(Collectors.toSet()))
+                            .hobby(memberProfile.getHobbies().stream()
+                                    .map(Hobby::getKoreanName)
+                                    .collect(Collectors.toSet()))
+                            .mateType(memberSecondProfile.getMateType())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+
 }
