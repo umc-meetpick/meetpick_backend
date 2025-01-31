@@ -16,4 +16,6 @@ public interface MatchingService {
     MatchRequestListDto getMatchRequests(Long memberId, Pageable pageable);
 
     List<AlarmResponseDto> getAlarms(Long memberId, MateType mateType);
+
+    List<MatchRequestDto> getCompletedMatches(Long memberId, MateType mateType);
 }
