@@ -65,7 +65,7 @@ public class RequestDTO {
     @AllArgsConstructor
     public static class isAcceptedDTO{
         private Boolean isAccepted;
-        private Long requestId;
+        private Long matchingRequestId;
         private Boolean status;
     }
 }
