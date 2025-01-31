@@ -4,16 +4,14 @@ import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.Notification;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
+@Setter
 public class MemberSecondProfileMapping extends BaseTimeEntity {
     //id
     @Id
@@ -33,7 +31,11 @@ public class MemberSecondProfileMapping extends BaseTimeEntity {
     @JoinColumn
     private MemberSecondProfile memberSecondProfile;
 
-    //status
+    //status - 매칭 완료 여부 - 거절 or 승낙시 true로
     @Column(nullable = false)
     private Boolean status;
+
+    // 매칭 승낙 여부
+    @Column
+    private Boolean isAccepted;
 }
