@@ -41,11 +41,9 @@
 | refactor | 코드 리팩토링 |
 | docs | 문서 수정 |
 | rename | 파일 혹은 폴더명 수정 |
-
-## pipelice test
-
 | remove | 파일 삭제 |
 | build | 빌드 파일 수정 |
 | ci | CI/CD 설정 변경 |
 
+## pipelice test 2
 
