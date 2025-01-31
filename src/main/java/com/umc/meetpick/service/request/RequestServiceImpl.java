@@ -218,12 +218,12 @@ public class RequestServiceImpl implements RequestService {
 
     // 매칭 요청에 대한 수락 or 거절
     @Override
-    public RequestDTO.isAcceptedDTO acceptRequest(Long requestId, Long userId, Boolean isAccepted) {
+    public RequestDTO.isAcceptedDTO acceptRequest(Long matchingRequestId, Long userId, Boolean isAccepted) {
 
-        MemberSecondProfile request = memberSecondProfileRepository.findById(requestId)
-                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭"));
+//        MemberSecondProfile request = memberSecondProfileRepository.findById(requestId)
+//                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭"));
 
-        MemberSecondProfileMapping memberSecondProfileMapping = memberMappingRepository.findByMemberSecondProfile(request)
+        MemberSecondProfileMapping memberSecondProfileMapping = memberMappingRepository.findById(matchingRequestId)
                 .orElseThrow(()-> new EntityNotFoundException("신청을 찾을 수 없음"));
 
         if(!memberSecondProfileMapping.getMemberSecondProfile().getMember().getId().equals(userId)) {
@@ -240,7 +240,7 @@ public class RequestServiceImpl implements RequestService {
         MemberSecondProfileMapping updatedMapping = memberMappingRepository.save(memberSecondProfileMapping);
 
         return RequestDTO.isAcceptedDTO.builder()
-                .requestId(updatedMapping.getMemberSecondProfile().getId())
+                .matchingRequestId(updatedMapping.getId())
                 .isAccepted(updatedMapping.getIsAccepted())
                 .status(updatedMapping.getStatus())
                 .build();
