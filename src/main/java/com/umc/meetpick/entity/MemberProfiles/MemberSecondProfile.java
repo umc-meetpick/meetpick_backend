@@ -1,5 +1,6 @@
 package com.umc.meetpick.entity.MemberProfiles;
 
+import com.umc.meetpick.entity.BaseTimeEntity;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.Personality;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
@@ -9,6 +10,7 @@ import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Null;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-public class MemberSecondProfile {
+public class MemberSecondProfile extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,20 +44,26 @@ public class MemberSecondProfile {
     private StudentNumber studentNumber;
 
     @Min(18)
-    private int minAge;
-
     @Max(28)
-    private int maxAge;
-
     @Column(nullable = true)
-    @ElementCollection
-    private Set<Personality> personality = new HashSet<>();
+    private Integer minAge;
+
+    @Min(18)
+    @Max(28)
+    @Column(nullable = true)
+    private Integer maxAge;
+
+    @OneToOne
+    @JoinColumn
+    private Personality personality;
 
     @ElementCollection
+    @Builder.Default
     private Set<MBTI> mbti = new HashSet<>();
 
     boolean isHobbySame;
 
+    @Builder.Default
     @OneToMany
     private List<MemberSecondProfileTimes> memberSecondProfileTimes = new ArrayList<>();
 
@@ -67,6 +75,7 @@ public class MemberSecondProfile {
 
     @ElementCollection
     @Column(nullable = true)
+    @Builder.Default
     private Set<ExerciseType> exerciseTypes = new HashSet<>();
 
     @Column(nullable = true)
@@ -74,9 +83,11 @@ public class MemberSecondProfile {
 
     @ElementCollection
     @Column(nullable = true)
+    @Builder.Default
     private Set<FoodType> foodTypes = new HashSet<>();
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private MateType mateType;
 
     // 문자열로 mbti 받고 해당 하는 mbti 리스트 가져오는 함수

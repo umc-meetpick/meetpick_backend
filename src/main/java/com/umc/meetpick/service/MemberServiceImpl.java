@@ -19,13 +19,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    private MemberSecondProfileRepository memberSecondProfileRepository;
+    private final MemberSecondProfileRepository memberSecondProfileRepository;
 
-    // TODO 레디스 사용하기
+    // TODO 레디스 사용하기, 무작위 멤버 추출 방식 바꾸기
     public MemberResponseDTO getRandomMember(MateType mateType){
 
         long randomId = (long) (Math.random()*memberSecondProfileRepository.count());
-        MemberSecondProfile memberProfile = memberSecondProfileRepository.findMemberSecondProfileByIdAndMateType(randomId, mateType).orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
+
+        // TODO ID 바꾸기
+        MemberSecondProfile memberProfile = memberSecondProfileRepository.findMemberSecondProfileByIdAndMateType(1L, mateType).orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
 
         return MemberProfileToMemberProfileResponseDTO(memberProfile);
     }
@@ -37,8 +39,8 @@ public class MemberServiceImpl implements MemberService {
 
             return MemberResponseDTO.builder()
                     .id(member.getId())
-                    .studentNumber(member.getStudentNumber())
-                    .major(memberProfile.getMajor().toString())
+                    .studentNumber(memberProfile.getStudentNumber())
+                    .major(memberProfile.getMajor().getName())
                     .nickname(memberProfile.getNickname())
                     .university(member.getUniversity().toString())
                     .userImage(memberProfile.getProfileImage())
