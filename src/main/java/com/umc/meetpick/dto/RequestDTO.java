@@ -45,7 +45,7 @@ public class RequestDTO {
     public static class JoinRequestDTO {
         private Long requestId;
         private Long postUserId;
-        private Boolean status;
+        //private Boolean status;
     }
 
     // 매칭에 좋아요 누르기

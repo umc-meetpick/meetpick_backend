@@ -137,6 +137,7 @@ public class RequestServiceImpl implements RequestService {
 
     }
 
+    // 매칭에 참가하기 api
     @Override
     public RequestDTO.JoinRequestDTO createJoinRequest(RequestDTO.JoinRequestDTO newJoinRequest) {
         // requestId가 존재하는지 판단
@@ -160,7 +161,7 @@ public class RequestServiceImpl implements RequestService {
         return RequestDTO.JoinRequestDTO.builder()
                 .requestId(savedMapping.getMemberSecondProfile().getId())
                 .postUserId(savedMapping.getMember().getId())
-                .status(savedMapping.getStatus())
+                //.status(savedMapping.getStatus())
                 .build();
 
     }
