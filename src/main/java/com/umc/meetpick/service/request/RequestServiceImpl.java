@@ -150,6 +150,11 @@ public class RequestServiceImpl implements RequestService {
         Member member = memberRepository.findById(newJoinRequest.getPostUserId())
                 .orElseThrow(() -> new EntityNotFoundException("매칭 신청 유저 오류" + newJoinRequest.getPostUserId()));
 
+        // 중복 신청 방지
+        if(memberMappingRepository.existsByMemberSecondProfileAndMember(request, member)){
+            throw new IllegalArgumentException("중복신청 불가");
+        }
+
         // MemberMapping 생성
         MemberSecondProfileMapping memberSecondProfileMapping = MemberSecondProfileMapping.builder()
                 .member(member)

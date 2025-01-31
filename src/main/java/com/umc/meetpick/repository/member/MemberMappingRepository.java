@@ -16,6 +16,8 @@ public interface MemberMappingRepository extends JpaRepository<MemberSecondProfi
 
     Optional<MemberSecondProfileMapping> findByMemberSecondProfile(MemberSecondProfile memberSecondProfile);
 
+    boolean existsByMemberSecondProfileAndMember(MemberSecondProfile memberSecondProfile, Member member);
+
     Page<MemberSecondProfileMapping> findAllByMemberSecondProfile_MemberOrderByCreatedAt(@Param("member") Member member, Pageable pageable);
 
 }
