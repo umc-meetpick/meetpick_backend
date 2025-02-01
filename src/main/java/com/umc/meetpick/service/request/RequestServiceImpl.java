@@ -39,6 +39,7 @@ public class RequestServiceImpl implements RequestService {
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
     private final PersonalityRepository personalityRepository;
+    private final MemberSecondProfileSubMajorRepository memberSecondProfileSubMajorRepository;
 
     @Override
     public RequestDTO.NewRequestDTO createNewRequest(RequestDTO.NewRequestDTO newRequest) {
@@ -124,6 +125,8 @@ public class RequestServiceImpl implements RequestService {
                             .build();
                 })
                         .toList();
+
+        memberSecondProfileSubMajorRepository.saveAll(subMajorList);
 
         return RequestDTO.NewRequestDTO.builder()
                 .writerId(savedProfile.getMember().getId())
