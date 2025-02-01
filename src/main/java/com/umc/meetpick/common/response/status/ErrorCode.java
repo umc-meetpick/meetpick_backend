@@ -15,6 +15,8 @@ public enum ErrorCode implements BaseErrorCode {
     _BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON400", "잘못된 요청입니다."),
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON401", "인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
+    // 서버 관련 에러
+    SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "SERVER5001", "서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요."),
 
     // 멤버 관련 에러
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
@@ -28,6 +30,20 @@ public enum ErrorCode implements BaseErrorCode {
 
     UNSIGNED(HttpStatus.BAD_REQUEST, "POST4001", "로그인 되어 있지 않습니다."),
 
+    // 닉네임 관련 에러
+    NICKNAME_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "NICKNAME4001", "이미 존재하는 닉네임입니다."),
+    NICKNAME_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "NICKNAME4002", "닉네임을 입력해야 합니다."),
+    //프로필 관련 에러
+    PROFILE_NOT_FOUND(HttpStatus.BAD_REQUEST, "PROFILE4001", "프로필을 찾을 수 없습니다."),
+    PROFILE_IMAGE_INVALID(HttpStatus.BAD_REQUEST, "PROFILE4002", "잘못된 프로필 이미지입니다."),
+
+    // 학번 관련 에러
+    INVALID_STUDENT_NUMBER(HttpStatus.BAD_REQUEST, "STUDENT_NUMBER4001", "숫자만 입력하세요."),
+
+    INVALID_MBTI(HttpStatus.BAD_REQUEST, "MBTI4001", "유효하지 않은 MBTI 값입니다."),
+
+
+    SUB_MAJOR_NOT_FOUND(HttpStatus.BAD_REQUEST, "MAJOR4001", "유효하지 않은 전공(학과) ID입니다.");
 
     ;
 
