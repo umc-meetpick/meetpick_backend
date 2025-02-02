@@ -1,19 +1,14 @@
 package com.umc.meetpick.entity;
-import com.umc.meetpick.enums.Gender;
-import com.umc.meetpick.enums.MemberRole;
-import com.umc.meetpick.enums.MemberStatus;
-import com.umc.meetpick.enums.SocialType;
+import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
+import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
+import com.umc.meetpick.enums.*;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder
@@ -22,10 +17,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Member {
 
-    //id
+    // id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
+    // 이름
+    @Column(nullable = false)
+    private String name;
 
     //gender
     @Enumerated(EnumType.STRING)  // enum 값을 문자열로 저장
@@ -37,8 +37,9 @@ public class Member {
     private Date birthday;
 
     //university
+    @Enumerated(EnumType.STRING)  // enum 값을 문자열로 저장
     @Column(nullable = false)
-    private String university;
+    private University university;
 
     //socialType
     @Enumerated(EnumType.STRING)  // enum 값을 문자열로 저장
@@ -58,15 +59,26 @@ public class Member {
     @Column(nullable = false)
     private MemberRole role;
 
-    //외래키
     @OneToOne
-    @JoinColumn(name = "member_profile")
+    @Setter
+    @JoinColumn(name = "member_profile_id")
     private MemberProfile memberProfile;
 
     //외래키
-    @ManyToOne
-    @JoinColumn(name = "major_id")
-    private Major major;
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
+    @Setter
+    private MemberSecondProfile memberSecondProfile;
+
+    // 나이 계산 함수
+    public int getAge() {
+        // Date를 LocalDate로 변환
+        LocalDate birthDate = new java.sql.Date(birthday.getTime()).toLocalDate();
+        LocalDate currentDate = LocalDate.now();
+
+        // 현재 날짜와 생일을 기준으로 나이 계산
+        return Period.between(birthDate, currentDate).getYears();
+    }
+
 
     //양방향 매핑 설정
 

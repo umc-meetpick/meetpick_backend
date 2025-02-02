@@ -1,9 +1,13 @@
 package com.umc.meetpick.dto;
 
-import com.umc.meetpick.enums.FoodType;
-import com.umc.meetpick.enums.MBTI;
-import com.umc.meetpick.enums.MateType;  // MateType import 추가
+import com.umc.meetpick.entity.Personality;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
+import com.umc.meetpick.enums.*;
 import lombok.*;
+
+import java.util.List;
+import java.util.Set;
 
 
 public class RequestDTO {
@@ -16,17 +20,52 @@ public class RequestDTO {
     public static class NewRequestDTO {
         private Long writerId;
         //private String majorName;
-        private String subMajorName;
-        private String hobbyName;
-        private Integer studentNumber;
-        private MBTI mbti;
-        private Integer minAge;
-        private Integer maxAge;
-        private Integer minTime;
-        private Integer maxTime;
-        private FoodType food;
-        private Integer maxPeople;
+        private Gender gender;
+        private List<String> subMajorName;
+        private StudentNumber studentNumber;
+        private int minAge;
+        private int maxAge;
+        private List<String> personality;
+        private Set<MBTI> mbti;
+        private boolean isHobbySame;
+        private List<MemberSecondProfileTimesDTO> memberSecondProfileTimes;
+        private int maxPeople;
+        private String comment;
+        private Set<ExerciseType> exerciseTypes;
+        private Boolean isSchool;
+        private Set<FoodType> food;
         private MateType type;
     }
 
+    // 매칭에 참여하기
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class JoinRequestDTO {
+        private Long requestId;
+        private Long postUserId;
+        //private Boolean status;
+    }
+
+    // 매칭에 좋아요 누르기
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class LikeRequestDTO {
+        private Long requestId;
+        private Long postUserId;
+    }
+
+    // 매칭 승낙 or 거절
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class isAcceptedDTO{
+        private Boolean isAccepted;
+        private Long matchingRequestId;
+        private Boolean status;
+    }
 }
