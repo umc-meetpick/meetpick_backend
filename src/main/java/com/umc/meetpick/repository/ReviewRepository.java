@@ -1,6 +1,5 @@
 package com.umc.meetpick.repository;
 
-import com.umc.meetpick.entity.Request;
 import com.umc.meetpick.entity.Review;
 
 import org.springframework.data.jpa.repository.JpaRepository;

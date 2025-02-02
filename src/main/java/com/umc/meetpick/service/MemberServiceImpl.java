@@ -11,12 +11,9 @@ import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,6 +51,17 @@ public class MemberServiceImpl implements MemberService {
                 .comment(member.getMemberSecondProfile().getComment())
                 .build();
     }
+
+    @Override
+    public Map<String, String> getContactInfo(Long memberId) {
+        Member member = memberRepository.findMemberById(memberId);
+
+        return Map.of(
+                member.getMemberProfile().getContact().getKoreanName(),
+                member.getMemberProfile().getContactInfo()
+        );
+    }
+
 
     private MemberResponseDTO MemberProfileToMemberProfileResponseDTO(MemberSecondProfile memberSecondProfile) {
 

@@ -73,6 +73,8 @@ public class MemberSecondProfile extends BaseTimeEntity {
 
     private String comment;
 
+    // 운동 프로필의 경우
+
     @ElementCollection
     @Column(nullable = true)
     @Builder.Default
@@ -81,14 +83,36 @@ public class MemberSecondProfile extends BaseTimeEntity {
     @Column(nullable = true)
     private Boolean isSchool;
 
+    // 음식 프로필의 경우
+
     @ElementCollection
     @Column(nullable = true)
     @Builder.Default
     private Set<FoodType> foodTypes = new HashSet<>();
 
-    @Column(nullable = false)
+    // 공부 프로필의 경우
+    @Enumerated(EnumType.STRING)  // null 시 상관 없음
+    @Column(nullable = true)
+    private StudyType studyType;
+
+    // TODO 나중에는 대학별로 진짜 존재하는 과목으로 해야 할 수도... 일단은 너무 많으니까 보류
+    @Column(nullable = true)
+    private String courseName;
+
+    @Column(nullable = true)
     @Enumerated(EnumType.STRING)
     private MateType mateType;
+
+    @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
+    private MeetType meetType;
+
+    @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
+    private MeetFrequency meetFrequency;
+
+    @Column(nullable = false)
+    private String studyPlace;
 
     // 문자열로 mbti 받고 해당 하는 mbti 리스트 가져오는 함수
     public Set<MBTI> getMbtis(String mbti) {

@@ -2,7 +2,6 @@ package com.umc.meetpick;
 
 import com.umc.meetpick.domain.factory.MemberFactory;
 import com.umc.meetpick.domain.factory.MemberSecondProfileFactory;
-import com.umc.meetpick.dto.ReportDTO;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
@@ -19,7 +18,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 

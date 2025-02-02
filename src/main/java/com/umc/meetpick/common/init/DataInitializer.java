@@ -2,14 +2,11 @@ package com.umc.meetpick.common.init;
 
 import com.umc.meetpick.entity.*;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
-import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
-import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
