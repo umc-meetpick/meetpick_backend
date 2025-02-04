@@ -51,6 +51,10 @@ public class MemberProfile extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "member_profile_hobby",  // 관계 테이블 이름
+            joinColumns = @JoinColumn(name = "member_profile_id")  // MemberProfile의 ID를 위한 컬럼
+    )
     private Set<Hobby> hobbies;
 
     //contact

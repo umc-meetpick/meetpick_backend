@@ -33,6 +33,7 @@ public enum ErrorCode implements BaseErrorCode {
     // 닉네임 관련 에러
     NICKNAME_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "NICKNAME4001", "이미 존재하는 닉네임입니다."),
     NICKNAME_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "NICKNAME4002", "닉네임을 입력해야 합니다."),
+
     //프로필 관련 에러
     PROFILE_NOT_FOUND(HttpStatus.BAD_REQUEST, "PROFILE4001", "프로필을 찾을 수 없습니다."),
     PROFILE_IMAGE_INVALID(HttpStatus.BAD_REQUEST, "PROFILE4002", "잘못된 프로필 이미지입니다."),
@@ -46,8 +47,12 @@ public enum ErrorCode implements BaseErrorCode {
 
     // 취미 관련 에러 코드
     HOBBY_NOT_FOUND(HttpStatus.BAD_REQUEST, "HOBBY4001", "해당 취미를 찾을 수 없습니다."),
-    HOBBY_SELECTION_ERROR(HttpStatus.BAD_REQUEST, "HOBBY4002", "취미 선택에 오류가 발생했습니다. 최대 5개까지 선택 가능합니다.");
+    HOBBY_SELECTION_ERROR(HttpStatus.BAD_REQUEST, "HOBBY4002", "취미 선택에 오류가 발생했습니다. 최대 5개까지 선택 가능합니다."),
+    INVALID_HOBBY_ID(HttpStatus.BAD_REQUEST, "HOBBY4003", "유효하지 않은 취미 ID입니다."),
 
+    // 연락 수잔 관련 에러 코드
+    CONTACT_TYPE_INVALID(HttpStatus.BAD_REQUEST, "CONTACT4001", "잘못된 연락 수단 입니다."),
+    CONTACT_INFO_INVALID(HttpStatus.BAD_REQUEST,"CONTACT4002","잘못된 값 입니다.");
     ;
     private final HttpStatus httpStatus;
     private final String code;
