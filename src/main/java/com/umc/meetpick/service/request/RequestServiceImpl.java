@@ -1,7 +1,5 @@
 package com.umc.meetpick.service.request;
 
-import com.umc.meetpick.common.exception.handler.GeneralHandler;
-import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.MatchResponseDto;
 import com.umc.meetpick.dto.RequestDTO;
 import com.umc.meetpick.entity.*;
@@ -25,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

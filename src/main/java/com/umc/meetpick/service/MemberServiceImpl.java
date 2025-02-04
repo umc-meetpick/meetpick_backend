@@ -11,12 +11,8 @@ import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
