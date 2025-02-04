@@ -4,24 +4,25 @@ import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.enums.*;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Date;
 
-import lombok.*;
-
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    // 이름
+    @Column(nullable = false)
+    private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -30,7 +31,8 @@ public class Member {
     @Column(nullable = false)
     private Date birthday;
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true) //임시로 true로 설정
     private University university;
 
     @Enumerated(EnumType.STRING)
@@ -59,18 +61,20 @@ public class Member {
 
     // 나이 계산 함수
     public int getAge() {
-        // Date를 LocalDate로 변환
         LocalDate birthDate = new java.sql.Date(birthday.getTime()).toLocalDate();
         LocalDate currentDate = LocalDate.now();
+        return Period.between(birthDate, currentDate).getYears();
+    }
 
     @Column(nullable = false)
     private boolean termsAgreed = false;
 
     @PrePersist
     public void prePersist() {
+        if (this.name == null || this.name.trim().isEmpty()) this.name = "Unknown User";
         if (this.gender == null) this.gender = Gender.MALE;
         if (this.birthday == null) this.birthday = new Date();
-        if (this.university == null) this.university = "Unknown University";
+        if (this.university == null) this.university = University.UNKNOWN_UNIVERSITY;
         if (this.socialType == null) this.socialType = SocialType.KAKAO;
         if (this.socialId == null) this.socialId = 0L;
         if (this.status == null) this.status = MemberStatus.ACTIVE;

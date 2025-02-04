@@ -2,7 +2,8 @@ package com.umc.meetpick.service;
 
 import com.umc.meetpick.common.response.ApiResponse;
 import com.umc.meetpick.entity.Member;
-import com.umc.meetpick.repository.MemberRepository;
+import com.umc.meetpick.enums.University;
+import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.common.response.status.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.regex.Pattern;
 
 @Service
@@ -122,7 +122,13 @@ public class EmailVerificationService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
 
-        member.setUniversity(universityName.trim());
+        // ✅ 변경된 부분: 예외 발생 대신 UNKNOWN_UNIVERSITY 저장
+        University universityEnum = University.fromString(universityName.trim());
+        if (universityEnum == University.UNKNOWN_UNIVERSITY) {
+            log.warn("⚠️ 알 수 없는 대학교: {}", universityName);
+        }
+
+        member.setUniversity(universityEnum);
         memberRepository.save(member);
     }
 

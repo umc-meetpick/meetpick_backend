@@ -8,7 +8,7 @@ import com.umc.meetpick.entity.KakaoMember;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.SocialType;
 import com.umc.meetpick.repository.KakaoMemberRepository;
-import com.umc.meetpick.repository.MemberRepository;
+import com.umc.meetpick.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,11 +58,10 @@ public class KakaoService {
         KakaoUserInfoResponseDTO kakaoUserInfo = requestKakaoUserInfo(accessToken);
         Long socialId = kakaoUserInfo.getSocialId();
 
-        log.info("✅ [KakaoService] 가져온 사용자 정보: socialId={}, nickname={}", socialId, kakaoUserInfo.getNickname());
+        log.info("✅ [KakaoService] 가져온 사용자 정보: socialId={}", socialId);
 
         // 🔹 3. DB에서 사용자 조회 (없으면 회원가입)
         Member member = findOrCreateMember(kakaoUserInfo);
-
         if (member == null) {
             throw new RuntimeException("카카오 로그인 처리 중 문제가 발생했습니다.");
         }
@@ -72,7 +71,8 @@ public class KakaoService {
         // 🔹 4. JWT 토큰 발급
         String jwtToken = jwtUtil.generateToken(member.getId());
 
-        return new KakaoLoginResponseDTO(jwtToken, member.getId());
+        // 🔹 5. JWT + OAuth Access Token 포함한 응답 반환
+        return new KakaoLoginResponseDTO(jwtToken, accessToken, member.getId());
     }
 
     /**
@@ -80,7 +80,6 @@ public class KakaoService {
      */
     private KakaoTokenResponseDTO requestAccessToken(String code) {
         log.info("🔄 [KakaoService] 카카오 액세스 토큰 요청");
-        System.out.println(redirectUri);
         return WebClient.create(KAUTH_TOKEN_URL)
                 .post()
                 .uri(uriBuilder -> uriBuilder
@@ -101,7 +100,6 @@ public class KakaoService {
      */
     private KakaoUserInfoResponseDTO requestKakaoUserInfo(String accessToken) {
         log.info("🔄 [KakaoService] 카카오 사용자 정보 요청");
-
         return WebClient.create(KAPI_USER_URL)
                 .get()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
@@ -134,16 +132,10 @@ public class KakaoService {
                 log.info("✅ 기존 KakaoMember가 Member와 연결됨 - Member ID: {}", kakaoMember.getMember().getId());
                 return kakaoMember.getMember();
             }
-            log.warn("⚠ 기존 KakaoMember에 Member 연결이 없음. 새로운 Member 생성 필요.");
         } else {
-            // 3️⃣ 새 KakaoMember 생성
             log.info("🎉 새로운 KakaoMember 생성");
             kakaoMember = KakaoMember.builder()
                     .socialId(socialId)
-                    .nickname(kakaoUserInfo.getNickname())
-                    .gender(kakaoUserInfo.getGender())
-                    .birthday(kakaoUserInfo.getBirthday())
-                    .socialType(SocialType.KAKAO)
                     .build();
             kakaoMember = kakaoMemberRepository.save(kakaoMember);
         }
@@ -153,14 +145,15 @@ public class KakaoService {
         Member newMember = Member.builder()
                 .socialId(socialId)
                 .socialType(SocialType.KAKAO)
-                .university("Unknown University")  // 기본 값 설정
                 .build();
         newMember = memberRepository.save(newMember);
 
         kakaoMember.setMember(newMember);
-        kakaoMemberRepository.save(kakaoMember);  // ✅ 연결 후 저장
+        kakaoMemberRepository.save(kakaoMember);
 
         log.info("✅ 새 KakaoMember와 Member 연결 완료 - Member ID: {}", newMember.getId());
         return newMember;
     }
 }
+
+//localhost:8080/oauth2/authorization/kakao

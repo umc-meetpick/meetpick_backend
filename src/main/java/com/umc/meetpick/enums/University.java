@@ -25,19 +25,41 @@ public enum University {
     HANSEONG_UNIVERSITY("한성대학교", "서울특별시 성북구 삼선교로 16"),
     SEOUL_NATIONAL_SCIENCE_TECHNOLOGY("서울과학기술대학교", "서울특별시 노원구 공릉로 232"),
     KOREAN_AIR_UNIVERSITY("한국항공대학교", "서울특별시 강서구 화곡로 76"),
-    DEOKSEONG_WOMANS_UNIVERSITY("덕성여자대학교", "서울특별시 도봉구 덕성로 132");
+    DEOKSEONG_WOMANS_UNIVERSITY("덕성여자대학교", "서울특별시 도봉구 덕성로 132"),
+    UNKNOWN_UNIVERSITY("알 수 없는 대학교", "위치 정보 없음"); // 🔹 기본값 추가
 
     private final String universityName;
     private final String address;
 
-    // 생성자
     University(String universityName, String address) {
         this.universityName = universityName;
         this.address = address;
     }
 
-    // 검색 후 일치하는 목록 반환
-    // TODO 나중에 리팩토링
+    public String getUniversityName() {
+        return universityName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * ✅ 문자열을 `University` Enum으로 변환하는 메서드
+     * - 존재하지 않는 경우 `UNKNOWN_UNIVERSITY` 반환
+     */
+    public static University fromString(String universityName) {
+        for (University university : University.values()) {
+            if (university.universityName.equalsIgnoreCase(universityName.trim())) {
+                return university;
+            }
+        }
+        return UNKNOWN_UNIVERSITY; // ✅ 존재하지 않는 경우 안전하게 기본값 반환
+    }
+
+    /**
+     * ✅ 키워드를 포함하는 대학교 검색 기능
+     */
     public static List<Map<String, String>> search(String keyword) {
         List<Map<String, String>> result = new ArrayList<>();
         for (University university : University.values()) {
@@ -51,5 +73,19 @@ public enum University {
         return result;
     }
 
+    /**
+     * ✅ "대학교"로 끝나는 대학만 필터링
+     */
+    public static List<Map<String, String>> getUniversitiesEndingWithUniversity() {
+        List<Map<String, String>> result = new ArrayList<>();
+        for (University university : University.values()) {
+            if (university.universityName.endsWith("대학교")) {
+                Map<String, String> map = new HashMap<>();
+                map.put("universityName", university.universityName);
+                map.put("address", university.address);
+                result.add(map);
+            }
+        }
+        return result;
+    }
 }
-

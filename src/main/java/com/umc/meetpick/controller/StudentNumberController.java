@@ -2,6 +2,7 @@ package com.umc.meetpick.controller;
 
 import com.umc.meetpick.common.response.ApiResponse;
 import com.umc.meetpick.dto.StudentNumberDTO;
+import com.umc.meetpick.service.CurrentUser;
 import com.umc.meetpick.service.StudentNumberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,9 +23,10 @@ public class StudentNumberController {
     @Operation(summary = "학번 설정")
     @PostMapping("/set")
     public ApiResponse<StudentNumberDTO.StudentNumberResponseDTO> setStudentNumber(
-            @RequestParam("memberId") Long memberId,
+            @CurrentUser Long memberId,  // ✅ JWT에서 인증된 memberId 자동 추출
             @Valid @RequestBody StudentNumberDTO.StudentNumberRequestDTO requestDTO) {
-        log.info("학번 설정 요청 - memberId={}, studentNumber={}", memberId, requestDTO.getStudentNumber());
+
+        log.info("📚 학번 설정 요청 - memberId={}, studentNumber={}", memberId, requestDTO.getStudentNumber());
         return studentNumberService.setStudentNumber(memberId, requestDTO);
     }
 }

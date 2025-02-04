@@ -2,7 +2,7 @@ package com.umc.meetpick.service;
 
 import com.umc.meetpick.dto.TermsDTO;
 import com.umc.meetpick.entity.Member;
-import com.umc.meetpick.repository.MemberRepository;
+import com.umc.meetpick.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

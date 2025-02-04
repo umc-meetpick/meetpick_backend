@@ -26,13 +26,6 @@ spring:
             authorization-grant-type: authorization_code
 #            redirect-uri: http://3.38.151.77:8080/login/oauth2/code/kakao
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
-#            redirect-uri: "{baseUrl}/oauth2/authorization/kakao"
-#            redirect-uri: "{baseUrl}/login/oauth2/code/kakao" # ✅ 변경
-#            redirect-uri: http://3.38.151.77:8080/login/oauth2/code/kakao  # ✅ 변경
-#            redirect-uri: "http://3.38.151.77:8080/login/oauth2/code/kakao"
-#            redirect-uri: "{baseUrl}/login/oauth2/code/kakao" # ✅ 변경
-#            redirect-uri: "http://3.38.151.77:8080/login/oauth2/code/kakao"
-#            redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
             scope: profile_nickname, profile_image
             client-name: Kakao
             client-authentication-method: client_secret_post
@@ -54,16 +47,16 @@ spring:
   jwt:
     secret: MBmyRKy5ewzjVqQ5mDiXkeK4ECmByFUax6I0iWgiFzs=
 
-  session:
-    store-type: none  # ✅ Redis 사용하지 않음 (테스트용)
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: "*"
-    endpoint:
-      mappings:
-        enabled: true
+#  session:
+#    store-type: none  # ✅ Redis 사용하지 않음 (테스트용)
+#  management:
+#    endpoints:
+#      web:
+#        exposure:
+#          include: "*"
+#    endpoint:
+#      mappings:
+#        enabled: true
 
 
 

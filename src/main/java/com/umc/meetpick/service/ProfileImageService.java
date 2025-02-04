@@ -2,9 +2,9 @@ package com.umc.meetpick.service;
 
 import com.umc.meetpick.dto.ProfileImageDTO;
 import com.umc.meetpick.entity.Member;
-import com.umc.meetpick.entity.MemberProfile;
-import com.umc.meetpick.repository.MemberProfileRepository;
-import com.umc.meetpick.repository.MemberRepository;
+import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
+import com.umc.meetpick.repository.member.MemberProfileRepository;
+import com.umc.meetpick.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +20,10 @@ public class ProfileImageService {
 
     @Transactional
     public ProfileImageDTO.ProfileImageResponseDTO setProfileImage(Long memberId, ProfileImageDTO.ProfileImageRequestDTO requestDTO) {
+        if (memberId == null) {
+            throw new IllegalArgumentException("Member ID cannot be null.");
+        }
+
         log.info("🔍 프로필 이미지 업데이트 요청 - memberId={}, imageUrl={}", memberId, requestDTO.getImageUrl());
 
         // 1️⃣ Member 조회

@@ -1,8 +1,9 @@
 package com.umc.meetpick.common.exception.handler;
 
+import com.umc.meetpick.JwtUtil;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.SocialType;
-import com.umc.meetpick.repository.MemberRepository;
+import com.umc.meetpick.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Component
@@ -25,6 +27,8 @@ import java.util.Optional;
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final MemberRepository memberRepository;
+    private final JwtUtil jwtUtil;
+    private static final Map<Long, String> tokenStorage = new ConcurrentHashMap<>(); // ✅ JWT 토큰 저장소
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -47,18 +51,25 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             log.info("✅ OAuth2 로그인 사용자 socialId: {}", socialId);
 
             Optional<Member> existingMember = memberRepository.findBySocialId(socialId);
+            String token;
 
             if (existingMember.isPresent()) {
-                // ✅ 기존 회원이면 바로 홈으로 이동
+                // ✅ 기존 회원 로그인 처리
                 Member member = existingMember.get();
                 log.info("🎯 기존 회원 로그인 성공! memberId={}", member.getId());
 
+                // ✅ 기존 토큰이 있으면 재사용, 없으면 새로 생성
+                token = tokenStorage.getOrDefault(member.getId(), jwtUtil.generateToken(member.getId()));
+                tokenStorage.put(member.getId(), token);
+
+                log.info("✅ JWT 토큰 재사용 또는 발급 완료: {}", token);
+
+                // ✅ 세션 유지
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 request.getSession().setAttribute("memberId", member.getId());
 
-                response.sendRedirect("/home");
             } else {
-                // ✅ 신규 회원이면 약관 동의 페이지로 이동
+                // ✅ 신규 회원 가입 처리
                 Member newMember = Member.builder()
                         .socialId(socialId)
                         .socialType(socialType)
@@ -67,9 +78,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
                 log.info("🎉 신규 회원 가입 진행! memberId={}", newMember.getId());
 
-                String encodedMemberId = URLEncoder.encode(newMember.getId().toString(), StandardCharsets.UTF_8);
-                response.sendRedirect("/terms?memberId=" + encodedMemberId);
+                // ✅ JWT 토큰 생성 및 저장
+                token = jwtUtil.generateToken(newMember.getId());
+                tokenStorage.put(newMember.getId(), token);
+                log.info("✅ JWT 토큰 발급 완료: {}", token);
             }
+
+            // ✅ 불필요한 리다이렉트 방지 (로그인 성공 후 `/home`으로 이동)
+            response.sendRedirect("http://localhost:8080/home");
 
         } catch (Exception e) {
             log.error("❌ OAuth2 로그인 처리 중 오류 발생: {}", e.getMessage(), e);

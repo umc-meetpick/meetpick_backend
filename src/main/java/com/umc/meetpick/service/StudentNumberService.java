@@ -5,9 +5,10 @@ import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.common.response.status.SuccessCode;
 import com.umc.meetpick.dto.StudentNumberDTO;
 import com.umc.meetpick.entity.Member;
-import com.umc.meetpick.entity.MemberProfile;
-import com.umc.meetpick.repository.MemberProfileRepository;
-import com.umc.meetpick.repository.MemberRepository;
+
+import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
+import com.umc.meetpick.repository.member.MemberProfileRepository;
+import com.umc.meetpick.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

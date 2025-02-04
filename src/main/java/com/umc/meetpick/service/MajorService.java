@@ -6,8 +6,9 @@ import com.umc.meetpick.common.response.status.SuccessCode;
 import com.umc.meetpick.dto.MajorDTO;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.Major;
+import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.SubMajor;
-import com.umc.meetpick.repository.MemberRepository;
+import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.SubMajorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +38,15 @@ public class MajorService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException(ErrorCode.MEMBER_NOT_FOUND.getMessage()));
 
-        // 전공 설정
-        member.setMajor(major);
-        memberRepository.save(member);
+        // ✅ MemberProfile 가져오기
+        MemberProfile memberProfile = member.getMemberProfile();
+        if (memberProfile == null) {
+            throw new RuntimeException("❌ MemberProfile이 존재하지 않습니다.");
+        }
+
+        // ✅ 전공 설정을 MemberProfile에 저장
+        memberProfile.setMajor(major);
+        //memberProfile.setSubMajor(subMajor); // SubMajor도 설정
 
         log.info("✅ 전공 설정 완료 - memberId={}, subMajorId={}, subMajorName={}, majorId={}, majorName={}",
                 memberId, subMajor.getId(), subMajor.getName(), major.getId(), major.getName());

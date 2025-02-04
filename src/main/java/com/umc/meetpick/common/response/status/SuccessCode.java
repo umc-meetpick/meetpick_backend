@@ -27,7 +27,10 @@ public enum SuccessCode implements BaseCode {
 
     MBTI_SET_SUCCESS(HttpStatus.OK, "MBTI2001", "MBTI가 설정되었습니다."),
 
-    MAJOR_SET_SUCCESS(HttpStatus.OK, "MAJOR200", "전공이 설정되었습니다.");
+    MAJOR_SET_SUCCESS(HttpStatus.OK, "MAJOR200", "전공이 설정되었습니다."),
+    // 취미 설정 성공 코드
+    HOBBY_SET_SUCCESS(HttpStatus.OK, "HOBBY200", "취미가 성공적으로 설정되었습니다.");
+
 
     private final HttpStatus httpStatus;
     private final String code;

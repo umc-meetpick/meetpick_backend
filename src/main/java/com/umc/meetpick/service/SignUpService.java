@@ -4,7 +4,7 @@ import com.umc.meetpick.common.response.ApiResponse;
 import com.umc.meetpick.dto.SignUpDTO;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.Gender;
-import com.umc.meetpick.repository.MemberRepository;
+import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.common.response.status.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

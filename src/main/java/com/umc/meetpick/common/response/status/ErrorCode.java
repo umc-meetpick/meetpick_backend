@@ -42,12 +42,13 @@ public enum ErrorCode implements BaseErrorCode {
 
     INVALID_MBTI(HttpStatus.BAD_REQUEST, "MBTI4001", "유효하지 않은 MBTI 값입니다."),
 
+    SUB_MAJOR_NOT_FOUND(HttpStatus.BAD_REQUEST, "MAJOR4001", "유효하지 않은 전공(학과) ID입니다."),
 
-    SUB_MAJOR_NOT_FOUND(HttpStatus.BAD_REQUEST, "MAJOR4001", "유효하지 않은 전공(학과) ID입니다.");
+    // 취미 관련 에러 코드
+    HOBBY_NOT_FOUND(HttpStatus.BAD_REQUEST, "HOBBY4001", "해당 취미를 찾을 수 없습니다."),
+    HOBBY_SELECTION_ERROR(HttpStatus.BAD_REQUEST, "HOBBY4002", "취미 선택에 오류가 발생했습니다. 최대 5개까지 선택 가능합니다.");
 
     ;
-
-
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;

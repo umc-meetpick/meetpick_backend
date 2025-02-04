@@ -1,19 +1,18 @@
 package com.umc.meetpick.entity.MemberProfiles;
 import com.umc.meetpick.entity.BaseTimeEntity;
 import com.umc.meetpick.entity.Major;
+import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.ContactType;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.Hobby;
 import com.umc.meetpick.enums.MBTI;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +22,11 @@ public class MemberProfile extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    //추가
+    @OneToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     // 닉네임
     @Column(nullable = false)
@@ -42,7 +46,7 @@ public class MemberProfile extends BaseTimeEntity {
     private MBTI MBTI;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "major_id", nullable = true)
     private Major major;
 
     @Enumerated(EnumType.STRING)
@@ -57,4 +61,16 @@ public class MemberProfile extends BaseTimeEntity {
     //contactInfo
     @Column(nullable = false)
     private String contactInfo;
+
+    //추가
+    @PrePersist
+    public void prePersist() {
+        if (this.nickname == null || this.nickname.isEmpty()) this.nickname = "Default Nickname";
+        if (this.profileImage == null || this.profileImage.isEmpty()) this.profileImage = "default.png";
+        if (this.MBTI == null) this.MBTI = MBTI.INTJ; // 기본 MBTI 설정
+        if (this.contact == null) this.contact = ContactType.KAKAO_TALK_ID; // 기본 연락처 타입 설정
+        if (this.contactInfo == null || this.contactInfo.isEmpty()) this.contactInfo = "contact@default.com"; // 기본 연락처 정보
+
+    }
+
 }
