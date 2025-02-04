@@ -23,3 +23,4 @@ public class KakaoLoginController {
         return ApiResponse.onSuccess(responseDTO);
     }
 }
+//localhost:8080/api/auth/kakao

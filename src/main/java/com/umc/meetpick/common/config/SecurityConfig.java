@@ -52,3 +52,10 @@ public class SecurityConfig {
         return http.build();
     }
 }
+
+//사용자가 /oauth2/authorization/kakao 요청
+//카카오 로그인 후 리다이렉트 → /login/oauth2/code/kakao
+//CustomOAuth2UserService에서 사용자 정보 로드
+//OAuth2AuthenticationSuccessHandler에서 JWT 생성 및 반환
+//클라이언트가 JWT 저장 (로컬 스토리지, 쿠키 등)
+//이후 API 요청 시 Authorization: Bearer <JWT> 포함

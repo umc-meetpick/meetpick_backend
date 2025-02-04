@@ -15,8 +15,6 @@ import org.springframework.stereotype.Component;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -64,7 +62,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
                 log.info("✅ JWT 토큰 재사용 또는 발급 완료: {}", token);
 
-                // ✅ 세션 유지
+                // ✅ SecurityContext에 사용자 정보 저장
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 request.getSession().setAttribute("memberId", member.getId());
 
@@ -84,8 +82,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 log.info("✅ JWT 토큰 발급 완료: {}", token);
             }
 
-            // ✅ 불필요한 리다이렉트 방지 (로그인 성공 후 `/home`으로 이동)
-            response.sendRedirect("http://localhost:8080/home");
+            // ✅ JWT 토큰을 응답 헤더에 추가
+            response.setHeader("Authorization", "Bearer " + token);
+
+            // ✅ JSON 형식으로 클라이언트에게 응답 (프론트엔드에서 JWT 저장 가능)
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("{\"token\":\"" + token + "\"}");
 
         } catch (Exception e) {
             log.error("❌ OAuth2 로그인 처리 중 오류 발생: {}", e.getMessage(), e);
