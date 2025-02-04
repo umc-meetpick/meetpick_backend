@@ -61,7 +61,7 @@ public class MemberSecondProfile extends BaseTimeEntity {
     @Builder.Default
     private Set<MBTI> mbti = new HashSet<>();
 
-    boolean isHobbySame;
+    private Boolean isHobbySame;
 
     @Builder.Default
     @OneToMany

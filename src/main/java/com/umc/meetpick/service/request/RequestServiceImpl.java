@@ -22,8 +22,11 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.umc.meetpick.enums.StudentNumber.*;
 
 @Service
 @RequiredArgsConstructor
@@ -87,7 +90,7 @@ public class RequestServiceImpl implements RequestService {
                 .maxPeople(newRequest.getMaxPeople())
                 .currentPeople(0)
                 .personality(savedPersonality)
-                .isHobbySame(newRequest.isHobbySame())
+                .isHobbySame(newRequest.getIsHobbySame())
                 .comment(newRequest.getComment())
                 .mateType(newRequest.getType())
                 .foodTypes(newRequest.getFood())
@@ -146,18 +149,78 @@ public class RequestServiceImpl implements RequestService {
 
         request.addPerson();
 
-        // 유저 join으로 찾기
-        Member member = memberRepository.findById(newJoinRequest.getPostUserId())
+        // 유저 join으로 찾기 - 매칭 신청한 유저
+        Member joinMember = memberRepository.findById(newJoinRequest.getPostUserId())
                 .orElseThrow(() -> new EntityNotFoundException("매칭 신청 유저 오류" + newJoinRequest.getPostUserId()));
 
+        MemberProfile joinMemberProfile = joinMember.getMemberProfile();
+
+        // 매칭 등록 유저 찾아오기
+        Member requestOwnerMember = memberRepository.findById(request.getMember().getId())
+                .orElseThrow(()-> new EntityNotFoundException("매칭 등록 유저 오류"));
+
+        MemberProfile requestOwnerMemberProfile = requestOwnerMember.getMemberProfile();
+
+        // 조건에 맞는지 판단 - 성별
+        if(!(request.getGender() == null) && joinMember.getGender() != request.getGender()){
+            throw new IllegalArgumentException("성별 조건 안 맞음");
+        }
+
+        // 조건에 맞는지 판단 - 나이 범위
+        if(!(request.getMinAge() == null)){
+            if (request.getMinAge() > joinMember.getAge() || request.getMaxAge() < joinMember.getAge()) {
+                throw new IllegalArgumentException("나이 조건 안 맞음");
+            }
+        }
+
+        // 조건에 맞는지 판단 - 학번
+        if(request.getStudentNumber() == PEER){
+            if (!(joinMemberProfile.getStudentNumber() == requestOwnerMemberProfile.getStudentNumber())){
+                throw new IllegalArgumentException("학번 조건 안 맞음");
+            }
+        } else if(request.getStudentNumber() == SENIOR ){
+            if (!(joinMemberProfile.getStudentNumber() < requestOwnerMemberProfile.getStudentNumber())){
+                throw new IllegalArgumentException("학번 조건 안 맞음");
+            }
+        } else if(request.getStudentNumber() == JUNIOR){
+            if (!(joinMemberProfile.getStudentNumber() > requestOwnerMemberProfile.getStudentNumber())){
+                throw new IllegalArgumentException("학번 조건 안 맞음");
+            }
+        }
+
+        // 조건에 맞는지 판단 - submajor - 나중에
+
+        // 취미 동일 여부 - 하나라도 같으면 통과
+        if(request.getIsHobbySame()){
+            if(!(Collections.disjoint(joinMemberProfile.getHobbies(),requestOwnerMemberProfile.getHobbies()))){
+                throw new IllegalArgumentException("취미 조건 안 맞음");
+            }
+        }
+
+        // 성격 판단 - enum형식으로 신청자 mbti가져오고 스트링으로 바꿔서 하나하나 비교
+        String joinMemberMBTI = joinMemberProfile.getMBTI().name();
+        if (!((request.getPersonality().getGroupA() == PersonalityEnum.CHEERFUL && joinMemberMBTI.charAt(0) == 'E') ||
+                (request.getPersonality().getGroupA() == PersonalityEnum.QUIET && joinMemberMBTI.charAt(0) == 'I'))) {
+            throw new IllegalArgumentException("성격 조건 안 맞음");
+        }else if (!((request.getPersonality().getGroupB() == PersonalityEnum.REALISTIC && joinMemberMBTI.charAt(1) == 'S') ||
+                (request.getPersonality().getGroupB() == PersonalityEnum.CREATIVE && joinMemberMBTI.charAt(1) == 'N'))) {
+            throw new IllegalArgumentException("성격 조건 안 맞음");
+        }else if (!((request.getPersonality().getGroupC() == PersonalityEnum.OBJECTIVE && joinMemberMBTI.charAt(2) == 'T') ||
+                (request.getPersonality().getGroupC() == PersonalityEnum.SUBJECTIVE && joinMemberMBTI.charAt(2) == 'F'))) {
+            throw new IllegalArgumentException("성격 조건 안 맞음");
+        }else if (!((request.getPersonality().getGroupD() == PersonalityEnum.SYSTEMATIC && joinMemberMBTI.charAt(3) == 'J') ||
+                (request.getPersonality().getGroupD() == PersonalityEnum.FLEXIBLE && joinMemberMBTI.charAt(3) == 'P'))) {
+            throw new IllegalArgumentException("성격 조건 안 맞음");
+        }
+
         // 중복 신청 방지
-        if(memberMappingRepository.existsByMemberSecondProfileAndMember(request, member)){
+        if(memberMappingRepository.existsByMemberSecondProfileAndMember(request, joinMember)){
             throw new IllegalArgumentException("중복신청 불가");
         }
 
         // MemberMapping 생성
         MemberSecondProfileMapping memberSecondProfileMapping = MemberSecondProfileMapping.builder()
-                .member(member)
+                .member(joinMember)
                 .memberSecondProfile(request)
                 .status(false)
                 .build();
