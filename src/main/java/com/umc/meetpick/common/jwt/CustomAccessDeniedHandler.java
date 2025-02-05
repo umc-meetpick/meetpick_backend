@@ -29,9 +29,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         ObjectMapper objectMapper = new ObjectMapper();
 
         // CORS 헤더 추가 (출처는 프론트엔드 URL로 변경)
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
