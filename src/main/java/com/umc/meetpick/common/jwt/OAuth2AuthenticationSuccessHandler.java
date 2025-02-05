@@ -74,7 +74,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 response.setContentType("application/json;charset=UTF-8");
                 response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
                 response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-                // 토큰을 쿼리 파라미터로 추가하여 리디렉션 URL을 생성
                 String redirectUrl = "http://localhost:5173/looking?token=" + token;
                 response.sendRedirect(redirectUrl);
 
@@ -101,9 +100,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 response.setContentType("application/json;charset=UTF-8");
                 response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
                 response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-            // 토큰을 쿼리 파라미터로 추가하여 리디렉션 URL을 생성
                 String redirectUrl = "http://localhost:5173/signup?token=" + token;
                 response.sendRedirect(redirectUrl);
+                response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.of(SuccessCode._ADDITIONAL_INFO, token)));
             }
 
         } catch (Exception e) {
