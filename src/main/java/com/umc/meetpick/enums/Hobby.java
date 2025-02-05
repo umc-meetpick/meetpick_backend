@@ -32,5 +32,13 @@ public enum Hobby {
     public String getKoreanName() {
         return koreanName;
     }
-}
 
+    public static Hobby fromString(String koreanName) {
+        for (Hobby hobby : Hobby.values()) {
+            if (hobby.koreanName.equals(koreanName)) {
+                return hobby;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with koreanName: " + koreanName);
+    }
+}
