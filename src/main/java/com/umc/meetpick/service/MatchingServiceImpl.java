@@ -156,7 +156,7 @@ public class MatchingServiceImpl implements MatchingService {
                             .memberProfileId(memberSecondProfile.getId())
                             .writerId(memberSecondProfile.getMember().getId())
                             .studentNumber(memberSecondProfile.getMember().getMemberProfile().getStudentNumber())
-                            .major(memberSecondProfile.getMember().getMemberProfile().getMajor().getName())
+                            .major(memberSecondProfile.getMember().getMemberProfile().getSubMajor().getName())
                             .age(memberSecondProfile.getMember().getAge())
                             .mateType(memberSecondProfile.getMateType().getKoreanName())
                             .createdAt(formattedDate)
