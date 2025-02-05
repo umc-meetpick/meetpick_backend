@@ -22,7 +22,7 @@ spring:
             client-id: 5595f2a84cb895af59630179b5f6d796
             client-secret: jKeP5ML0PhLvaadugrqB1gQkLpVLxRU9
             authorization-grant-type: authorization_code
-            redirect-uri: http://35.172.251.131/:8080/login/oauth2/code/kakao
+            redirect-uri: http://35.172.251.131:8080/login/oauth2/code/kakao
             scope: profile_nickname, profile_image
             client-name: Kakao
             client-authentication-method: client_secret_post
