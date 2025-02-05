@@ -27,6 +27,7 @@ public enum University {
     KOREAN_AIR_UNIVERSITY("한국항공대학교", "서울특별시 강서구 화곡로 76"),
     DEOKSEONG_WOMANS_UNIVERSITY("덕성여자대학교", "서울특별시 도봉구 덕성로 132");
 
+
     private final String universityName;
     private final String address;
 
@@ -34,6 +35,15 @@ public enum University {
     University(String universityName, String address) {
         this.universityName = universityName;
         this.address = address;
+    }
+
+    public static University fromString(String universityName) {
+        for (University university : University.values()) {
+            if (university.universityName.equalsIgnoreCase(universityName.trim())) {
+                return university;
+            }
+        }
+        return SEOUL_NATIONAL_UNIVERSITY; // ✅ 존재하지 않는 경우 안전하게 기본값 반환
     }
 
     // 검색 후 일치하는 목록 반환
