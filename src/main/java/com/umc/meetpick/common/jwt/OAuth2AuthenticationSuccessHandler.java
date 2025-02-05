@@ -72,6 +72,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
                 // 로그인 성공 시
                 response.setContentType("application/json;charset=UTF-8");
+                response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+                response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
                 response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.of(SuccessCode._LOGIN_SUCCESS, token)));
 
             } else {
@@ -95,6 +97,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 // TODO 권한 설정하기
                 // 회원가입 필요 시 다른 코드 반환
                 response.setContentType("application/json;charset=UTF-8");
+                response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+                response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
                 response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.of(SuccessCode._ADDITIONAL_INFO, token)));
             }
 
