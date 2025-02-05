@@ -35,14 +35,14 @@ public class SecurityConfig {
                 //TODO 나중에 이 부분 리팩토링
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint(endpoint ->
-                                endpoint.baseUri("/oauth2/authorization"))
+                                endpoint.baseUri("/oauth2/authorize"))
                         .redirectionEndpoint(endpoint ->
                                 endpoint.baseUri("/login/oauth2/code/*"))
                         .successHandler(oAuth2AuthenticationSuccessHandler) // ✅ OAuth2 성공 핸들러 설정
                         .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
                 )
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers("/sign-api/**", "/swagger-ui/**", "/swagger-ui.html/**", "/v3/api-docs/**", "/oauth2/**", "/h2-console", "/api/university/**", "/api/members/random-user").permitAll()
+                        .requestMatchers("/sign-api/**", "/swagger-ui/**", "/swagger-ui.html/**", "/v3/api-docs/**", "/oauth2/**", "/h2-console/**", "/api/university/**", "/api/members/random-user", "/login/**").permitAll()
                         .anyRequest().authenticated()) // 로그인 관련만 허용
                 // 애플리케이션에 들어오는 요청에 대한 사용권한을 체크한다.
                 .exceptionHandling((exceptionConfig) ->
