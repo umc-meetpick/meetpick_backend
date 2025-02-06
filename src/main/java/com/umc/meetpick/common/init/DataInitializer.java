@@ -45,6 +45,7 @@ public class DataInitializer implements CommandLineRunner {
         Major agricultureAndLife = majorRepository.findById(7L).orElse(majorRepository.save(new Major("농·생명 계열")));
         Major convergenceAndSpecialization = majorRepository.findById(8L).orElse(majorRepository.save(new Major("융합/특성화 계열")));
 
+
         // 사용자 기본값 저장
         if (memberRepository.count() == 0) {
             if (memberRepository.count() == 0) {
