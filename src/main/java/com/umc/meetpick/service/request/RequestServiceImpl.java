@@ -197,8 +197,15 @@ public class RequestServiceImpl implements RequestService {
             }
         }
 
-        // 성격 판단 - enum형식으로 신청자 mbti가져오고 스트링으로 바꿔서 하나하나 비교
+        // 성격 판단 - 입력받은 mbti 가져와서 판단
         String joinMemberMBTI = joinMemberProfile.getMBTI().name();
+        String requestMBTI = request.getMbti().stream().map(Enum::name).collect(Collectors.joining());
+        for (int i = 0; i < 4; i++){
+            if(!(requestMBTI.charAt(i) == joinMemberMBTI.charAt(i)) && !(requestMBTI.charAt(i) == 'X')){
+                throw new IllegalArgumentException("성격 조건 안 맞음");
+            }
+        }
+
 //        if (!((request.getPersonality().getGroupA() == PersonalityEnum.CHEERFUL && joinMemberMBTI.charAt(0) == 'E') ||
 //                (request.getPersonality().getGroupA() == PersonalityEnum.QUIET && joinMemberMBTI.charAt(0) == 'I'))) {
 //            throw new IllegalArgumentException("성격 조건 안 맞음");
