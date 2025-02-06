@@ -42,10 +42,11 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
                 )
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers( "/**").permitAll()
-                        /*"/sign-api/**", "/swagger-ui/**", "/swagger-ui.html/**", "/v3/api-docs/**", "/oauth2/**", "/h2-console/**", "/api/university/**", "/api/members/random-user", "/login/**"*/
+                        .requestMatchers( "/sign-api/**", "/swagger-ui/**", "/swagger-ui.html/**", "/v3/api-docs/**", "/oauth2/**", "/h2-console/**", "/api/university/**", "/api/members/random-user", "/login/**").permitAll()
                         .anyRequest().authenticated()) // 로그인 관련만 허용
+
                 // 애플리케이션에 들어오는 요청에 대한 사용권한을 체크한다.
+
                 .exceptionHandling((exceptionConfig) ->
                         exceptionConfig.authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)
                 ) // 인증 실패 및 권한이 없는 경우
