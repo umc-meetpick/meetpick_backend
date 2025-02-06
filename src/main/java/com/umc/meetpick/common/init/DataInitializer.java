@@ -51,51 +51,49 @@ public class DataInitializer implements CommandLineRunner {
                 Major major1 = majorRepository.save(new Major("컴퓨터공학과"));
                 Major major2 = majorRepository.save(new Major("전자공학과"));
 
-                MemberProfile profile1 = memberProfileRepository.save(MemberProfile.builder()
-                        .nickname("코딩마스터")
-                        .profileImage("https://example.com/profile1.jpg")
-                        .studentNumber(20200001)
-                        .MBTI(MBTI.INTP)
-                        .major(major1)
-                        .hobbies(Set.of(Hobby.READING, Hobby.COLLECTING))
-                        .contact(ContactType.KAKAO_TALK_ID)
-                        .contactInfo("kakao_id_1")
-                        .build());
-
-                MemberProfile profile2 = memberProfileRepository.save(MemberProfile.builder()
-                        .nickname("전자왕")
-                        .profileImage("https://example.com/profile2.jpg")
-                        .studentNumber(20190015)
-                        .MBTI(MBTI.ENTJ)
-                        .major(major2)
-                        .hobbies(Set.of(Hobby.GARDENING, Hobby.KNITTING))
-                        .contact(ContactType.PHONE_NUMBER)
-                        .contactInfo("electro_master@example.com")
-                        .build());
-
-                Member member1 = memberRepository.save(Member.builder()
-                        .name("개똥이")
-                        .gender(Gender.MALE)
-                        .birthday(new java.util.Date(1995 - 1900, Calendar.JUNE, 15)) // Date 생성 시 주의
-                        .university(University.SEOUL_NATIONAL_UNIVERSITY)
-                        .socialType(SocialType.KAKAO)
-                        .socialId(1234567890L)
-                        .status(MemberStatus.ACTIVE)
-                        .role(MemberRole.MEMBER)
-                        .memberProfile(profile1)
-                        .build());
-
-                Member member2 = memberRepository.save(Member.builder()
-                        .name("말똥이")
-                        .gender(Gender.FEMALE)
-                        .birthday(new java.util.Date(1998 - 1900, Calendar.APRIL, 20))
-                        .university(University.CHUNGANG_UNIVERSITY)
-                        .socialType(SocialType.KAKAO)
-                        .socialId(9876543210L)
-                        .status(MemberStatus.ACTIVE)
-                        .role(MemberRole.MEMBER)
-                        .memberProfile(profile2)
-                        .build());
+//                MemberProfile profile1 = memberProfileRepository.save(MemberProfile.builder()
+//                        .nickname("코딩마스터")
+//                        .profileImage("https://example.com/profile1.jpg")
+//                        .studentNumber(20200001)
+//                        .MBTI(MBTI.INTP)
+//                        .hobbies(Set.of(Hobby.READING, Hobby.COLLECTING))
+//                        .contact(ContactType.KAKAO_TALK_ID)
+//                        .contactInfo("kakao_id_1")
+//                        .build());
+//
+//                MemberProfile profile2 = memberProfileRepository.save(MemberProfile.builder()
+//                        .nickname("전자왕")
+//                        .profileImage("https://example.com/profile2.jpg")
+//                        .studentNumber(20190015)
+//                        .MBTI(MBTI.ENTJ)
+//                        .hobbies(Set.of(Hobby.GARDENING, Hobby.KNITTING))
+//                        .contact(ContactType.PHONE_NUMBER)
+//                        .contactInfo("electro_master@example.com")
+//                        .build());
+//
+//                Member member1 = memberRepository.save(Member.builder()
+//                        .name("개똥이")
+//                        .gender(Gender.MALE)
+//                        .birthday(new java.util.Date(1995 - 1900, Calendar.JUNE, 15)) // Date 생성 시 주의
+//                        .university(University.SEOUL_NATIONAL_UNIVERSITY)
+//                        .socialType(SocialType.KAKAO)
+//                        .socialId(1234567890L)
+//                        .status(MemberStatus.ACTIVE)
+//                        .role(MemberRole.MEMBER)
+//                        .memberProfile(profile1)
+//                        .build());
+//
+//                Member member2 = memberRepository.save(Member.builder()
+//                        .name("말똥이")
+//                        .gender(Gender.FEMALE)
+//                        .birthday(new java.util.Date(1998 - 1900, Calendar.APRIL, 20))
+//                        .university(University.CHUNGANG_UNIVERSITY)
+//                        .socialType(SocialType.KAKAO)
+//                        .socialId(9876543210L)
+//                        .status(MemberStatus.ACTIVE)
+//                        .role(MemberRole.MEMBER)
+//                        .memberProfile(profile2)
+//                        .build());
 
 //                MemberSecondProfile secondProfile1 = memberSecondProfileRepository.save(MemberSecondProfile.builder()
 //                        .member(member1)
