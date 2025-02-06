@@ -97,7 +97,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 // TODO 나중에는 권한 설정 등 해서 바꾸기
                 // TODO 회원가입 페이지로 리다이렉트
                 // TODO 권한 설정하기
-                // 기존 회원 로그인 또는 신규 회원 가입 시
+                // 회원가입 필요 시 다른 코드 반환
                 response.setContentType("application/json;charset=UTF-8");
                 response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
                 response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
