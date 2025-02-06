@@ -48,9 +48,9 @@ public class TempController {
 
     @Operation(summary = "로그인 한 유저 정보 반환", description = "유저 정보 반환") // [변경 2]
     @GetMapping("/get-member")
-    public Long getMember(@AuthUser Member member)
+    public Long getMember(@AuthUser Long memberId)
     {
-        return member.getId();
+        return memberId;
     }
 
     @Operation(summary = "이메일 인증 초기화") // [변경 2]
