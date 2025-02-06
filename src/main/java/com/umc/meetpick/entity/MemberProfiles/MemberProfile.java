@@ -1,7 +1,6 @@
 package com.umc.meetpick.entity.MemberProfiles;
 import com.umc.meetpick.entity.BaseTimeEntity;
 import com.umc.meetpick.entity.Major;
-import com.umc.meetpick.entity.SubMajor;
 import com.umc.meetpick.enums.ContactType;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.Hobby;
@@ -44,7 +43,7 @@ public class MemberProfile extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private SubMajor subMajor;
+    private Major major;
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.LAZY)

@@ -24,6 +24,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     // 이름
     @Column(nullable = false)
     private String name;
@@ -60,9 +61,6 @@ public class Member {
     @Column(nullable = false)
     private MemberRole role;
 
-    @Column(nullable = false)
-    private boolean isVerified = false;
-
     @OneToOne
     @Setter
     @JoinColumn(name = "member_profile_id")
@@ -83,12 +81,6 @@ public class Member {
         return Period.between(birthDate, currentDate).getYears();
     }
 
-    public void setMember(String name, Gender gender, Date birthday){
-        this.name = name;
-        this.gender = gender;
-        this.birthday = birthday;
-    }
-
 
     //양방향 매핑 설정
 
@@ -104,21 +96,5 @@ public class Member {
     @OneToMany(mappedBy = "writer")
     private List<Report> writtenReports = new ArrayList<>();*/
 
-    @PrePersist
-    public void prePersist() {
-        if (this.name == null || this.name.trim().isEmpty()) this.name = "Unknown User";
-        if (this.gender == null) this.gender = Gender.MALE;
-        if (this.birthday == null) this.birthday = new Date();
-        if (this.university == null) this.university = University.SEOUL_NATIONAL_UNIVERSITY;
-        if (this.socialType == null) this.socialType = SocialType.KAKAO;
-        if (this.socialId == null) this.socialId = 0L;
-        if (this.status == null) this.status = MemberStatus.ACTIVE;
-        if (this.role == null) this.role = MemberRole.MEMBER;
-    }
 
-
-    public void setUniversity(University universityEnum) {
-        this.university = universityEnum;
-        this.isVerified = true;
-    }
 }
