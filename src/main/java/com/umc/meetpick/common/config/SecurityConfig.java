@@ -29,6 +29,9 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable) // UI를 사용하는 것을 기본값으로 가진 시큐리티 설정 비활성화
                 .cors(AbstractHttpConfigurer::disable) // CORS 비활성화
                 .csrf(AbstractHttpConfigurer::disable) // CSRF 비활성화
+                .headers(headers ->
+                        headers.frameOptions(frameOptions -> frameOptions.disable()) // H2 콘솔을 위한 프레임 허용
+                )
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 ) // stateless로 설정

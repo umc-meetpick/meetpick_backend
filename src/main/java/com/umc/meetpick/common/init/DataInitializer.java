@@ -22,7 +22,7 @@ public class DataInitializer implements CommandLineRunner {
     private final MemberProfileRepository memberProfileRepository;
     private final MemberRepository memberRepository;
     private final MemberSecondProfileRepository memberSecondProfileRepository;
-    private final PersonalityRepository personalityRepository;
+    //private final PersonalityRepository personalityRepository;
     private final MemberMappingRepository memberMappingRepository;
 
     /*@PostConstruct
