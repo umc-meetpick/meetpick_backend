@@ -27,7 +27,7 @@ public class RequestDTO {
         private int maxAge;
         private List<String> personality;
         private Set<MBTI> mbti;
-        private boolean isHobbySame;
+        private Boolean isHobbySame;
         private List<MemberSecondProfileTimesDTO> memberSecondProfileTimes;
         private int maxPeople;
         private String comment;

@@ -180,52 +180,52 @@ public class DataInitializer implements CommandLineRunner {
                         .memberProfile(profile2)
                         .build());
 
-                MemberSecondProfile secondProfile1 = memberSecondProfileRepository.save(MemberSecondProfile.builder()
-                        .member(member1)
-                        .mateType(MateType.MEAL)
-                        .minAge(20)
-                        .maxAge(30)
-                        .personality(personalityRepository.save(new Personality(PersonalityEnum.CHEERFUL, PersonalityEnum.OBJECTIVE, PersonalityEnum.SUBJECTIVE, PersonalityEnum.QUIET)))
-                        .exerciseTypes(Set.of(ExerciseType.BOWLING, ExerciseType.RUNNING))
-                        .foodTypes(Set.of(FoodType.KOREAN, FoodType.JAPANESE))
-                        .isSchool(true)
-                        .comment("운동 같이 할 사람 구함!")
-                        .build());
+//                MemberSecondProfile secondProfile1 = memberSecondProfileRepository.save(MemberSecondProfile.builder()
+//                        .member(member1)
+//                        .mateType(MateType.MEAL)
+//                        .minAge(20)
+//                        .maxAge(30)
+//                        .personality(personalityRepository.save(new Personality(PersonalityEnum.CHEERFUL, PersonalityEnum.OBJECTIVE, PersonalityEnum.SUBJECTIVE, PersonalityEnum.QUIET)))
+//                        .exerciseTypes(Set.of(ExerciseType.BOWLING, ExerciseType.RUNNING))
+//                        .foodTypes(Set.of(FoodType.KOREAN, FoodType.JAPANESE))
+//                        .isSchool(true)
+//                        .comment("운동 같이 할 사람 구함!")
+//                        .build());
+//
+//                MemberSecondProfile secondProfile2 = memberSecondProfileRepository.save(MemberSecondProfile.builder()
+//                        .member(member2)
+//                        .mateType(MateType.STUDY)
+//                        .minAge(22)
+//                        .maxAge(28)
+//                        .personality(personalityRepository.save(new Personality(PersonalityEnum.CHEERFUL, PersonalityEnum.OBJECTIVE, PersonalityEnum.SUBJECTIVE, PersonalityEnum.QUIET)))
+//                        .exerciseTypes(Set.of(ExerciseType.BOWLING))
+//                        .foodTypes(Set.of(FoodType.WESTERN, FoodType.CHINESE))
+//                        .isSchool(false)
+//                        .comment("조용한 스터디 모임 찾습니다.")
+//                        .build());
 
-                MemberSecondProfile secondProfile2 = memberSecondProfileRepository.save(MemberSecondProfile.builder()
-                        .member(member2)
-                        .mateType(MateType.STUDY)
-                        .minAge(22)
-                        .maxAge(28)
-                        .personality(personalityRepository.save(new Personality(PersonalityEnum.CHEERFUL, PersonalityEnum.OBJECTIVE, PersonalityEnum.SUBJECTIVE, PersonalityEnum.QUIET)))
-                        .exerciseTypes(Set.of(ExerciseType.BOWLING))
-                        .foodTypes(Set.of(FoodType.WESTERN, FoodType.CHINESE))
-                        .isSchool(false)
-                        .comment("조용한 스터디 모임 찾습니다.")
-                        .build());
+//                member1.setMemberSecondProfile(secondProfile1);
+//                member2.setMemberSecondProfile(secondProfile2);
+//
+//                memberRepository.save(member1);
+//                memberRepository.save(member2);
+//
+//                MemberSecondProfileMapping mapping1 = memberMappingRepository.save(MemberSecondProfileMapping.builder()
+//                        .member(member1)
+//                        .memberSecondProfile(secondProfile2)
+//                        .status(false)
+//                        .isAccepted(false)
+//                        .build());
+//
+//                MemberSecondProfileMapping mapping2 = memberMappingRepository.save(MemberSecondProfileMapping.builder()
+//                        .member(member2)
+//                        .memberSecondProfile(secondProfile1)
+//                        .status(true)
+//                        .isAccepted(true)
+//                        .build());
 
-                member1.setMemberSecondProfile(secondProfile1);
-                member2.setMemberSecondProfile(secondProfile2);
-
-                memberRepository.save(member1);
-                memberRepository.save(member2);
-
-                MemberSecondProfileMapping mapping1 = memberMappingRepository.save(MemberSecondProfileMapping.builder()
-                        .member(member1)
-                        .memberSecondProfile(secondProfile2)
-                        .status(false)
-                        .isAccepted(false)
-                        .build());
-
-                MemberSecondProfileMapping mapping2 = memberMappingRepository.save(MemberSecondProfileMapping.builder()
-                        .member(member2)
-                        .memberSecondProfile(secondProfile1)
-                        .status(true)
-                        .isAccepted(true)
-                        .build());
-
-                memberMappingRepository.save(mapping1);
-                memberMappingRepository.save(mapping2);
+//                memberMappingRepository.save(mapping1);
+//                memberMappingRepository.save(mapping2);
             }
 
         }*/
