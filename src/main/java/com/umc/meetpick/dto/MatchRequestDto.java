@@ -36,7 +36,7 @@ public class MatchRequestDto {
                 .memberProfileId(memberSecondProfile.getId())
                 .writerId(member.getId())
                 .studentNumber(memberProfile.getStudentNumber())
-                .major(memberProfile.getMajor().getName())
+                .major(memberProfile.getSubMajor().getName())
                 .age(member.getAge())
                 .mateType(memberSecondProfile.getMateType().getKoreanName())
                 .createdAt(formattedDate)
