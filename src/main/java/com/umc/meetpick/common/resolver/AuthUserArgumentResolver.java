@@ -25,11 +25,10 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
     public boolean supportsParameter(MethodParameter parameter) {
 
         boolean hasAnnotation = parameter.hasParameterAnnotation(AuthUser.class);
-        boolean isMemberType = Member.class.isAssignableFrom(parameter.getParameterType());
+        /*boolean isMemberType = Member.class.isAssignableFrom(parameter.getParameterType());*/
+        //TODO 바꾸기
 
-        log.info("supportsParameter: {}", isMemberType);
-
-        return hasAnnotation && isMemberType;
+        return hasAnnotation /*&& isMemberType*/;
     }
 
     @Override
