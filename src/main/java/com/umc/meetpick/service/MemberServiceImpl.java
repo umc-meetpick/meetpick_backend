@@ -202,6 +202,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional
     public void updateUniversity(Long memberId, String universityName) {
+
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
 
