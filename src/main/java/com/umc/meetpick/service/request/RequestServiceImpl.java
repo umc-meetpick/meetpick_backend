@@ -10,7 +10,7 @@ import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
 
-import com.umc.meetpick.enums.PersonalityEnum;
+//import com.umc.meetpick.enums.PersonalityEnum;
 
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.Hobby;
@@ -38,7 +38,7 @@ public class RequestServiceImpl implements RequestService {
     private final MemberLikesRepository memberLikesRepository;
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
-    private final PersonalityRepository personalityRepository;
+    //private final PersonalityRepository personalityRepository;
     private final MemberSecondProfileSubMajorRepository memberSecondProfileSubMajorRepository;
 
     @Override
@@ -66,18 +66,18 @@ public class RequestServiceImpl implements RequestService {
         }
 
         // Personality 변환 및 저장
-        if (newRequest.getPersonality().size() != 4) {
-            throw new IllegalArgumentException("personality는 4개가 입력되어야 함");
-        }
-
-        Personality personality = new Personality(
-                PersonalityEnum.valueOf(newRequest.getPersonality().get(0)), // groupA
-                PersonalityEnum.valueOf(newRequest.getPersonality().get(1)), // groupB
-                PersonalityEnum.valueOf(newRequest.getPersonality().get(2)), // groupC
-                PersonalityEnum.valueOf(newRequest.getPersonality().get(3))  // groupD
-        );
-
-        Personality savedPersonality = personalityRepository.save(personality);
+//        if (newRequest.getPersonality().size() != 4) {
+//            throw new IllegalArgumentException("personality는 4개가 입력되어야 함");
+//        }
+//
+//        Personality personality = new Personality(
+//                PersonalityEnum.valueOf(newRequest.getPersonality().get(0)), // groupA
+//                PersonalityEnum.valueOf(newRequest.getPersonality().get(1)), // groupB
+//                PersonalityEnum.valueOf(newRequest.getPersonality().get(2)), // groupC
+//                PersonalityEnum.valueOf(newRequest.getPersonality().get(3))  // groupD
+//        );
+//
+//        Personality savedPersonality = personalityRepository.save(personality);
 
         // 새로운 MemberSecondProfile 생성
         MemberSecondProfile newMemberSecondProfile = MemberSecondProfile.builder()
@@ -89,7 +89,7 @@ public class RequestServiceImpl implements RequestService {
                 .maxAge(newRequest.getMaxAge())
                 .maxPeople(newRequest.getMaxPeople())
                 .currentPeople(0)
-                .personality(savedPersonality)
+                //.personality(savedPersonality)
                 .isHobbySame(newRequest.getIsHobbySame())
                 .comment(newRequest.getComment())
                 .mateType(newRequest.getType())
@@ -199,19 +199,19 @@ public class RequestServiceImpl implements RequestService {
 
         // 성격 판단 - enum형식으로 신청자 mbti가져오고 스트링으로 바꿔서 하나하나 비교
         String joinMemberMBTI = joinMemberProfile.getMBTI().name();
-        if (!((request.getPersonality().getGroupA() == PersonalityEnum.CHEERFUL && joinMemberMBTI.charAt(0) == 'E') ||
-                (request.getPersonality().getGroupA() == PersonalityEnum.QUIET && joinMemberMBTI.charAt(0) == 'I'))) {
-            throw new IllegalArgumentException("성격 조건 안 맞음");
-        }else if (!((request.getPersonality().getGroupB() == PersonalityEnum.REALISTIC && joinMemberMBTI.charAt(1) == 'S') ||
-                (request.getPersonality().getGroupB() == PersonalityEnum.CREATIVE && joinMemberMBTI.charAt(1) == 'N'))) {
-            throw new IllegalArgumentException("성격 조건 안 맞음");
-        }else if (!((request.getPersonality().getGroupC() == PersonalityEnum.OBJECTIVE && joinMemberMBTI.charAt(2) == 'T') ||
-                (request.getPersonality().getGroupC() == PersonalityEnum.SUBJECTIVE && joinMemberMBTI.charAt(2) == 'F'))) {
-            throw new IllegalArgumentException("성격 조건 안 맞음");
-        }else if (!((request.getPersonality().getGroupD() == PersonalityEnum.SYSTEMATIC && joinMemberMBTI.charAt(3) == 'J') ||
-                (request.getPersonality().getGroupD() == PersonalityEnum.FLEXIBLE && joinMemberMBTI.charAt(3) == 'P'))) {
-            throw new IllegalArgumentException("성격 조건 안 맞음");
-        }
+//        if (!((request.getPersonality().getGroupA() == PersonalityEnum.CHEERFUL && joinMemberMBTI.charAt(0) == 'E') ||
+//                (request.getPersonality().getGroupA() == PersonalityEnum.QUIET && joinMemberMBTI.charAt(0) == 'I'))) {
+//            throw new IllegalArgumentException("성격 조건 안 맞음");
+//        }else if (!((request.getPersonality().getGroupB() == PersonalityEnum.REALISTIC && joinMemberMBTI.charAt(1) == 'S') ||
+//                (request.getPersonality().getGroupB() == PersonalityEnum.CREATIVE && joinMemberMBTI.charAt(1) == 'N'))) {
+//            throw new IllegalArgumentException("성격 조건 안 맞음");
+//        }else if (!((request.getPersonality().getGroupC() == PersonalityEnum.OBJECTIVE && joinMemberMBTI.charAt(2) == 'T') ||
+//                (request.getPersonality().getGroupC() == PersonalityEnum.SUBJECTIVE && joinMemberMBTI.charAt(2) == 'F'))) {
+//            throw new IllegalArgumentException("성격 조건 안 맞음");
+//        }else if (!((request.getPersonality().getGroupD() == PersonalityEnum.SYSTEMATIC && joinMemberMBTI.charAt(3) == 'J') ||
+//                (request.getPersonality().getGroupD() == PersonalityEnum.FLEXIBLE && joinMemberMBTI.charAt(3) == 'P'))) {
+//            throw new IllegalArgumentException("성격 조건 안 맞음");
+//        }
 
         // 중복 신청 방지
         if(memberMappingRepository.existsByMemberSecondProfileAndMember(request, joinMember)){

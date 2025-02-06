@@ -2,7 +2,7 @@ package com.umc.meetpick.entity.MemberProfiles;
 
 import com.umc.meetpick.entity.BaseTimeEntity;
 import com.umc.meetpick.entity.Member;
-import com.umc.meetpick.entity.Personality;
+//import com.umc.meetpick.entity.Personality;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
 import com.umc.meetpick.enums.*;
@@ -53,9 +53,9 @@ public class MemberSecondProfile extends BaseTimeEntity {
     @Column(nullable = true)
     private Integer maxAge;
 
-    @OneToOne
-    @JoinColumn
-    private Personality personality;
+//    @OneToOne
+//    @JoinColumn
+//    private Personality personality;
 
     @ElementCollection
     @Builder.Default
