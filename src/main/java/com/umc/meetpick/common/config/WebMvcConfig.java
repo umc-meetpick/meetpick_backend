@@ -18,8 +18,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173", "http://localhost:5178")
-                .allowedMethods("OPTIONS","GET","POST","PUT","DELETE");
+                .allowedOriginPatterns("*") // 모든 도메인 허용 (allowCredentials 사용 가능)
+                .allowedMethods("OPTIONS","GET","POST","PUT","DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 
     public WebMvcConfig(AuthUserArgumentResolver authUserArgumentResolver) {
