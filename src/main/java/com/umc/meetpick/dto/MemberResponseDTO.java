@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberResponseDTO {
     long id;
-    int studentNumber;
+    String studentNumber;
     String major;
     String nickname;
     String university;

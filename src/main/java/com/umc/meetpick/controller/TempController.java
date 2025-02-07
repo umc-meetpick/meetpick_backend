@@ -36,7 +36,7 @@ public class TempController {
         return members.stream()
                 .map(member -> MemberResponseDTO.builder()
                         .id(member.getId())
-                        .studentNumber(member.getMemberProfile().getStudentNumber())
+                        .studentNumber(member.getMemberProfile().getStudentNumber() + "학번")
                         .major(member.getMemberProfile().getSubMajor().getName())
                         .nickname(member.getMemberProfile().getNickname())
                         .university(member.getUniversity().toString())

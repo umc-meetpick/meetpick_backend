@@ -7,7 +7,6 @@ import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.MateType;
 
 public interface MemberService {
-    MemberResponseDTO getRandomMember(MateType mateType);
 
     MemberDetailResponseDto getMemberDetail(Long memberId);
 
