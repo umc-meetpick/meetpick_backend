@@ -41,6 +41,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         Map<String, Object> attributes = oAuth2User.getAttributes();
+
         log.info("🔍 OAuth2 사용자 속성: {}", attributes);
 
         ObjectMapper objectMapper = new ObjectMapper();
