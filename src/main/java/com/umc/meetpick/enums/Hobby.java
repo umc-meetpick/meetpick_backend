@@ -1,5 +1,8 @@
 package com.umc.meetpick.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Hobby {
     READING("독서"),
     TRAVELING("여행"),
@@ -27,10 +30,6 @@ public enum Hobby {
 
     Hobby(String koreanName) {
         this.koreanName = koreanName;
-    }
-
-    public String getKoreanName() {
-        return koreanName;
     }
 
     public static Hobby fromString(String koreanName) {

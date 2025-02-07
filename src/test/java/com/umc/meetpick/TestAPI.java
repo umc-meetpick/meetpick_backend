@@ -11,7 +11,7 @@ import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
 import com.umc.meetpick.service.MatchingService;
 import com.umc.meetpick.service.MemberService;
-import com.umc.meetpick.service.UniversityService;
+import com.umc.meetpick.service.home.HomeService;
 import com.umc.meetpick.service.report.ReportService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +41,7 @@ public class TestAPI {
     private ReportService reportService;
 
     @Autowired
-    private UniversityService universityService;
+    private HomeService homeService;
 
     @Autowired
     private MemberSecondProfileRepository memberSecondProfileRepository;
