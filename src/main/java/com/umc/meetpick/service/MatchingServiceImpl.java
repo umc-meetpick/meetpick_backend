@@ -69,7 +69,7 @@ public class MatchingServiceImpl implements MatchingService {
                 }
 
                 // MBTI 조건 체크
-                if(memberSecondProfile.getMbti() == null || memberSecondProfile.getMbti().contains(member.getMemberProfile().getMBTI())){
+                if(memberSecondProfile.getMbti() == null || memberSecondProfile.getMbti().contains(member.getMemberProfile().getMBTI().name())){
                     conditionMatching++;
                 }
 

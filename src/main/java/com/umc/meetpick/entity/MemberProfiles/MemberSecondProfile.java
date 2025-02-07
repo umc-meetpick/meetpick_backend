@@ -57,9 +57,10 @@ public class MemberSecondProfile extends BaseTimeEntity {
 //    @JoinColumn
 //    private Personality personality;
 
-    @ElementCollection
-    @Builder.Default
-    private Set<MBTI> mbti = new HashSet<>();
+    //@ElementCollection
+    //@Builder.Default
+    //private Set<MBTI> mbti = new HashSet<>();
+    private String mbti;
 
     private Boolean isHobbySame;
 
