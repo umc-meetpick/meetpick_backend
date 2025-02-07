@@ -22,7 +22,7 @@ public class RequestDTO {
         //private String majorName;
         private Gender gender;
         private List<String> subMajorName;
-        private StudentNumber studentNumber;
+        private String studentNumber;
         private int minAge;
         private int maxAge;
         //private List<String> personality;
@@ -31,9 +31,9 @@ public class RequestDTO {
         private List<MemberSecondProfileTimesDTO> memberSecondProfileTimes;
         private int maxPeople;
         private String comment;
-        private Set<ExerciseType> exerciseTypes;
+        private String exerciseTypes;
         private Boolean isSchool;
-        private Set<FoodType> food;
+        private String food;
         private MateType type;
     }
 

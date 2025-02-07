@@ -12,9 +12,7 @@ import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
 
 //import com.umc.meetpick.enums.PersonalityEnum;
 
-import com.umc.meetpick.enums.FoodType;
-import com.umc.meetpick.enums.Hobby;
-import com.umc.meetpick.enums.MateType;
+import com.umc.meetpick.enums.*;
 
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
@@ -22,8 +20,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.umc.meetpick.enums.StudentNumber.*;
@@ -79,11 +79,27 @@ public class RequestServiceImpl implements RequestService {
 //
 //        Personality savedPersonality = personalityRepository.save(personality);
 
+
+        // studentNumber 변환 -> 프론트에서 받은 string을 enum으로
+        StudentNumber studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
+
+        // 운동 타입 변환
+        Set<ExerciseType> exerciseTypes = Arrays.stream(newRequest.getExerciseTypes().split(","))
+                .map(String::trim)  // 앞뒤 공백 제거
+                .map(ExerciseType::fromString) // ExerciseType으로 변환
+                .collect(Collectors.toSet());
+
+        // 음식 타입 변환
+        Set<FoodType> foodTypes = Arrays.stream(newRequest.getFood().split(","))
+                .map(String::trim)
+                .map(FoodType::fromString)
+                .collect(Collectors.toSet());
+
         // 새로운 MemberSecondProfile 생성
         MemberSecondProfile newMemberSecondProfile = MemberSecondProfile.builder()
                 .member(writer)
                 .gender(newRequest.getGender())
-                .studentNumber(newRequest.getStudentNumber())
+                .studentNumber(studentNumberEnum)
                 .mbti(newRequest.getMbti())
                 .minAge(newRequest.getMinAge())
                 .maxAge(newRequest.getMaxAge())
@@ -93,8 +109,8 @@ public class RequestServiceImpl implements RequestService {
                 .isHobbySame(newRequest.getIsHobbySame())
                 .comment(newRequest.getComment())
                 .mateType(newRequest.getType())
-                .foodTypes(newRequest.getFood())
-                .exerciseTypes(newRequest.getExerciseTypes())
+                .foodTypes(foodTypes)
+                .exerciseTypes(exerciseTypes)
                 .isSchool(newRequest.getIsSchool())
                 .build();
 
@@ -102,11 +118,14 @@ public class RequestServiceImpl implements RequestService {
 
         // membersecondprofiletimesd dto를 entity로 변환
         List<MemberSecondProfileTimes> timesList = newRequest.getMemberSecondProfileTimes().stream()
-                .map(dto -> MemberSecondProfileTimes.builder()
-                        .week(dto.getWeek())
-                        .times(dto.getTimes())
-                        .memberSecondProfile(savedProfile) // 프로필과 연결
-                        .build())
+                .map(dto -> {
+                    Week weekEnum = Week.fromString(dto.getWeek()); // 각 DTO의 week 변환
+                    return MemberSecondProfileTimes.builder()
+                            .week(weekEnum) // 변환된 Week enum 저장
+                            .times(dto.getTimes()) // times 그대로 매핑
+                            .memberSecondProfile(savedProfile) // 프로필 연결
+                            .build();
+                })
                 .toList();
 
         memberSecondProfileTimesRepository.saveAll(timesList);
@@ -130,7 +149,7 @@ public class RequestServiceImpl implements RequestService {
 
         return RequestDTO.NewRequestDTO.builder()
                 .writerId(savedProfile.getMember().getId())
-                .studentNumber(savedProfile.getStudentNumber())
+                .studentNumber(savedProfile.getStudentNumber().name())
                 .mbti(savedProfile.getMbti())
                 .minAge(savedProfile.getMinAge())
                 .maxAge(savedProfile.getMaxAge())
