@@ -15,6 +15,9 @@ import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
+import com.umc.meetpick.repository.member.MemberLikesRepository;
+import com.umc.meetpick.repository.member.MemberProfileRepository;
+import com.umc.meetpick.dto.ProfileDetailResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +40,8 @@ public class MatchingServiceImpl implements MatchingService {
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberRepository memberRepository;
     private final MemberMappingRepository memberMappingRepository;
+    private final MemberLikesRepository memberLikesRepository;// 좋아요 여부 확인용
+    private final MemberProfileRepository memberProfileRepository;// 프로필 정보 조회용
     private final int minCondition = 3;
     private int page = 0;
     private final int pageSize = 100;
@@ -210,5 +215,22 @@ public class MatchingServiceImpl implements MatchingService {
                 .requestId(memberSecondProfile.getId())
                 .gender(memberSecondProfile.getGender().getKoreanName())
                 .build();
+    }
+
+    @Override
+    public ProfileDetailResponseDto getProfileDetail(Long memberId, MateType mateType) {
+        // 1. Member 엔티티 조회
+        Member member = memberRepository.findMemberById(memberId);
+
+        // 2. MemberSecondProfile 조회 (mateType에 해당하는)
+        MemberSecondProfile secondProfile = memberSecondProfileRepository
+                .findByMemberIdAndMateType(memberId, mateType)
+                .orElseThrow(() -> new RuntimeException("해당하는 프로필이 없습니다."));
+
+        // 3. 좋아요 여부 확인
+        boolean isLiked = memberLikesRepository.existsByMemberAndMemberSecondProfile(member, secondProfile);
+
+        // 4. DTO 변환 및 반환
+        return ProfileDetailResponseDto.from(member, secondProfile, isLiked);
     }
 }

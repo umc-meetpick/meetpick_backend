@@ -30,5 +30,7 @@ public interface MemberSecondProfileRepository extends JpaRepository<MemberSecon
 
     Optional<MemberSecondProfile> findFirstBy();
 
+    Optional<MemberSecondProfile> findByMemberIdAndMateType(Long memberId, MateType mateType);
+
 
 }
