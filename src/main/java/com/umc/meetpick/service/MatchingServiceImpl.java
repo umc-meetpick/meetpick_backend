@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MatchingServiceImpl implements MatchingService {
 
+    //TODO Request SERVICE랑 합치기
+
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberRepository memberRepository;
     private final MemberMappingRepository memberMappingRepository;

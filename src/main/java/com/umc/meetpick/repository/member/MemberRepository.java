@@ -14,4 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findMemberById(Long id);
     Optional<Member> findBySocialId(Long socialId);
     Optional<Member> findBySocialIdAndSocialType(Long socialId, SocialType socialType);
+
+    //TODO 삭제 예정
+    Member findFirstBy();
 }
