@@ -218,7 +218,7 @@ public class RequestServiceImpl implements RequestService {
 
         // 성격 판단 - 입력받은 mbti 가져와서 판단
         String joinMemberMBTI = joinMemberProfile.getMBTI().name();
-        String requestMBTI = request.getMbti().stream().map(Enum::name).collect(Collectors.joining());
+        String requestMBTI = request.getMbti();
         for (int i = 0; i < 4; i++){
             if(!(requestMBTI.charAt(i) == joinMemberMBTI.charAt(i)) && !(requestMBTI.charAt(i) == 'X')){
                 throw new IllegalArgumentException("성격 조건 안 맞음");
