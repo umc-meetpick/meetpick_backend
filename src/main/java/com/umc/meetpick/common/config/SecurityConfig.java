@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -23,6 +24,8 @@ public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
 
+    //TODO 리프레시 토큰 추가 및 권한 추가
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         return httpSecurity
@@ -30,7 +33,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable) // CORS 비활성화
                 .csrf(AbstractHttpConfigurer::disable) // CSRF 비활성화
                 .headers(headers ->
-                        headers.frameOptions(frameOptions -> frameOptions.disable()) // H2 콘솔을 위한 프레임 허용
+                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable) // H2 콘솔을 위한 프레임 허용
                 )
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

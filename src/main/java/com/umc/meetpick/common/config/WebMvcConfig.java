@@ -1,6 +1,7 @@
 package com.umc.meetpick.common.config;
 
 import com.umc.meetpick.common.resolver.AuthUserArgumentResolver;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -14,6 +15,9 @@ import java.util.List;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AuthUserArgumentResolver authUserArgumentResolver;
+
+    @Value("${front.redirect-url}")
+    private String url;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
