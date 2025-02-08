@@ -33,4 +33,7 @@ public interface MemberSecondProfileRepository extends JpaRepository<MemberSecon
     Optional<MemberSecondProfile> findByMemberIdAndMateType(Long memberId, MateType mateType);
 
 
-}
+    Page<MemberSecondProfile> findAllByMateType(MateType mateType, Pageable pageable); //페이징
+    }
+
+

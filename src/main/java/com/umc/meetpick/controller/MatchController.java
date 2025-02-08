@@ -71,4 +71,14 @@ public class MatchController {
     public ApiResponse<List<MatchResponseDto>> getLikeRequest(@AuthUser Long memberId, @PathParam("mateType") MateType mateType) {
         return ApiResponse.onSuccess(requestService.getLikes(memberId, mateType));
     }
+
+    @Operation(summary = "프로필 목록 조회", description = "메이트 타입별 전체 프로필 목록을 조회합니다.")
+    @GetMapping("/profiles")
+    public ApiResponse<ProfileDetailListResponseDto> getAllProfiles(
+            @AuthUser Long memberId,
+            @RequestParam MateType mateType,
+            @PageableDefault(size = 10) Pageable pageable
+    ) {
+        return ApiResponse.onSuccess(matchingService.getAllProfiles(memberId, mateType, pageable));
+    }
 }

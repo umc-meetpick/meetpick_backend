@@ -1,10 +1,7 @@
 package com.umc.meetpick.service;
 
 
-import com.umc.meetpick.dto.AlarmResponseDto;
-import com.umc.meetpick.dto.MatchRequestDto;
-import com.umc.meetpick.dto.MatchRequestListDto;
-import com.umc.meetpick.dto.MatchResponseDto;
+import com.umc.meetpick.dto.*;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
@@ -17,7 +14,6 @@ import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
 import com.umc.meetpick.repository.member.MemberLikesRepository;
 import com.umc.meetpick.repository.member.MemberProfileRepository;
-import com.umc.meetpick.dto.ProfileDetailResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -218,19 +214,27 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     @Override
-    public ProfileDetailResponseDto getProfileDetail(Long memberId, MateType mateType) {
-        // 1. Member 엔티티 조회
-        Member member = memberRepository.findMemberById(memberId);
+    public ProfileDetailListResponseDto getAllProfiles(Long memberId, MateType mateType, Pageable pageable) {
+        // 1. 해당 mateType의 모든 프로필 조회 (페이징 처리)
+        Page<MemberSecondProfile> profiles = memberSecondProfileRepository
+                .findAllByMateType(mateType, pageable);
 
-        // 2. MemberSecondProfile 조회 (mateType에 해당하는)
-        MemberSecondProfile secondProfile = memberSecondProfileRepository
-                .findByMemberIdAndMateType(memberId, mateType)
-                .orElseThrow(() -> new RuntimeException("해당하는 프로필이 없습니다."));
+        // 2. 각 프로필을 DTO로 변환
+        List<ProfileDetailResponseDto> profileDtos = profiles.getContent().stream()
+                .map(secondProfile -> {
+                    Member profileMember = secondProfile.getMember();
+                    boolean isLiked = memberLikesRepository
+                            .existsByMemberAndMemberSecondProfile(profileMember, secondProfile);
+                    return ProfileDetailResponseDto.from(profileMember, secondProfile, isLiked);
+                })
+                .collect(Collectors.toList());
 
-        // 3. 좋아요 여부 확인
-        boolean isLiked = memberLikesRepository.existsByMemberAndMemberSecondProfile(member, secondProfile);
-
-        // 4. DTO 변환 및 반환
-        return ProfileDetailResponseDto.from(member, secondProfile, isLiked);
+        // 3. 최종 응답 생성
+        return ProfileDetailListResponseDto.from(
+                profileDtos,
+                profiles.getTotalPages(),
+                profiles.getTotalElements(),
+                profiles.hasNext()
+        );
     }
 }
