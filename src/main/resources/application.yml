@@ -26,6 +26,7 @@ spring:
             authorization-grant-type: authorization_code
 #            redirect-uri: http://3.38.151.77:8080/login/oauth2/code/kakao
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+#            redirect-uri: http://35.172.251.131:8080/login/oauth2/code/kakao
             scope: profile_nickname, profile_image
             client-name: Kakao
             client-authentication-method: client_secret_post

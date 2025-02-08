@@ -96,6 +96,7 @@ public class ProfileController {
     public ApiResponse<ProfileDTO.ContactDTO.ContactResponseDTO> setContact(
             @CurrentUser Long memberId,
             @RequestBody ProfileDTO.ContactDTO.ContactRequestDTO contactRequestDTO) {
+
         contactRequestDTO.setMemberId(memberId);
         return profileService.setContact(contactRequestDTO);  // ProfileService로 호출
     }
