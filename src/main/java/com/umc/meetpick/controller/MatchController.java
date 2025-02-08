@@ -13,7 +13,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -79,6 +81,6 @@ public class MatchController {
             @RequestParam MateType mateType,
             @PageableDefault(size = 10) Pageable pageable
     ) {
-        return ApiResponse.onSuccess(matchingService.getAllProfiles(memberId, mateType, pageable));
+        return ApiResponse.onSuccess(matchingService.getAllProfiles(memberId, mateType, new FilterRequestDTO(), pageable));
     }
 }

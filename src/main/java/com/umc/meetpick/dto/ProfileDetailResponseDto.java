@@ -3,6 +3,7 @@ package com.umc.meetpick.dto;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
+import com.umc.meetpick.entity.SubMajor;
 import com.umc.meetpick.enums.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -32,6 +34,9 @@ public class ProfileDetailResponseDto {
     private boolean isLiked;          // From MemberSecondProfileLikes
     private SlotInfo slotInfo;
 
+    //정렬용 필드
+    private LocalDateTime createdAt;    // 최신순 정렬용
+
     //매칭 선호도 내부 클래스 PreferenceInfo
     @Getter
     @Builder
@@ -45,6 +50,13 @@ public class ProfileDetailResponseDto {
         // MateType
         private Set<ExerciseType> exerciseTypes;  // From MemberSecondProfile.exerciseTypes (EXERCISE 타입일 때만)
         private Set<FoodType> foodTypes;          // From MemberSecondProfile.foodTypes (MEAL 타입일 때만)
+
+        // STUDY 타입 필터링용
+        private Set<String> availableDays;     // 가능한 요일
+        private Set<String> availableTimes;    // 가능한 시간
+        private Set<SubMajor> preferredMajors; // 선호 전공
+        private Boolean isSchool;              // 교내/교외 여부
+
     }
 
     // 슬롯 정보 내부 클래스 SlotInfo
@@ -72,15 +84,16 @@ public class ProfileDetailResponseDto {
         // PreferenceInfo 생성
         PreferenceInfo preferenceInfo = PreferenceInfo.builder()
                 .mateType(secondProfile.getMateType())
-                .preferredGender(secondProfile.getGender() != null ?
+                .preferredGender(secondProfile.getGender() != null ?    // 선호 성별
                         secondProfile.getGender().getKoreanName() : null)
-                .minAge(secondProfile.getMinAge())
+                .minAge(secondProfile.getMinAge())                      // 선호 나이 범위
                 .maxAge(secondProfile.getMaxAge())
-                .studentNumber(secondProfile.getStudentNumber())
+                .studentNumber(secondProfile.getStudentNumber())        // 선호 학번
                 .exerciseTypes(secondProfile.getMateType() == MateType.EXERCISE ?
                         secondProfile.getExerciseTypes() : null)
                 .foodTypes(secondProfile.getMateType() == MateType.MEAL ?
                         secondProfile.getFoodTypes() : null)
+                .isSchool(secondProfile.getIsSchool())                 // 교내/교외 여부 추가
                 .build();
 
         // 최종 DTO 생성
