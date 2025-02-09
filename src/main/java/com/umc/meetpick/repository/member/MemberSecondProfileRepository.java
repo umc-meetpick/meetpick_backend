@@ -14,8 +14,6 @@ import java.util.Optional;
 @Repository
 public interface MemberSecondProfileRepository extends JpaRepository<MemberSecondProfile, Long> {
 
-    Optional<MemberSecondProfile> findMemberSecondProfileByIdAndMateType(@Param("id") Long id, @Param("mateType") MateType mateType);
-
     boolean existsByMemberIdAndMateType(Long writerId, MateType mateType);
 
     boolean existsByMemberId(Long writerid);
@@ -27,6 +25,10 @@ public interface MemberSecondProfileRepository extends JpaRepository<MemberSecon
             "WHERE m.member.id = :memberId " +
             "ORDER BY m.createdAt DESC")
     Page<MemberSecondProfile> findMemberSecondProfileByMemberId(@Param("memberId") Long memberId, Pageable pageable);
+
+    Optional<MemberSecondProfile> findFirstByMateTypeOrderByCreatedAtDesc(@Param("mateType") MateType mateType);
+
+    Optional<MemberSecondProfile> findFirstBy();
 
 
 }

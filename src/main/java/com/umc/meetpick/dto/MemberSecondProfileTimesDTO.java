@@ -11,6 +11,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class MemberSecondProfileTimesDTO {
-    private Week week;
+    private String week;
     private Set<Integer> times;
 }

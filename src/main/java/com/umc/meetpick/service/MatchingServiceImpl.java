@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MatchingServiceImpl implements MatchingService {
 
+    //TODO Request SERVICE랑 합치기
+
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberRepository memberRepository;
     private final MemberMappingRepository memberMappingRepository;
@@ -69,7 +71,7 @@ public class MatchingServiceImpl implements MatchingService {
                 }
 
                 // MBTI 조건 체크
-                if(memberSecondProfile.getMbti() == null || memberSecondProfile.getMbti().contains(member.getMemberProfile().getMBTI())){
+                if(memberSecondProfile.getMbti() == null || memberSecondProfile.getMbti().contains(member.getMemberProfile().getMBTI().name())){
                     conditionMatching++;
                 }
 

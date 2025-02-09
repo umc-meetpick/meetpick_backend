@@ -10,8 +10,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
-        OAuth2User oAuth2User = super.loadUser(userRequest);
 
+        OAuth2User oAuth2User = super.loadUser(userRequest);
         // 사용자 정보 로깅
         System.out.println("OAuth2User attributes: " + oAuth2User.getAttributes());
 

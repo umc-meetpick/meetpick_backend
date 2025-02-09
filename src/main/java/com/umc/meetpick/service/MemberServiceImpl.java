@@ -41,17 +41,6 @@ public class MemberServiceImpl implements MemberService {
     private final MemberProfileRepository memberProfileRepository;
     private final SubMajorRepository subMajorRepository;
 
-    // TODO 레디스 사용하기, 무작위 멤버 추출 방식 바꾸기
-    public MemberResponseDTO getRandomMember(MateType mateType){
-
-        long randomId = (long) (Math.random()*memberSecondProfileRepository.count());
-
-        // TODO ID 바꾸기
-        MemberSecondProfile memberProfile = memberSecondProfileRepository.findMemberSecondProfileByIdAndMateType(1L, mateType).orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
-
-        return MemberProfileToMemberProfileResponseDTO(memberProfile);
-    }
-
     @Override
     public MemberDetailResponseDto getMemberDetail(Long memberId) {
         Member member = memberRepository.findMemberById(memberId);
@@ -220,20 +209,4 @@ public class MemberServiceImpl implements MemberService {
         return universityPattern.matcher(univName).matches();
     }
 
-
-    private MemberResponseDTO MemberProfileToMemberProfileResponseDTO(MemberSecondProfile memberSecondProfile) {
-
-        Member member = memberSecondProfile.getMember();
-        MemberProfile memberProfile = member.getMemberProfile(); //TODO JOIN을 더 최소하 할 수 있는 방법이 있을까?
-
-            return MemberResponseDTO.builder()
-                    .id(member.getId())
-                    .studentNumber(memberProfile.getStudentNumber())
-                    .major(memberProfile.getSubMajor().getName())
-                    .nickname(memberProfile.getNickname())
-                    .university(member.getUniversity().toString())
-                    .userImage(memberProfile.getProfileImage())
-                    .comment(memberSecondProfile.getComment())
-                    .build();
-    }
 }
