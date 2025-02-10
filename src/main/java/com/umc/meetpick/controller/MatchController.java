@@ -31,16 +31,11 @@ public class MatchController {
     // 작동 됨
     @Operation(summary = "매칭 요청 목록 조회", description = "사용자에게 온 매칭 요청 목록을 페이징하여 조회합니다.") // [변경 2]
     @GetMapping
-    public ApiResponse<MatchRequestListDto> getMatchRequests(
-            @Parameter(description = "조회할 사용자의 ID", required = true) // [변경 3]
-            @AuthUser Long memberId,
-            @Parameter(description = "페이지 정보 (기본값: 10개, 생성일 기준 정렬)") // [변경 4]
-            @PageableDefault(size = 10) Pageable pageable
+    public ApiResponse<MatchRequestListDto> getMatchRequests(@ModelAttribute PageRequestDto pageRequestDto, @AuthUser Long memberId) {
 
-            //TODO sort 가 안돼서 일단 뺐습니다! 나중에 다시 추가할게요!
-    ) {
-        MatchRequestListDto response = matchingService.getMatchRequests(memberId, pageable);
-        return ApiResponse.onSuccess(response);
+        Pageable pageable = pageRequestDto.toPageable();
+
+        return ApiResponse.onSuccess(matchingService.getMatchRequests(memberId, pageRequestDto.getMateType(), pageable));
     }
 
     @Operation(summary = "추천 매칭 목록 조회", description = "사용자에게 적절한 메이트를 추천해줍니다") // [변경 2]

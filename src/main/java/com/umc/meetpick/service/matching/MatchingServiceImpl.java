@@ -94,7 +94,7 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     @Override
-    public MatchRequestListDto getMatchRequests(Long memberId, Pageable pageable) {
+    public MatchRequestListDto getMatchRequests(Long memberId, String mateType, Pageable pageable) {
 
         // 1. 페이징된 Request 엔티티 조회
         // TODO 만약 요청이 하나도 없는 경우 예외 처리하기

@@ -1,10 +1,8 @@
-package com.umc.meetpick.service;
+package com.umc.meetpick.service.member;
 
 import com.umc.meetpick.dto.MemberDetailResponseDto;
-import com.umc.meetpick.dto.MemberResponseDTO;
+import com.umc.meetpick.dto.MyProfileDto;
 import com.umc.meetpick.dto.RegisterDTO;
-import com.umc.meetpick.entity.Member;
-import com.umc.meetpick.enums.MateType;
 
 public interface MemberService {
 
@@ -19,4 +17,6 @@ public interface MemberService {
     String verifyEmailCode(Long memberId, RegisterDTO.EmailVerificationCodeDTO requestDTO);
 
     String nickDuplicate(Long memberId, String nickName);
+
+    MyProfileDto getMyProfile(Long memberId);
 }

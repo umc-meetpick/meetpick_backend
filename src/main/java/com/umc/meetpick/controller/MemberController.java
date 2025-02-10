@@ -3,15 +3,11 @@ package com.umc.meetpick.controller;
 import com.umc.meetpick.common.annotation.AuthUser;
 import com.umc.meetpick.common.response.ApiResponse;
 import com.umc.meetpick.dto.MemberDetailResponseDto;
-import com.umc.meetpick.dto.MemberResponseDTO;
+import com.umc.meetpick.dto.MyProfileDto;
 import com.umc.meetpick.dto.RegisterDTO;
-import com.umc.meetpick.entity.Member;
-import com.umc.meetpick.enums.MateType;
-import com.umc.meetpick.repository.member.MemberRepository;
-import com.umc.meetpick.service.MemberService;
+import com.umc.meetpick.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -65,5 +61,14 @@ public class MemberController {
     public ApiResponse<String> checkNickname(@AuthUser Long memberId, String nickname) {
 
         return ApiResponse.onSuccess(memberService.nickDuplicate(memberId, nickname));  // ProfileService로 호출
+    }
+
+    @Operation(summary = "로그인 한 유저 정보 반환")
+    @GetMapping("/my-profile")
+    public ApiResponse<MyProfileDto> getMyProfile(@AuthUser Long memberId) {
+
+        log.info("Controller : getMyProfile 호출 {}", memberId);
+
+        return ApiResponse.onSuccess(memberService.getMyProfile(memberId));  // ProfileService로 호출
     }
 }

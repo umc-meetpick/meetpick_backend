@@ -18,7 +18,7 @@ import java.util.Map;
 @Tag(name = "대학교 관련 API", description = "대학교 관련 API입니다")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/university")
+@RequestMapping("/api/home")
 @Slf4j
 public class HomeController {
 

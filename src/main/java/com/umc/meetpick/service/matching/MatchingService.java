@@ -9,7 +9,7 @@ import java.util.List;
 public interface MatchingService {
     List<MatchResponseDto> match(Long memberId, MateType mateType);
 
-    MatchRequestListDto getMatchRequests(Long memberId, Pageable pageable);
+    MatchRequestListDto getMatchRequests(Long memberId, String mateType, Pageable pageable);
 
     AlarmDto.AlarmPageResponseDto getAlarms(String mateType, Pageable pageable, Long memberId);
 

@@ -24,7 +24,6 @@ public class MatchingDtoFactory {
 
     // MemberSecondProfileMapping 리스트를 AlarmResponseDto 리스트로 변환하는 메서드
     public static AlarmDto.AlarmPageResponseDto memberSecondProfileToAlarmDtoList(Page<MemberSecondProfileMapping> mappingList) {
-
         List<AlarmDto.AlarmResponseDto> alarmResponseDtoList = mappingList.stream()
                 .map(mapping -> memberSecondProfileToAlarmDto(mapping.getMemberSecondProfile()))
                 .toList();

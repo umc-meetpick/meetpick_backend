@@ -22,6 +22,7 @@ public enum ErrorCode implements BaseErrorCode {
     NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임은 필수 입니다."),
     NICKNAME_DUPLICATE(HttpStatus.BAD_REQUEST, "MEMBER4003", "존재하는 닉네임입니다"),
     SUBMAJOR_NOT_EXSIT(HttpStatus.BAD_REQUEST, "MEMBER4004", "존재하지 않는 전공입니다"),
+    PROFILE_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4005", "1차 프로필이 없습니다"),
 
     MEMBER_SIGNUP_ERROR(HttpStatus.BAD_REQUEST, "SIGNUP4001", "회원가입 유효성 검사 실패"),
     EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "SIGNUP4002", "이미 존재하는 이메일입니다."),

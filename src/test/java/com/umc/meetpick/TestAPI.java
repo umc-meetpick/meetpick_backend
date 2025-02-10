@@ -5,17 +5,15 @@ import com.umc.meetpick.domain.factory.MemberSecondProfileFactory;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
-import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
 import com.umc.meetpick.service.matching.MatchingService;
-import com.umc.meetpick.service.MemberService;
+import com.umc.meetpick.service.member.MemberService;
 import com.umc.meetpick.service.home.HomeService;
 import com.umc.meetpick.service.report.ReportService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

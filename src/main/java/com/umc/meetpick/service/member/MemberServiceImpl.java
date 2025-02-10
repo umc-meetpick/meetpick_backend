@@ -1,13 +1,12 @@
-package com.umc.meetpick.service;
+package com.umc.meetpick.service.member;
 
 import com.umc.meetpick.common.exception.handler.GeneralHandler;
 import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.MemberDetailResponseDto;
-import com.umc.meetpick.dto.MemberResponseDTO;
+import com.umc.meetpick.dto.MyProfileDto;
 import com.umc.meetpick.dto.RegisterDTO;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
-import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.SubMajor;
 import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.SubMajorRepository;
@@ -16,6 +15,7 @@ import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -28,7 +28,10 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.umc.meetpick.service.member.factory.MemberDtoFactory.memberToProfileDto;
+
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
@@ -200,6 +203,17 @@ public class MemberServiceImpl implements MemberService {
         member.setUniversity(universityEnum);
         memberRepository.save(member);
     }
+
+    @Override
+    public MyProfileDto getMyProfile(Long memberId) {
+
+        log.info("Service : getMyProfile 호출 {}", memberId);
+
+        Member member = memberRepository.findMemberById(memberId);
+
+        return memberToProfileDto(member);
+    }
+
 
     /**
      * 대학교명 형식 검증
