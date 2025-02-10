@@ -2,9 +2,9 @@ package com.umc.meetpick.service.home.factory;
 
 import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
-import com.umc.meetpick.service.home.template.AllStrategy;
-import com.umc.meetpick.service.home.template.MateStrategy;
-import com.umc.meetpick.service.home.template.MemberQueryStrategy;
+import com.umc.meetpick.service.home.strategy.AllStrategy;
+import com.umc.meetpick.service.home.strategy.MateStrategy;
+import com.umc.meetpick.service.home.strategy.MemberQueryStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,15 +14,11 @@ public class MemberQueryStrategyFactory {
 
     private final MemberSecondProfileRepository memberSecondProfileRepository;
 
+    public MemberQueryStrategy getStrategy(MateType mateType) {
 
-    public MemberQueryStrategy getStrategy(String mateType) {
-
-        MateType type = MateType.fromString(mateType);
-
-        return switch (type) {
+        return switch (mateType) {
             case ALL -> new AllStrategy(memberSecondProfileRepository);
             case MEAL, EXERCISE, STUDY -> new MateStrategy(memberSecondProfileRepository);
-            default -> throw new IllegalArgumentException("Unsupported mateType: " + type);
         };
     }
 }

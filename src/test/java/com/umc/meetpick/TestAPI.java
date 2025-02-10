@@ -9,7 +9,7 @@ import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
-import com.umc.meetpick.service.MatchingService;
+import com.umc.meetpick.service.matching.MatchingService;
 import com.umc.meetpick.service.MemberService;
 import com.umc.meetpick.service.home.HomeService;
 import com.umc.meetpick.service.report.ReportService;
@@ -92,8 +92,4 @@ public class TestAPI {
 
     }*/
 
-    @Test
-    void testAPI3(){
-        System.out.println(matchingService.getAlarms(5L, MateType.ALL).get(0).getContent());
-    }
 }

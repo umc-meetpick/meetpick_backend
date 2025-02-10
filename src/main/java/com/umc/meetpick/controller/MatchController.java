@@ -3,15 +3,15 @@ package com.umc.meetpick.controller;
 import com.umc.meetpick.common.annotation.AuthUser;
 import com.umc.meetpick.common.response.ApiResponse;
 import com.umc.meetpick.dto.*;
-import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.MateType;
-import com.umc.meetpick.service.MatchingService;
+import com.umc.meetpick.service.matching.MatchingService;
 import com.umc.meetpick.service.request.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/matches") // URL 경로 설정
+@Slf4j
 public class MatchController {
 
     private final MatchingService matchingService;
@@ -51,11 +52,17 @@ public class MatchController {
     }
 
     @Operation(summary = "알람 목록 받아오기", description = "알람을 받아옵니다") // [변경 2]
-    @GetMapping("alarm")
-    public ApiResponse<List<AlarmResponseDto>> getAlarm(
-            @PathParam("mateType") MateType mateType, @AuthUser Long memberId)
+    @GetMapping("/alarm")
+    public ApiResponse<AlarmDto.AlarmPageResponseDto> getAlarm(@ModelAttribute AlarmDto.AlarmRequestDto alarmRequestDto, @AuthUser Long memberId)
     {
-        return ApiResponse.onSuccess(matchingService.getAlarms(memberId, mateType));
+
+        log.info(alarmRequestDto.getMateType());
+
+        Pageable pageable = alarmRequestDto.toPageable();
+
+        log.info(String.valueOf(pageable.getPageNumber()));
+
+        return ApiResponse.onSuccess(matchingService.getAlarms(alarmRequestDto.getMateType(), pageable, memberId));
     }
 
     @Operation(summary = "매칭이 완료된 리스트 받아오기", description = "매칭 완료된 리스트 받아옴") // [변경 2]

@@ -36,7 +36,7 @@ public class HomeController {
     // 작동 됨. 단, member Id가 어떻게 저장되냐에 따라 다르다
     @Operation(summary = "랜덤 유저 반환 API")
     @GetMapping("/random-user")
-    public ApiResponse<MemberResponseDTO> getRandomMember(@PathParam("MateType") String mateType) {
+    public ApiResponse<MemberResponseDTO> getRandomMember(@PathParam("mateType") String mateType) {
 
         log.info("GET - 랜덤 유저 반환 : {}", mateType);
 

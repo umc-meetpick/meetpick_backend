@@ -1,10 +1,6 @@
-package com.umc.meetpick.service;
+package com.umc.meetpick.service.matching;
 
-import com.umc.meetpick.dto.AlarmResponseDto;
-import com.umc.meetpick.dto.MatchRequestDto;
-import com.umc.meetpick.dto.MatchRequestListDto;
-import com.umc.meetpick.dto.MatchResponseDto;
-import com.umc.meetpick.entity.Member;
+import com.umc.meetpick.dto.*;
 import com.umc.meetpick.enums.MateType;
 import org.springframework.data.domain.Pageable;
 
@@ -15,7 +11,7 @@ public interface MatchingService {
 
     MatchRequestListDto getMatchRequests(Long memberId, Pageable pageable);
 
-    List<AlarmResponseDto> getAlarms(Long memberId, MateType mateType);
+    AlarmDto.AlarmPageResponseDto getAlarms(String mateType, Pageable pageable, Long memberId);
 
     List<MatchRequestDto> getCompletedMatches(Long memberId, MateType mateType);
 }

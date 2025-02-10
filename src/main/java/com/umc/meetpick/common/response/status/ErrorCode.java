@@ -32,6 +32,9 @@ public enum ErrorCode implements BaseErrorCode {
 
     INVALID_UNIVERSITY(HttpStatus.BAD_REQUEST, "UNIV4001" ,"대학교명 형식 오류: 예) xx대학교와 같이 입력하세요."),
 
+    // ENUM 관련
+    INVALID_MATE_TYPE(HttpStatus.BAD_REQUEST, "TYPE4000", "유효하지 않은 메이트 타입입니다")
+
 
     ;
 

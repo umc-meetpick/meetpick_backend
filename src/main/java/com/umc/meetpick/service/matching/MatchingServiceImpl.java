@@ -1,10 +1,7 @@
-package com.umc.meetpick.service;
+package com.umc.meetpick.service.matching;
 
 
-import com.umc.meetpick.dto.AlarmResponseDto;
-import com.umc.meetpick.dto.MatchRequestDto;
-import com.umc.meetpick.dto.MatchRequestListDto;
-import com.umc.meetpick.dto.MatchResponseDto;
+import com.umc.meetpick.dto.*;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
@@ -15,18 +12,23 @@ import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
+import com.umc.meetpick.service.home.factory.MemberQueryStrategyFactory;
+import com.umc.meetpick.service.home.strategy.MemberQueryStrategy;
+import com.umc.meetpick.service.matching.factory.AlarmQueryStrategyFactory;
+import com.umc.meetpick.service.matching.strategy.AlarmQueryStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.umc.meetpick.common.util.DateTimeUtil.getTime;
+import static com.umc.meetpick.service.matching.factory.MatchingDtoFactory.memberSecondProfileToAlarmDtoList;
 
 @Service
 @RequiredArgsConstructor
@@ -118,24 +120,16 @@ public class MatchingServiceImpl implements MatchingService {
 
     // TODO 디자인 패턴 적용 및 내용 수정
     @Override
-    public List<AlarmResponseDto> getAlarms(Long memberId, MateType mateType) {
+    public AlarmDto.AlarmPageResponseDto getAlarms(String mateType, Pageable pageable, Long memberId) {
 
+        MateType type = MateType.fromString(mateType);
         Member member = memberRepository.findMemberById(memberId);
 
-        // TODO 인덱싱 추가하기 & 예외처리 & pageable 처리 다르게 하기 (무한스크롤)
-        List<MemberSecondProfileMapping> memberSecondProfileMappings = memberMappingRepository.findAllByMemberSecondProfile_MemberOrderByCreatedAt(member, pageable).getContent();
+        AlarmQueryStrategyFactory factory = new AlarmQueryStrategyFactory(memberMappingRepository);
+        AlarmQueryStrategy strategy = factory.getStrategy(type);
+        Page<MemberSecondProfileMapping> memberProfile = strategy.getSecondProfilesByMateType(member, type, pageable);
 
-        return memberSecondProfileMappings.stream()
-                .map(mapping -> {
-                    MemberSecondProfile memberSecondProfile = mapping.getMemberSecondProfile();
-                    return AlarmResponseDto.builder()
-                            .mateType(memberSecondProfile.getMateType().getKoreanName())
-                            .content("새로운 알림을 확인해보세요!")
-                            .createdAt(getTime(mapping.getCreatedAt()))
-                            .mappingId(mapping.getId())
-                            .build();
-                })
-                .collect(Collectors.toList());
+        return memberSecondProfileToAlarmDtoList(memberProfile);
     }
 
     @Override
@@ -144,7 +138,7 @@ public class MatchingServiceImpl implements MatchingService {
 
         //TODO 완성된거만 뽑도록 바꾸기
 
-        return memberMappingRepository.findAllByMemberSecondProfile_MemberOrderByCreatedAt(member, pageable)
+        return memberMappingRepository.findAllByMemberSecondProfile_Member(member, pageable)
                 .getContent()
                 .stream()
                 .map(mapping -> {
@@ -165,33 +159,6 @@ public class MatchingServiceImpl implements MatchingService {
                             .build();
                 })
                 .collect(Collectors.toList());
-    }
-
-
-    private String getTime(LocalDateTime localDateTime) {
-        if (localDateTime == null) {
-            return "알 수 없음";
-        }
-
-        LocalDateTime now = LocalDateTime.now();
-        Duration duration = Duration.between(localDateTime, now);
-
-        long seconds = duration.getSeconds();
-        long minutes = seconds / 60;
-        long hours = minutes / 60;
-        long days = hours / 24;
-
-        if (seconds < 60) {
-            return seconds + "초 전";
-        } else if (minutes < 60) {
-            return minutes + "분 전";
-        } else if (hours < 24) {
-            return hours + "시간 전";
-        } else if (days < 7) {
-            return days + "일 전";
-        } else {
-            return localDateTime.toLocalDate().toString(); // "YYYY-MM-DD" 형식
-        }
     }
 
     private MatchResponseDto requestToMatchResponseDto(Member member, MemberSecondProfile memberSecondProfile){

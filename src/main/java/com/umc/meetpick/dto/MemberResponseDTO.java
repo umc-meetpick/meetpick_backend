@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberResponseDTO {
     long id;
+    String gender;
     String studentNumber;
     String major;
     String nickname;
