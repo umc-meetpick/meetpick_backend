@@ -9,6 +9,7 @@ import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.Hobby;
 import com.umc.meetpick.enums.MateType;
+import com.umc.meetpick.enums.SubjectType;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
@@ -218,72 +219,107 @@ public class MatchingServiceImpl implements MatchingService {
                 .build();
     }
 
-    @Override
-    public ProfileDetailListResponseDto getAllProfiles(Long memberId, MateType mateType, FilterRequestDTO filterRequest, Pageable pageable) {
-        Specification<MemberSecondProfile> spec = (root, query, builder) -> {
-            List<Predicate> predicates = new ArrayList<>();
 
-            // 기본 필터: mateType
-            predicates.add(builder.equal(root.get("mateType"), mateType));
 
-            // 선호 성별 필터
-            if (filterRequest.getGender() != null) {
-                predicates.add(builder.equal(root.get("gender"), filterRequest.getGender()));
-            }
+        @Override
+        public ProfileDetailListResponseDto getAllProfiles(Long memberId, MateType mateType, FilterRequestDTO filterRequest, Pageable pageable) {
+            Specification<MemberSecondProfile> spec = (root, query, builder) -> {
+                List<Predicate> predicates = new ArrayList<>();
 
-            // 학번 필터
-            if (filterRequest.getStudentNumber() != null) {
-                predicates.add(builder.equal(root.get("studentNumber"), filterRequest.getStudentNumber()));
-            }
+                // 기본 필터: mateType
+                predicates.add(builder.equal(root.get("mateType"), mateType));
 
-            // 교내 여부 필터
-            if (filterRequest.getIsSchool() != null) {
-                predicates.add(builder.equal(root.get("isSchool"), filterRequest.getIsSchool()));
-            }
+                // 공통 필터
+                // 1. 성별 필터
+                if (filterRequest.getGender() != null) {
+                    predicates.add(builder.equal(root.get("gender"), filterRequest.getGender()));
+                }
 
-            // MateType별 특수 필터
-            if (mateType == MateType.EXERCISE && filterRequest.getExerciseTypes() != null && !filterRequest.getExerciseTypes().isEmpty()) {
-                predicates.add(root.get("exerciseTypes").in(filterRequest.getExerciseTypes()));
-            } else if (mateType == MateType.MEAL && filterRequest.getFoodTypes() != null && !filterRequest.getFoodTypes().isEmpty()) {
-                predicates.add(root.get("foodTypes").in(filterRequest.getFoodTypes()));
-            }
+                // 2. 학번 필터
+                if (filterRequest.getStudentNumber() != null) {
+                    predicates.add(builder.equal(root.get("studentNumber"), filterRequest.getStudentNumber()));
+                }
 
-            return builder.and(predicates.toArray(new Predicate[0]));
-        };
+                // 3. 나이 필터
+                if (filterRequest.getMinAge() != null) {
+                    predicates.add(builder.greaterThanOrEqualTo(root.get("minAge"), filterRequest.getMinAge()));
+                }
+                if (filterRequest.getMaxAge() != null) {
+                    predicates.add(builder.lessThanOrEqualTo(root.get("maxAge"), filterRequest.getMaxAge()));
+                }
 
-        // 필터링된 데이터 조회
-        Page<MemberSecondProfile> profiles = memberSecondProfileRepository.findAll(spec, pageable);
+                // 4. 요일/시간 필터
+                if (filterRequest.getAvailableDays() != null && !filterRequest.getAvailableDays().isEmpty()) {
+                    predicates.add(root.join("memberSecondProfileTimes").get("week").in(filterRequest.getAvailableDays()));
+                }
+                if (filterRequest.getAvailableTimes() != null && !filterRequest.getAvailableTimes().isEmpty()) {
+                    predicates.add(root.join("memberSecondProfileTimes").get("times").in(filterRequest.getAvailableTimes()));
+                }
 
-        // 디버깅을 위한 로그 추가
-        profiles.getContent().forEach(profile -> {
-            System.out.println("=== MemberSecondProfile 데이터 ===");
-            System.out.println("ID: " + profile.getId());
-            System.out.println("선호 성별: " + profile.getGender());
-            System.out.println("선호 나이: " + profile.getMinAge() + "~" + profile.getMaxAge());
-            System.out.println("선호 학번: " + profile.getStudentNumber());
-            System.out.println("교내/교외: " + profile.getIsSchool());
-            System.out.println("운동 타입: " + profile.getExerciseTypes());
-            System.out.println("음식 타입: " + profile.getFoodTypes());
-            System.out.println("========================");
-        });
+                // MateType별 특수 필터
+                switch (mateType) {
+                    case STUDY:
+                        if (filterRequest.getSubjectType() != null) {
+                            predicates.add(builder.equal(root.get("subjectType"), filterRequest.getSubjectType()));
+                        }
+                        if (filterRequest.getSubjectType() == SubjectType.CERTIFICATE
+                                && filterRequest.getCertificateType() != null) {
+                            predicates.add(builder.equal(root.get("certificateType"), filterRequest.getCertificateType()));
+                        }
+                        break;
 
-        // DTO 변환
-        List<ProfileDetailResponseDto> profileDtos = profiles.getContent().stream()
-                .map(secondProfile -> {
-                    Member profileMember = secondProfile.getMember();
-                    boolean isLiked = memberLikesRepository
-                            .existsByMemberAndMemberSecondProfile(profileMember, secondProfile);
+                    case EXERCISE:
+                        if (filterRequest.getExerciseTypes() != null && !filterRequest.getExerciseTypes().isEmpty()) {
+                            predicates.add(root.get("exerciseTypes").in(filterRequest.getExerciseTypes()));
+                        }
+                        break;
 
-                    return ProfileDetailResponseDto.from(profileMember, secondProfile, isLiked);
-                })
-                .collect(Collectors.toList());
+                    case MEAL:
+                        if (filterRequest.getFoodTypes() != null && !filterRequest.getFoodTypes().isEmpty()) {
+                            predicates.add(root.get("foodTypes").in(filterRequest.getFoodTypes()));
+                        }
+                        break;
+                }
 
-        return ProfileDetailListResponseDto.from(
-                profileDtos,
-                profiles.getTotalPages(),
-                profiles.getTotalElements(),
-                profiles.hasNext()
-        );
-    }
+                // 최신순 정렬 추가
+                query.orderBy(builder.desc(root.get("createdAt")));
+
+                return builder.and(predicates.toArray(new Predicate[0]));
+            };
+
+            // 필터링된 데이터 조회
+            Page<MemberSecondProfile> profiles = memberSecondProfileRepository.findAll(spec, pageable);
+
+            // 디버깅을 위한 로그 추가
+            profiles.getContent().forEach(profile -> {
+                System.out.println("=== MemberSecondProfile 데이터 ===");
+                System.out.println("ID: " + profile.getId());
+                System.out.println("선호 성별: " + profile.getGender());
+                System.out.println("선호 나이: " + profile.getMinAge() + "~" + profile.getMaxAge());
+                System.out.println("선호 학번: " + profile.getStudentNumber());
+                System.out.println("교내/교외: " + profile.getIsSchool());
+                System.out.println("운동 타입: " + profile.getExerciseTypes());
+                System.out.println("음식 타입: " + profile.getFoodTypes());
+                System.out.println("========================");
+            });
+
+
+            // DTO 변환
+            List<ProfileDetailResponseDto> profileDtos = profiles.getContent().stream()
+                    .map(secondProfile -> {
+                        Member profileMember = secondProfile.getMember();
+                        boolean isLiked = memberLikesRepository
+                                .existsByMemberAndMemberSecondProfile(profileMember, secondProfile);
+                        return ProfileDetailResponseDto.from(profileMember, secondProfile, isLiked);
+                    })
+                    .collect(Collectors.toList());
+
+            return ProfileDetailListResponseDto.from(
+                    profileDtos,
+                    profiles.getTotalPages(),
+                    profiles.getTotalElements(),
+                    profiles.hasNext()
+            );
+        }
 
 }
