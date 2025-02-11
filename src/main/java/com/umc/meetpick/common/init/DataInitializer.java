@@ -160,6 +160,7 @@ public class DataInitializer implements CommandLineRunner {
                         .contactInfo("sportsking@example.com")
                         .build());
 
+
                 Member member3 = memberRepository.save(Member.builder()
                         .name("철수")
                         .gender(Gender.MALE)
@@ -599,6 +600,30 @@ public class DataInitializer implements CommandLineRunner {
 
                 memberMappingRepository.save(mapping11);
                 memberMappingRepository.save(mapping12);
+
+                // 깡통 유저 위한 새로운 프로필 생성
+                MemberProfile testProfile = memberProfileRepository.save(MemberProfile.builder()
+                        .nickname("테스트유저")
+                        .profileImage("https://example.com/test.jpg")
+                        .studentNumber(31)
+                        .subMajor(subMajorRepository.findByNameOrderByName("경영학과"))
+                        .MBTI(MBTI.ISTJ)
+                        .hobbies(Set.of(Hobby.READING))
+                        .contact(ContactType.PHONE_NUMBER)
+                        .contactInfo("testuser@example.com")
+                        .build());
+
+                Member member20 = memberRepository.save(Member.builder()
+                        .name("테스트")
+                        .gender(Gender.MALE)
+                        .birthday(new java.util.Date(1998 - 1900, Calendar.JUNE, 15))
+                        .university(University.SUNGSHIN_WOMANS_UNIVERSITY)
+                        .socialType(SocialType.KAKAO)
+                        .socialId(999999999L)  // 유니크한 값
+                        .status(MemberStatus.ACTIVE)
+                        .role(MemberRole.MEMBER)
+                        .memberProfile(testProfile)  // 새로운 프로필 사용
+                        .build());
 
             }
 
