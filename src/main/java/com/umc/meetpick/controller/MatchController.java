@@ -31,7 +31,7 @@ public class MatchController {
     // 작동 됨
     @Operation(summary = "매칭 요청 목록 조회", description = "사용자에게 온 매칭 요청 목록을 페이징하여 조회합니다.") // [변경 2]
     @GetMapping
-    public ApiResponse<MatchRequestListDto> getMatchRequests(@ModelAttribute PageRequestDto pageRequestDto, @AuthUser Long memberId) {
+    public ApiResponse<MatchPageDto> getMatchRequests(@ModelAttribute PageRequestDto pageRequestDto, @AuthUser Long memberId) {
 
         Pageable pageable = pageRequestDto.toPageable();
 

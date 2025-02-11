@@ -318,8 +318,16 @@ public class DataInitializer implements CommandLineRunner {
                         .isAccepted(true)
                         .build());
 
+                MemberSecondProfileMapping mapping6_1 = memberMappingRepository.save(MemberSecondProfileMapping.builder()
+                        .member(member6)
+                        .memberSecondProfile(secondProfile3)
+                        .status(false)
+                        .isAccepted(false)
+                        .build());
+
                 memberMappingRepository.save(mapping5);
                 memberMappingRepository.save(mapping6);
+                memberMappingRepository.save(mapping6_1);
 
 // ===== Pair 3 =====
                 MemberProfile profile7 = memberProfileRepository.save(MemberProfile.builder()

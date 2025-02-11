@@ -15,7 +15,9 @@ import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
 import com.umc.meetpick.service.home.factory.MemberQueryStrategyFactory;
 import com.umc.meetpick.service.home.strategy.MemberQueryStrategy;
 import com.umc.meetpick.service.matching.factory.AlarmQueryStrategyFactory;
+import com.umc.meetpick.service.matching.factory.MatchQueryStrategyFactory;
 import com.umc.meetpick.service.matching.strategy.AlarmQueryStrategy;
+import com.umc.meetpick.service.matching.strategy.MatchQueryStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +31,7 @@ import java.util.stream.Collectors;
 
 import static com.umc.meetpick.common.util.DateTimeUtil.getTime;
 import static com.umc.meetpick.service.matching.factory.MatchingDtoFactory.memberSecondProfileToAlarmDtoList;
+import static com.umc.meetpick.service.matching.factory.MatchingDtoFactory.memberSecondProfileToMatchPageDto;
 
 @Service
 @RequiredArgsConstructor
@@ -94,24 +97,17 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     @Override
-    public MatchRequestListDto getMatchRequests(Long memberId, String mateType, Pageable pageable) {
+    public MatchPageDto getMatchRequests(Long memberId, String mateType, Pageable pageable) {
 
-        // 1. 페이징된 Request 엔티티 조회
-        // TODO 만약 요청이 하나도 없는 경우 예외 처리하기
-        Page<MemberSecondProfile> requests = memberSecondProfileRepository.findMemberSecondProfileByMemberId(memberId, pageable);
+        MateType type = MateType.fromString(mateType);
+        Member member = memberRepository.findMemberById(memberId);
 
-        // 2. Request 엔티티를 DTO로 변환
-        List<MatchRequestDto> matchRequests = requests.getContent().stream()
-                .map(MatchRequestDto::from)
-                .collect(Collectors.toList());
+        MatchQueryStrategyFactory factory = new MatchQueryStrategyFactory(memberMappingRepository);
+        MatchQueryStrategy strategy = factory.getStrategy(type);
+        Page<MemberSecondProfileMapping> memberProfile = strategy.getMemberProfiles(member, type, pageable);
 
         // 3. 최종 응답 DTO 생성
-        return MatchRequestListDto.builder()
-                .requests(matchRequests)
-                .totalPages(requests.getTotalPages())
-                .totalElements(requests.getTotalElements())
-                .hasNext(requests.hasNext())
-                .build();
+        return memberSecondProfileToMatchPageDto(memberProfile);
     }
 
     private List<MemberSecondProfile> getMatchingType(MateType mateType){
@@ -151,7 +147,7 @@ public class MatchingServiceImpl implements MatchingService {
                     return MatchRequestDto.builder()
                             .memberProfileId(memberSecondProfile.getId())
                             .writerId(memberSecondProfile.getMember().getId())
-                            .studentNumber(memberSecondProfile.getMember().getMemberProfile().getStudentNumber())
+                            .studentNumber(memberSecondProfile.getMember().getMemberProfile().getStudentNumber() + "학번")
                             .major(memberSecondProfile.getMember().getMemberProfile().getSubMajor().getName())
                             .age(memberSecondProfile.getMember().getAge())
                             .mateType(memberSecondProfile.getMateType().getKoreanName())
