@@ -8,5 +8,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface MatchQueryStrategy {
-    Page<MemberSecondProfileMapping> getMemberProfiles(Member member, MateType mateType, Pageable pageable);
+    Page<MemberSecondProfileMapping> getMemberProfiles(Member member, MateType mateType, Pageable pageable, Boolean isAccepted);
 }

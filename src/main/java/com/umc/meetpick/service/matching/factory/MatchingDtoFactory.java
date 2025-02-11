@@ -26,6 +26,7 @@ public class MatchingDtoFactory {
                 .mateType(memberSecondProfile.getMateType().getKoreanName())
                 .content("새로운 알림을 확인해보세요!")
                 .createdAt(getTime(mapping.getCreatedAt()))
+                .memberSecondProfileId(memberSecondProfile.getId())
                 .mappingId(mapping.getId())
                 .build();
     }
@@ -46,18 +47,20 @@ public class MatchingDtoFactory {
 
 
     // TODo 이름 수정하기
-    public static MatchRequestDto memberSecondProfileToMatchRequestDto(Member member) {
+    public static MatchRequestDto memberSecondProfileToMatchRequestDto(MemberSecondProfileMapping mapping) {
 
+        //TODO 고치기
+        Member member = mapping.getMember();
         MemberProfile memberProfile = member.getMemberProfile();
-        MemberSecondProfile memberSecondProfile = member.getMemberSecondProfile();
+        MemberSecondProfile memberSecondProfile = mapping.getMemberSecondProfile();
 
         // 날짜 변환
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        String formattedDate = memberSecondProfile.getCreatedAt().format(formatter);
+        String formattedDate = memberSecondProfile.getModifiedAt().format(formatter);
 
         return MatchRequestDto.builder()
-                .memberProfileId(memberSecondProfile.getId())
-                .writerId(member.getId())
+                .mappingId(mapping.getId())
+                .memberSecondProfileId(memberSecondProfile.getId())
                 .studentNumber(memberProfile.getStudentNumber() + "학번")
                 .major(memberProfile.getSubMajor().getMajor().getName())
                 .age(member.getAge())
@@ -70,7 +73,7 @@ public class MatchingDtoFactory {
     public static MatchPageDto memberSecondProfileToMatchPageDto(Page<MemberSecondProfileMapping> mappingList) {
 
         List<MatchRequestDto> matchRequestDtoList = mappingList.stream()
-                .map(mapping -> memberSecondProfileToMatchRequestDto(mapping.getMember()))
+                .map(MatchingDtoFactory::memberSecondProfileToMatchRequestDto)
                 .toList();
 
         return   MatchPageDto.builder()

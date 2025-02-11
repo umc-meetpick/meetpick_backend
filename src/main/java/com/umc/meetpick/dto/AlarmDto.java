@@ -32,6 +32,7 @@ public class AlarmDto {
         String mateType;
         String content;
         String createdAt;
+        Long memberSecondProfileId;
         Long mappingId;
     }
 

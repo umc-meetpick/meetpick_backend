@@ -2,15 +2,19 @@ package com.umc.meetpick.controller;
 
 import com.umc.meetpick.common.annotation.AuthUser;
 import com.umc.meetpick.common.response.ApiResponse;
+import com.umc.meetpick.dto.ContactResponseDto;
 import com.umc.meetpick.dto.MemberDetailResponseDto;
 import com.umc.meetpick.dto.MyProfileDto;
 import com.umc.meetpick.dto.RegisterDTO;
+import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Tag(name = "멤버 관련 API", description = "멤버 관련 API입니다")
 @RequiredArgsConstructor
@@ -23,7 +27,7 @@ public class MemberController {
 
     @Operation(summary = "사용자 상세 프로필 보기", description = "사용자 상세 프로필 보기") // [변경 2]
     @GetMapping("detail/{memberId}")
-    public ApiResponse<MemberDetailResponseDto> getMemberDetail(@AuthUser Long memberId){
+    public ApiResponse<Map<String, Object>> getMemberDetail(@PathVariable("memberId") Long memberId){
         return ApiResponse.onSuccess(memberService.getMemberDetail(memberId));
     }
 
@@ -70,5 +74,13 @@ public class MemberController {
         log.info("Controller : getMyProfile 호출 {}", memberId);
 
         return ApiResponse.onSuccess(memberService.getMyProfile(memberId));  // ProfileService로 호출
+    }
+
+    // 이게 맞나 생각해보니
+    @Operation(summary = "멤버 연락처 정보 반환")
+    @GetMapping("contact-info/{mappingId}")
+    public ApiResponse<ContactResponseDto> getContactInfo(@AuthUser Long memberId, @PathVariable Long mappingId) {
+
+        return ApiResponse.onSuccess(memberService.getContactInfo(memberId, mappingId));  // ProfileService로 호출
     }
 }

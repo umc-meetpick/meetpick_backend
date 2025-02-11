@@ -104,7 +104,7 @@ public class MatchingServiceImpl implements MatchingService {
 
         MatchQueryStrategyFactory factory = new MatchQueryStrategyFactory(memberMappingRepository);
         MatchQueryStrategy strategy = factory.getStrategy(type);
-        Page<MemberSecondProfileMapping> memberProfile = strategy.getMemberProfiles(member, type, pageable);
+        Page<MemberSecondProfileMapping> memberProfile = strategy.getMemberProfiles(member, type, pageable, false);
 
         // 3. 최종 응답 DTO 생성
         return memberSecondProfileToMatchPageDto(memberProfile);
@@ -129,32 +129,17 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     @Override
-    public List<MatchRequestDto> getCompletedMatches(Long memberId, MateType mateType) {
+    public MatchPageDto getCompletedMatches(Long memberId, String mateType, Pageable pageable) {
+
+        MateType type = MateType.fromString(mateType);
         Member member = memberRepository.findMemberById(memberId);
 
-        //TODO 완성된거만 뽑도록 바꾸기
+        MatchQueryStrategyFactory factory = new MatchQueryStrategyFactory(memberMappingRepository);
+        MatchQueryStrategy strategy = factory.getStrategy(type);
+        Page<MemberSecondProfileMapping> memberProfile = strategy.getMemberProfiles(member, type, pageable, true);
 
-        return memberMappingRepository.findAllByMemberSecondProfile_Member(member, pageable)
-                .getContent()
-                .stream()
-                .map(mapping -> {
-                    MemberSecondProfile memberSecondProfile = mapping.getMemberSecondProfile();
-
-                    // 날짜 변환
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    String formattedDate = memberSecondProfile.getCreatedAt().format(formatter);
-
-                    return MatchRequestDto.builder()
-                            .memberProfileId(memberSecondProfile.getId())
-                            .writerId(memberSecondProfile.getMember().getId())
-                            .studentNumber(memberSecondProfile.getMember().getMemberProfile().getStudentNumber() + "학번")
-                            .major(memberSecondProfile.getMember().getMemberProfile().getSubMajor().getName())
-                            .age(memberSecondProfile.getMember().getAge())
-                            .mateType(memberSecondProfile.getMateType().getKoreanName())
-                            .createdAt(formattedDate)
-                            .build();
-                })
-                .collect(Collectors.toList());
+        // 3. 최종 응답 DTO 생성
+        return memberSecondProfileToMatchPageDto(memberProfile);
     }
 
     private MatchResponseDto requestToMatchResponseDto(Member member, MemberSecondProfile memberSecondProfile){

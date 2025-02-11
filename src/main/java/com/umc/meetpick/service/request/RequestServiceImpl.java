@@ -110,7 +110,7 @@ public class RequestServiceImpl implements RequestService {
                 .comment(newRequest.getComment())
                 .mateType(newRequest.getType())
                 .foodTypes(foodTypes)
-                .exerciseTypes(exerciseTypes)
+                //.exerciseType(exerciseTypes)
                 .isSchool(newRequest.getIsSchool())
                 .build();
 

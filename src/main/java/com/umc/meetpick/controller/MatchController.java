@@ -62,10 +62,13 @@ public class MatchController {
 
     @Operation(summary = "매칭이 완료된 리스트 받아오기", description = "매칭 완료된 리스트 받아옴") // [변경 2]
     @GetMapping("completed-match")
-    public ApiResponse<List<MatchRequestDto>> getCompletedMatch(
-            @PathParam("mateType") MateType mateType, @AuthUser Long memberId)
+    public ApiResponse<MatchPageDto> getCompletedMatch(
+            @ModelAttribute PageRequestDto pageRequestDto, @AuthUser Long memberId)
     {
-        return ApiResponse.onSuccess(matchingService.getCompletedMatches(memberId, mateType));
+
+        Pageable pageable = pageRequestDto.toPageable();
+
+        return ApiResponse.onSuccess(matchingService.getCompletedMatches(memberId, pageRequestDto.getMateType(), pageable));
     }
 
     @Operation(summary = "찜한 목록 가져오기")

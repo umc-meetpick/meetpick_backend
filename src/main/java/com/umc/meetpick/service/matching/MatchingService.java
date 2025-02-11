@@ -13,5 +13,5 @@ public interface MatchingService {
 
     AlarmDto.AlarmPageResponseDto getAlarms(String mateType, Pageable pageable, Long memberId);
 
-    List<MatchRequestDto> getCompletedMatches(Long memberId, MateType mateType);
+    MatchPageDto getCompletedMatches(Long memberId, String mateType, Pageable pageable);
 }

@@ -1,11 +1,19 @@
 package com.umc.meetpick.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Week {
-    MON,
-    TUE,
-    WED,
-    THRU,
-    FRI;
+    MON ("월"),
+    TUE ("화"),
+    WED ("수"),
+    THRU ("목"),
+    FRI ("금");
+
+    Week(String koreanName) {
+        this.koreanName = koreanName;
+    }
+
     public static Week fromString(String week) {
         switch (week) {
             case "월":
@@ -22,5 +30,7 @@ public enum Week {
                 throw new IllegalArgumentException("week 오류");
         }
     }
+
+    private final String koreanName;
 }
 

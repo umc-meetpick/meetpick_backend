@@ -1,12 +1,16 @@
 package com.umc.meetpick.service.member;
 
+import com.umc.meetpick.dto.ContactResponseDto;
 import com.umc.meetpick.dto.MemberDetailResponseDto;
 import com.umc.meetpick.dto.MyProfileDto;
 import com.umc.meetpick.dto.RegisterDTO;
 
+import java.util.Map;
+
 public interface MemberService {
 
-    MemberDetailResponseDto getMemberDetail(Long memberId);
+    // TODO 뜯어 고치기
+    Map<String, Object> getMemberDetail(Long memberId);
 
     RegisterDTO.SignupSuccessDTO saveMember(Long memberId, RegisterDTO.SignUpDTO signUpDTO);
 
@@ -19,4 +23,6 @@ public interface MemberService {
     String nickDuplicate(Long memberId, String nickName);
 
     MyProfileDto getMyProfile(Long memberId);
+
+    ContactResponseDto getContactInfo(Long memberId, Long mappingId);
 }
