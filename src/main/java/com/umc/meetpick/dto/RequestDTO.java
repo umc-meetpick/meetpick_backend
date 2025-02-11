@@ -34,7 +34,7 @@ public class RequestDTO {
         private String comment;
         private String exerciseTypes;
         private Boolean isSchool;
-        private String food;
+        private List<String> food;
         private MateType type;
     }
 
