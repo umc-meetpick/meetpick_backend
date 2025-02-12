@@ -20,10 +20,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.umc.meetpick.enums.StudentNumber.*;
@@ -60,7 +57,7 @@ public class RequestServiceImpl implements RequestService {
             throw new IllegalArgumentException("이미 요청이 존재");
         }
 
-        // 동일 작성자인 경우
+         //동일 작성자인 경우
         if (memberSecondProfileRepository.existsByMemberId(writer.getId())){
             throw new IllegalArgumentException("하나의 요청만 가능합니다.");
         }
@@ -83,17 +80,21 @@ public class RequestServiceImpl implements RequestService {
         // studentNumber 변환 -> 프론트에서 받은 string을 enum으로
         StudentNumber studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
 
-        // 운동 타입 변환
-        Set<ExerciseType> exerciseTypes = Arrays.stream(newRequest.getExerciseTypes().split(","))
-                .map(String::trim)  // 앞뒤 공백 제거
-                .map(ExerciseType::fromString) // ExerciseType으로 변환
-                .collect(Collectors.toSet());
+        // 운동 타입 변환 (nullable 처리)
+        Set<ExerciseType> exerciseTypes = Optional.ofNullable(newRequest.getExerciseTypes())
+                .map(types -> Arrays.stream(types.split(","))
+                        .map(String::trim)
+                        .map(ExerciseType::fromString)
+                        .collect(Collectors.toSet()))
+                .orElse(Collections.emptySet());
 
-        // 음식 타입 변환
-        Set<FoodType> foodTypes = Arrays.stream(newRequest.getFood().split(","))
-                .map(String::trim)
+        // 음식 타입 변환 (nullable 처리)
+        Set<FoodType> foodTypes = Optional.ofNullable(newRequest.getFood())
+                .orElse(Collections.emptyList())  // food가 null이면 빈 리스트 처리
+                .stream()
                 .map(FoodType::fromString)
                 .collect(Collectors.toSet());
+
 
         // 새로운 MemberSecondProfile 생성
         MemberSecondProfile newMemberSecondProfile = MemberSecondProfile.builder()
@@ -116,17 +117,15 @@ public class RequestServiceImpl implements RequestService {
 
         MemberSecondProfile savedProfile = memberSecondProfileRepository.save(newMemberSecondProfile);
 
-        // membersecondprofiletimesd dto를 entity로 변환
+        // memberSecondProfileTimes 변환 및 저장
         List<MemberSecondProfileTimes> timesList = newRequest.getMemberSecondProfileTimes().stream()
-                .map(dto -> {
-                    Week weekEnum = Week.fromString(dto.getWeek()); // 각 DTO의 week 변환
-                    return MemberSecondProfileTimes.builder()
-                            .week(weekEnum) // 변환된 Week enum 저장
-                            .times(dto.getTimes()) // times 그대로 매핑
-                            .memberSecondProfile(savedProfile) // 프로필 연결
-                            .build();
-                })
+                .map(dto -> MemberSecondProfileTimes.builder()
+                        .week(Week.fromString(dto.getWeek()))  // ✅ week 변환
+                        .times(dto.getTimes())
+                        .memberSecondProfile(savedProfile)
+                        .build())
                 .toList();
+
 
         memberSecondProfileTimesRepository.saveAll(timesList);
 
@@ -220,7 +219,7 @@ public class RequestServiceImpl implements RequestService {
         String joinMemberMBTI = joinMemberProfile.getMBTI().name();
         String requestMBTI = request.getMbti();
         for (int i = 0; i < 4; i++){
-            if(!(requestMBTI.charAt(i) == joinMemberMBTI.charAt(i)) && !(requestMBTI.charAt(i) == 'X')){
+            if(!(requestMBTI.charAt(i) == joinMemberMBTI.charAt(i)) && !(requestMBTI.charAt(i) == 'x')){
                 throw new IllegalArgumentException("성격 조건 안 맞음");
             }
         }
