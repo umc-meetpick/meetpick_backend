@@ -30,7 +30,7 @@ public class MatchController {
 
     // 작동 됨
     @Operation(summary = "매칭 요청 목록 조회", description = "사용자에게 온 매칭 요청 목록을 페이징하여 조회합니다.") // [변경 2]
-    @GetMapping
+    @GetMapping("/get-matches")
     public ApiResponse<MatchPageDto> getMatchRequests(@ModelAttribute PageRequestDto pageRequestDto, @AuthUser Long memberId) {
 
         Pageable pageable = pageRequestDto.toPageable();
@@ -39,7 +39,7 @@ public class MatchController {
     }
 
     @Operation(summary = "추천 매칭 목록 조회", description = "사용자에게 적절한 메이트를 추천해줍니다") // [변경 2]
-    @GetMapping("recommendation")
+    @GetMapping("/recommendation")
     public ApiResponse<List<MatchResponseDto>> getRecommendation(
             @PathParam("mateType") MateType mateType, @AuthUser Long memberId)
     {
@@ -61,7 +61,7 @@ public class MatchController {
     }
 
     @Operation(summary = "매칭이 완료된 리스트 받아오기", description = "매칭 완료된 리스트 받아옴") // [변경 2]
-    @GetMapping("completed-match")
+    @GetMapping("/completed-match")
     public ApiResponse<MatchPageDto> getCompletedMatch(
             @ModelAttribute PageRequestDto pageRequestDto, @AuthUser Long memberId)
     {
