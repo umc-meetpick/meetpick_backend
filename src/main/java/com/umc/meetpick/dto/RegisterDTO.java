@@ -4,7 +4,12 @@ import com.umc.meetpick.enums.ContactType;
 import com.umc.meetpick.enums.Gender;
 import com.umc.meetpick.enums.Hobby;
 import com.umc.meetpick.enums.MBTI;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -16,8 +21,16 @@ public class RegisterDTO {
     @Setter
     @Builder
     public static class SignUpDTO {
+
+        @Size(min = 1, max = 4)
         private String name;
-        private Gender gender;
+
+        @Pattern(regexp = "남성|여성", message = "성별은 '남성' 또는 '여성'만 가능합니다.")
+        private String gender;
+
+        @NotNull(message = "생년월일은 필수 입력 값입니다.")
+        @Past(message = "생년월일은 과거 날짜만 가능합니다.")
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
         private Date birthday;
     }
 

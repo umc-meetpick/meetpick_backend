@@ -25,12 +25,16 @@ public enum ErrorCode implements BaseErrorCode {
 
     MEMBER_SIGNUP_ERROR(HttpStatus.BAD_REQUEST, "SIGNUP4001", "회원가입 유효성 검사 실패"),
     EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "SIGNUP4002", "이미 존재하는 이메일입니다."),
+    EMAIL_NOT_VERIFIED(HttpStatus.BAD_REQUEST, "SIGNUP4003", "이메일 인증을 하지 않은 유저입니다."),
 
     POST_NOTFOUND(HttpStatus.BAD_REQUEST, "POST4004", "게시물을 찾을 수 없습니다."),
 
     UNSIGNED(HttpStatus.BAD_REQUEST, "POST4001", "로그인 되어 있지 않습니다."),
 
     INVALID_UNIVERSITY(HttpStatus.BAD_REQUEST, "UNIV4001" ,"대학교명 형식 오류: 예) xx대학교와 같이 입력하세요."),
+
+    //enum 관련
+    INVALID_ENUM(HttpStatus.BAD_REQUEST, "ENUM4001" ,"존재하지 않는 ENUM입니다.")
 
 
     ;

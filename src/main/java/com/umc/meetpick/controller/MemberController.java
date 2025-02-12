@@ -3,15 +3,11 @@ package com.umc.meetpick.controller;
 import com.umc.meetpick.common.annotation.AuthUser;
 import com.umc.meetpick.common.response.ApiResponse;
 import com.umc.meetpick.dto.MemberDetailResponseDto;
-import com.umc.meetpick.dto.MemberResponseDTO;
 import com.umc.meetpick.dto.RegisterDTO;
-import com.umc.meetpick.entity.Member;
-import com.umc.meetpick.enums.MateType;
-import com.umc.meetpick.repository.member.MemberRepository;
-import com.umc.meetpick.service.MemberService;
+import com.umc.meetpick.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.websocket.server.PathParam;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +31,7 @@ public class MemberController {
     // TODO memberId에서 member로 AuthUser 바꾸기
     @Operation(summary = "회원 기본 정보 저장")
     @PostMapping("/signup")
-    public ApiResponse<RegisterDTO.SignupSuccessDTO> saveMember(@AuthUser Long memberId, @RequestBody RegisterDTO.SignUpDTO signUpDTO) {
+    public ApiResponse<RegisterDTO.SignupSuccessDTO> saveMember(@AuthUser Long memberId, @Valid @RequestBody RegisterDTO.SignUpDTO signUpDTO) {
         return ApiResponse.onSuccess(memberService.saveMember(memberId, signUpDTO));
     }
 
