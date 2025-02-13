@@ -21,13 +21,14 @@ public interface MemberSecondProfileRepository extends JpaRepository<MemberSecon
 
     Page<MemberSecondProfile> findMemberSecondProfilesByMateType(@Param("memberId") MateType mateType, Pageable pageable);
 
+    Optional<MemberSecondProfile> findFirstByMateTypeOrderByCreatedAtDesc(@Param("mateType") MateType mateType);
+
     @Query("SELECT m FROM MemberSecondProfile m " +
             "JOIN MemberSecondProfileMapping mm ON m = mm.memberSecondProfile " +
             "WHERE m.member.id = :memberId " +
             "ORDER BY m.createdAt DESC")
     Page<MemberSecondProfile> findMemberSecondProfileByMemberId(@Param("memberId") Long memberId, Pageable pageable);
 
-    Optional<MemberSecondProfile> findFirstByMateTypeOrderByCreatedAtDesc(@Param("mateType") MateType mateType);
 
     Optional<MemberSecondProfile> findFirstBy();
 

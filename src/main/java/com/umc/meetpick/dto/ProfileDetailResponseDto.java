@@ -48,7 +48,7 @@ public class ProfileDetailResponseDto {
         private StudentNumber studentNumber;   // From MemberSecondProfile.studentNumber
 
         // MateType
-        private Set<ExerciseType> exerciseTypes;  // From MemberSecondProfile.exerciseTypes (EXERCISE 타입일 때만)
+        private String exerciseType;  // From MemberSecondProfile.exerciseTypes (EXERCISE 타입일 때만)
         private Set<FoodType> foodTypes;          // From MemberSecondProfile.foodTypes (MEAL 타입일 때만)
 
         // STUDY 타입 필터링용
@@ -89,8 +89,8 @@ public class ProfileDetailResponseDto {
                 .minAge(secondProfile.getMinAge())                      // 선호 나이 범위
                 .maxAge(secondProfile.getMaxAge())
                 .studentNumber(secondProfile.getStudentNumber())        // 선호 학번
-                .exerciseTypes(secondProfile.getMateType() == MateType.EXERCISE ?
-                        secondProfile.getExerciseTypes() : null)
+                .exerciseType(secondProfile.getMateType() == MateType.EXERCISE ?
+                        secondProfile.getExerciseType().getDisplayName() : null)
                 .foodTypes(secondProfile.getMateType() == MateType.MEAL ?
                         secondProfile.getFoodTypes() : null)
                 .isSchool(secondProfile.getIsSchool())                 // 교내/교외 여부 추가

@@ -23,7 +23,7 @@ public class JwtUtil {
 
     // TODO refresh 토큰 사용하기
     private final SecretKey secretKey;
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24시간
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 24; // 24 * 24 시간 // TODO 배포 시 변경
     private static final Map<Long, String> tokenCache = new ConcurrentHashMap<>(); // ✅ 토큰 캐시 추가
 
     public JwtUtil(@Value("${spring.jwt.secret}") String secret) {

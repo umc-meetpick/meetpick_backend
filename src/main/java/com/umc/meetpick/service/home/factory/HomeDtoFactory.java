@@ -16,6 +16,7 @@ public class HomeDtoFactory {
                 .id(member.getId())
                 .studentNumber(memberProfile.getStudentNumber() + "학번")
                 .major(memberProfile.getSubMajor().getMajor().getName())
+                .gender(member.getGender().getKoreanName())
                 .nickname(memberProfile.getNickname())
                 .university(member.getUniversity().getKoreanName())
                 .userImage(memberProfile.getProfileImage())
