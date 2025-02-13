@@ -7,7 +7,7 @@ import com.umc.meetpick.enums.MateType;
 import java.util.List;
 
 public interface RequestService {
-    RequestDTO.NewRequestDTO createNewRequest(RequestDTO.NewRequestDTO request);
+    RequestDTO.NewRequestDTO createNewRequest(Long memberId ,RequestDTO.NewRequestDTO request);
     RequestDTO.JoinRequestDTO createJoinRequest(RequestDTO.JoinRequestDTO request);
     void deleteRequest(Long requestId, Long userId);
     RequestDTO.LikeRequestDTO likeRequest(Long requestId, Long userId);

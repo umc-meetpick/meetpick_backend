@@ -39,10 +39,10 @@ public class RequestServiceImpl implements RequestService {
     private final MemberSecondProfileSubMajorRepository memberSecondProfileSubMajorRepository;
 
     @Override
-    public RequestDTO.NewRequestDTO createNewRequest(RequestDTO.NewRequestDTO newRequest) {
+    public RequestDTO.NewRequestDTO createNewRequest(Long memberId, RequestDTO.NewRequestDTO newRequest) {
         // 작성자가 실제 존재하는지 검증
-        Member writer = memberRepository.findById(newRequest.getWriterId())
-                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다." + newRequest.getWriterId()));
+        Member writer = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다." + memberId));
         // 프론트로부터 받은 전공이 전공 테이블에 존재하는지 검증
 //        Major major = majorRepository.findByName(newRequest.getMajorName())
 //                .orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getMajorName()));
@@ -58,9 +58,9 @@ public class RequestServiceImpl implements RequestService {
         }
 
          //동일 작성자인 경우
-        if (memberSecondProfileRepository.existsByMemberId(writer.getId())){
-            throw new IllegalArgumentException("하나의 요청만 가능합니다.");
-        }
+//        if (memberSecondProfileRepository.existsByMemberId(writer.getId())){
+//            throw new IllegalArgumentException("하나의 요청만 가능합니다.");
+//        }
 
         // Personality 변환 및 저장
 //        if (newRequest.getPersonality().size() != 4) {
@@ -81,12 +81,16 @@ public class RequestServiceImpl implements RequestService {
         StudentNumber studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
 
         // 운동 타입 변환 (nullable 처리)
-        Set<ExerciseType> exerciseTypes = Optional.ofNullable(newRequest.getExerciseTypes())
-                .map(types -> Arrays.stream(types.split(","))
-                        .map(String::trim)
-                        .map(ExerciseType::fromString)
-                        .collect(Collectors.toSet()))
-                .orElse(Collections.emptySet());
+//        Set<ExerciseType> exerciseTypes = Optional.ofNullable(newRequest.getExerciseTypes())
+//                .map(types -> Arrays.stream(types.split(","))
+//                        .map(String::trim)
+//                        .map(ExerciseType::fromString)
+//                        .collect(Collectors.toSet()))
+//                .orElse(Collections.emptySet());
+        ExerciseType exerciseTypes = null;
+        if (newRequest.getExerciseTypes() != null) {
+            exerciseTypes = ExerciseType.fromString(newRequest.getExerciseTypes());
+        }
 
         // 음식 타입 변환 (nullable 처리)
         Set<FoodType> foodTypes = Optional.ofNullable(newRequest.getFood())
@@ -94,6 +98,31 @@ public class RequestServiceImpl implements RequestService {
                 .stream()
                 .map(FoodType::fromString)
                 .collect(Collectors.toSet());
+
+        // 스터디 타입 변환
+        StudyType studyType = null;
+        if (newRequest.getStudyType() != null) {
+            studyType = StudyType.fromString(newRequest.getStudyType());
+        }
+
+        // 과목/교수 파싱 후 각각 넣기
+        String majorName = null;
+        String professorName = null;
+        if(newRequest.getMajorNameAndProfessorName() != null) {
+            String[] parts = newRequest.getMajorNameAndProfessorName().split("-");
+            majorName = parts[0];
+            professorName = parts[1];
+        }
+
+        // 공부 관련 온라인 여부
+        Boolean isOnline = null;
+        if(newRequest.getIsOnline() != null) {
+            if(newRequest.getIsOnline() == "오프라인"){
+                isOnline = false;
+            } else {
+                isOnline = true;
+            }
+        }
 
 
         // 새로운 MemberSecondProfile 생성
@@ -111,8 +140,14 @@ public class RequestServiceImpl implements RequestService {
                 .comment(newRequest.getComment())
                 .mateType(newRequest.getType())
                 .foodTypes(foodTypes)
-                //.exerciseType(exerciseTypes)
+                .exerciseType(exerciseTypes)
                 .isSchool(newRequest.getIsSchool())
+                .studyType(studyType)
+                .majorName(majorName)
+                .professorName(professorName)
+                .isOnline(isOnline)
+                .studyTimes(newRequest.getStudyTimes())
+                .place(newRequest.getPlace())
                 .build();
 
         MemberSecondProfile savedProfile = memberSecondProfileRepository.save(newMemberSecondProfile);
@@ -147,7 +182,7 @@ public class RequestServiceImpl implements RequestService {
         memberSecondProfileSubMajorRepository.saveAll(subMajorList);
 
         return RequestDTO.NewRequestDTO.builder()
-                .writerId(savedProfile.getMember().getId())
+                //.writerId(memberId)
                 .studentNumber(savedProfile.getStudentNumber().name())
                 .mbti(savedProfile.getMbti())
                 .minAge(savedProfile.getMinAge())
