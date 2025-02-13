@@ -64,7 +64,7 @@ public class MemberController {
     @GetMapping("/nickname/check")
     public ApiResponse<String> checkNickname(@AuthUser Long memberId, String nickname) {
 
-        return ApiResponse.onSuccess(memberService.nickDuplicate(memberId, nickname));  // ProfileService로 호출
+        return ApiResponse.onSuccessTemp(memberService.nickDuplicate(memberId, nickname));  // ProfileService로 호출
     }
 
     @Operation(summary = "로그인 한 유저 정보 반환")
