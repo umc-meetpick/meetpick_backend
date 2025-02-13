@@ -186,7 +186,7 @@ public class MemberServiceImpl implements MemberService {
     public String nickDuplicate(Long memberId, String nickName) {
 
         if(memberProfileRepository.findByNickname(nickName).isPresent()){
-            throw new GeneralHandler(ErrorCode.NICKNAME_DUPLICATE);
+            return "중복된 닉네임 입니다.";
         }
 
         return "사용 가능한 닉네임입니다";
