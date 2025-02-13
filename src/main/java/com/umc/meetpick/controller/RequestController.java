@@ -1,5 +1,6 @@
 package com.umc.meetpick.controller;
 
+import com.umc.meetpick.common.annotation.AuthUser;
 import com.umc.meetpick.common.response.ApiResponse;
 import com.umc.meetpick.dto.RequestDTO;
 import com.umc.meetpick.service.request.RequestService;
@@ -18,15 +19,15 @@ public class RequestController {
 
     @Operation(summary = "매칭 추가")
     @PostMapping("/add")
-    public ApiResponse<String> createRequest(@RequestBody RequestDTO.NewRequestDTO newRequest) {
-        RequestDTO.NewRequestDTO responseDTO = requestService.createNewRequest(newRequest);
+    public ApiResponse<String> createRequest(@AuthUser Long memberId, @RequestBody RequestDTO.NewRequestDTO newRequest) {
+        RequestDTO.NewRequestDTO responseDTO = requestService.createNewRequest(memberId, newRequest);
         return ApiResponse.onSuccess("등록 성공");
     }
 
     @Operation(summary = "매칭에 참가 신청")
     @PostMapping("/joinRequest")
-    public ApiResponse<RequestDTO.JoinRequestDTO> joinRequest(@RequestBody RequestDTO.JoinRequestDTO joinRequest) {
-        RequestDTO.JoinRequestDTO responseDTO = requestService.createJoinRequest(joinRequest);
+    public ApiResponse<RequestDTO.JoinRequestDTO> joinRequest(@AuthUser Long memberId,@RequestBody RequestDTO.JoinRequestDTO joinRequest) {
+        RequestDTO.JoinRequestDTO responseDTO = requestService.createJoinRequest(memberId ,joinRequest);
         return ApiResponse.onSuccess(responseDTO);
     }
 
@@ -39,22 +40,22 @@ public class RequestController {
 
     @Operation(summary = "매칭에 좋아요 누르기")
     @PostMapping("/like/{requestId}")
-    public ApiResponse<RequestDTO.LikeRequestDTO> likeRequest(@PathVariable Long requestId, @RequestParam Long userId) {
-        RequestDTO.LikeRequestDTO responseDTO = requestService.likeRequest(requestId, userId);
+    public ApiResponse<RequestDTO.LikeRequestDTO> likeRequest(@AuthUser Long memberId,@PathVariable Long requestId) {
+        RequestDTO.LikeRequestDTO responseDTO = requestService.likeRequest(memberId, requestId);
         return ApiResponse.onSuccess(responseDTO);
     }
 
     @Operation(summary = "매칭 좋아요 취소")
     @DeleteMapping("/like/{requestId}")
-    public ApiResponse<String> deleteLikeRequest(@PathVariable Long requestId, @RequestParam Long userId) {
-        requestService.deleteLikeRequest(requestId, userId);
+    public ApiResponse<String> deleteLikeRequest(@AuthUser Long memberId, @PathVariable Long requestId) {
+        requestService.deleteLikeRequest(memberId, requestId);
         return ApiResponse.onSuccess("삭제 성공");
     }
 
     @Operation(summary = "매칭 신청 승낙하기" )
     @PatchMapping("/accept/{matchingRequestId}")
-    public ApiResponse<RequestDTO.isAcceptedDTO> acceptRequest(@PathVariable Long matchingRequestId, @RequestParam Long userId, Boolean isAccepted) {
-        RequestDTO.isAcceptedDTO responseDTO = requestService.acceptRequest(matchingRequestId, userId, isAccepted);
+    public ApiResponse<RequestDTO.isAcceptedDTO> acceptRequest(@AuthUser Long memberId, @PathVariable Long matchingRequestId, @RequestParam Boolean isAccepted) {
+        RequestDTO.isAcceptedDTO responseDTO = requestService.acceptRequest(memberId, matchingRequestId, isAccepted);
         return ApiResponse.onSuccess(responseDTO);
     }
 }

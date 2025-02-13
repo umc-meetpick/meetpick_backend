@@ -1,5 +1,6 @@
 package com.umc.meetpick.controller;
 
+import com.umc.meetpick.common.annotation.AuthUser;
 import com.umc.meetpick.common.response.ApiResponse;
 import com.umc.meetpick.dto.ReportDTO;
 import com.umc.meetpick.service.report.ReportService;
@@ -21,8 +22,8 @@ public class ReportController {
 
     @Operation(summary = "신고 추가")
     @PostMapping("")
-    public ApiResponse<ReportDTO.PostReportDTO> postReport(@RequestBody ReportDTO.PostReportDTO postReport) {
-        ReportDTO.PostReportDTO responseDTO = reportService.postReport(postReport);
+    public ApiResponse<ReportDTO.PostReportDTO> postReport(@AuthUser Long reporterId, @RequestBody ReportDTO.PostReportDTO postReport) {
+        ReportDTO.PostReportDTO responseDTO = reportService.postReport(reporterId, postReport);
         return ApiResponse.onSuccess(responseDTO);
     }
 }

@@ -68,10 +68,9 @@ public class Member {
     @JoinColumn(name = "member_profile_id")
     private MemberProfile memberProfile;
 
-    //외래키
-    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
-    @Setter
-    private MemberSecondProfile memberSecondProfile;
+    // MemberSecondProfile과의 관계 (1:N)
+    @OneToMany(mappedBy = "member")
+    private List<MemberSecondProfile> memberSecondProfiles;
 
     // 나이 계산 함수
     public int getAge() {

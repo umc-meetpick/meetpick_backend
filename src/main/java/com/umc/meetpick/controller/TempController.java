@@ -38,7 +38,7 @@ public class TempController {
 
         // List<Member>를 순회하여 MemberResponseDTO로 변환
         return members.stream()
-                .map(member -> MemberProfileToMemberProfileResponseDTO(member.getMemberSecondProfile()))
+                .map(member -> MemberProfileToMemberProfileResponseDTO(member.getMemberSecondProfiles().get(0)))
                 .collect(Collectors.toList());
     }
 
@@ -48,7 +48,7 @@ public class TempController {
     {
         Member member = memberRepository.findMemberById(memberId);
 
-        return MemberProfileToMemberProfileResponseDTO(member.getMemberSecondProfile());
+        return MemberProfileToMemberProfileResponseDTO(member.getMemberSecondProfiles().get(0));
     }
 
     @Operation(summary = "임시 토큰 반환", description = "임의의 유저 정보로 임시 토큰을 발급합니다") // [변경 2]

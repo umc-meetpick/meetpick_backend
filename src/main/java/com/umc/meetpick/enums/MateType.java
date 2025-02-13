@@ -1,5 +1,7 @@
 package com.umc.meetpick.enums;
 
+import com.umc.meetpick.common.exception.handler.GeneralHandler;
+import com.umc.meetpick.common.response.status.ErrorCode;
 import lombok.Getter;
 
 @Getter
@@ -22,6 +24,6 @@ public enum MateType {
                 return mateType;
             }
         }
-        throw new IllegalArgumentException("Unknown MateType: " + type);
+        throw new GeneralHandler(ErrorCode.INVALID_MATE_TYPE);
     }
 }

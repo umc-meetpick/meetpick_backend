@@ -39,10 +39,10 @@ public class RequestServiceImpl implements RequestService {
     private final MemberSecondProfileSubMajorRepository memberSecondProfileSubMajorRepository;
 
     @Override
-    public RequestDTO.NewRequestDTO createNewRequest(RequestDTO.NewRequestDTO newRequest) {
+    public RequestDTO.NewRequestDTO createNewRequest(Long memberId, RequestDTO.NewRequestDTO newRequest) {
         // 작성자가 실제 존재하는지 검증
-        Member writer = memberRepository.findById(newRequest.getWriterId())
-                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다." + newRequest.getWriterId()));
+        Member writer = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다." + memberId));
         // 프론트로부터 받은 전공이 전공 테이블에 존재하는지 검증
 //        Major major = majorRepository.findByName(newRequest.getMajorName())
 //                .orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getMajorName()));
@@ -58,9 +58,9 @@ public class RequestServiceImpl implements RequestService {
         }
 
          //동일 작성자인 경우
-        if (memberSecondProfileRepository.existsByMemberId(writer.getId())){
-            throw new IllegalArgumentException("하나의 요청만 가능합니다.");
-        }
+//        if (memberSecondProfileRepository.existsByMemberId(writer.getId())){
+//            throw new IllegalArgumentException("하나의 요청만 가능합니다.");
+//        }
 
         // Personality 변환 및 저장
 //        if (newRequest.getPersonality().size() != 4) {
@@ -81,12 +81,16 @@ public class RequestServiceImpl implements RequestService {
         StudentNumber studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
 
         // 운동 타입 변환 (nullable 처리)
-        Set<ExerciseType> exerciseTypes = Optional.ofNullable(newRequest.getExerciseTypes())
-                .map(types -> Arrays.stream(types.split(","))
-                        .map(String::trim)
-                        .map(ExerciseType::fromString)
-                        .collect(Collectors.toSet()))
-                .orElse(Collections.emptySet());
+//        Set<ExerciseType> exerciseTypes = Optional.ofNullable(newRequest.getExerciseTypes())
+//                .map(types -> Arrays.stream(types.split(","))
+//                        .map(String::trim)
+//                        .map(ExerciseType::fromString)
+//                        .collect(Collectors.toSet()))
+//                .orElse(Collections.emptySet());
+        ExerciseType exerciseTypes = null;
+        if (newRequest.getExerciseTypes() != null) {
+            exerciseTypes = ExerciseType.fromString(newRequest.getExerciseTypes());
+        }
 
         // 음식 타입 변환 (nullable 처리)
         Set<FoodType> foodTypes = Optional.ofNullable(newRequest.getFood())
@@ -94,6 +98,31 @@ public class RequestServiceImpl implements RequestService {
                 .stream()
                 .map(FoodType::fromString)
                 .collect(Collectors.toSet());
+
+        // 스터디 타입 변환
+        StudyType studyType = null;
+        if (newRequest.getStudyType() != null) {
+            studyType = StudyType.fromString(newRequest.getStudyType());
+        }
+
+        // 과목/교수 파싱 후 각각 넣기
+        String majorName = null;
+        String professorName = null;
+        if(newRequest.getMajorNameAndProfessorName() != null) {
+            String[] parts = newRequest.getMajorNameAndProfessorName().split("-");
+            majorName = parts[0];
+            professorName = parts[1];
+        }
+
+        // 공부 관련 온라인 여부
+        Boolean isOnline = null;
+        if(newRequest.getIsOnline() != null) {
+            if(newRequest.getIsOnline() == "오프라인"){
+                isOnline = false;
+            } else {
+                isOnline = true;
+            }
+        }
 
 
         // 새로운 MemberSecondProfile 생성
@@ -111,8 +140,14 @@ public class RequestServiceImpl implements RequestService {
                 .comment(newRequest.getComment())
                 .mateType(newRequest.getType())
                 .foodTypes(foodTypes)
-                .exerciseTypes(exerciseTypes)
+                .exerciseType(exerciseTypes)
                 .isSchool(newRequest.getIsSchool())
+                .studyType(studyType)
+                .majorName(majorName)
+                .professorName(professorName)
+                .isOnline(isOnline)
+                .studyTimes(newRequest.getStudyTimes())
+                .place(newRequest.getPlace())
                 .build();
 
         MemberSecondProfile savedProfile = memberSecondProfileRepository.save(newMemberSecondProfile);
@@ -147,7 +182,7 @@ public class RequestServiceImpl implements RequestService {
         memberSecondProfileSubMajorRepository.saveAll(subMajorList);
 
         return RequestDTO.NewRequestDTO.builder()
-                .writerId(savedProfile.getMember().getId())
+                //.writerId(memberId)
                 .studentNumber(savedProfile.getStudentNumber().name())
                 .mbti(savedProfile.getMbti())
                 .minAge(savedProfile.getMinAge())
@@ -160,7 +195,7 @@ public class RequestServiceImpl implements RequestService {
 
     // 매칭에 참가하기 api
     @Override
-    public RequestDTO.JoinRequestDTO createJoinRequest(RequestDTO.JoinRequestDTO newJoinRequest) {
+    public RequestDTO.JoinRequestDTO createJoinRequest(Long memberId,RequestDTO.JoinRequestDTO newJoinRequest) {
         // requestId가 존재하는지 판단
         MemberSecondProfile request = memberSecondProfileRepository.findById(newJoinRequest.getRequestId())
                 .orElseThrow(()-> new EntityNotFoundException("잘못된 매칭에 대한 요청" + newJoinRequest.getRequestId()));
@@ -168,8 +203,8 @@ public class RequestServiceImpl implements RequestService {
         request.addPerson();
 
         // 유저 join으로 찾기 - 매칭 신청한 유저
-        Member joinMember = memberRepository.findById(newJoinRequest.getPostUserId())
-                .orElseThrow(() -> new EntityNotFoundException("매칭 신청 유저 오류" + newJoinRequest.getPostUserId()));
+        Member joinMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("매칭 신청 유저 오류"));
 
         MemberProfile joinMemberProfile = joinMember.getMemberProfile();
 
@@ -253,7 +288,7 @@ public class RequestServiceImpl implements RequestService {
 
         return RequestDTO.JoinRequestDTO.builder()
                 .requestId(savedMapping.getMemberSecondProfile().getId())
-                .postUserId(savedMapping.getMember().getId())
+                //.postUserId(savedMapping.getMember().getId())
                 //.status(savedMapping.getStatus())
                 .build();
 
@@ -272,11 +307,11 @@ public class RequestServiceImpl implements RequestService {
 
     // 매칭에 좋아요 등록
     @Override
-    public RequestDTO.LikeRequestDTO likeRequest(Long requestId, Long userId) {
+    public RequestDTO.LikeRequestDTO likeRequest(Long memberId,Long requestId) {
         MemberSecondProfile request = memberSecondProfileRepository.findById(requestId)
                 .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭에 대한 요청"));
 
-        Member member = memberRepository.findById(userId)
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new EntityNotFoundException("존재하지 않는 유저의 신청"));
 
         MemberSecondProfileLikes memberLikes = MemberSecondProfileLikes.builder()
@@ -288,17 +323,17 @@ public class RequestServiceImpl implements RequestService {
 
         return RequestDTO.LikeRequestDTO.builder()
                 .requestId(savedMemberLikes.getMemberSecondProfile().getId())
-                .postUserId(savedMemberLikes.getMember().getId())
+                //.postUserId(savedMemberLikes.getMember().getId())
                 .build();
     }
 
     @Override
-    public void deleteLikeRequest(Long requestId, Long userId){
+    public void deleteLikeRequest(Long memberId, Long requestId){
 
         MemberSecondProfileLikes memberLikes = memberLikesRepository.findByMemberSecondProfileId(requestId)
                 .orElseThrow(()->new IllegalArgumentException("찜하기 찾을 수 없음"));
 
-        if (!memberLikes.getMember().getId().equals(userId)) {
+        if (!memberLikes.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("취소 권한 없음");
         }
         memberLikesRepository.delete(memberLikes);
@@ -306,7 +341,7 @@ public class RequestServiceImpl implements RequestService {
 
     // 매칭 요청에 대한 수락 or 거절
     @Override
-    public RequestDTO.isAcceptedDTO acceptRequest(Long matchingRequestId, Long userId, Boolean isAccepted) {
+    public RequestDTO.isAcceptedDTO acceptRequest(Long memberId, Long matchingRequestId, Boolean isAccepted) {
 
 //        MemberSecondProfile request = memberSecondProfileRepository.findById(requestId)
 //                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭"));
@@ -314,7 +349,7 @@ public class RequestServiceImpl implements RequestService {
         MemberSecondProfileMapping memberSecondProfileMapping = memberMappingRepository.findById(matchingRequestId)
                 .orElseThrow(()-> new EntityNotFoundException("신청을 찾을 수 없음"));
 
-        if(!memberSecondProfileMapping.getMemberSecondProfile().getMember().getId().equals(userId)) {
+        if(!memberSecondProfileMapping.getMemberSecondProfile().getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("권한 없음");
         }
 

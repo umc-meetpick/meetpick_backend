@@ -18,7 +18,7 @@ public class RequestDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class NewRequestDTO {
-        private Long writerId;
+        //private Long writerId;
         //private String majorName;
         private Gender gender;
         private List<String> subMajorName;
@@ -35,6 +35,11 @@ public class RequestDTO {
         private String exerciseTypes;
         private Boolean isSchool;
         private List<String> food;
+        private String studyType;
+        private String majorNameAndProfessorName;
+        private String isOnline;
+        private int studyTimes;
+        private String place;
         private MateType type;
     }
 
@@ -45,7 +50,7 @@ public class RequestDTO {
     @AllArgsConstructor
     public static class JoinRequestDTO {
         private Long requestId;
-        private Long postUserId;
+        //private Long postUserId;
         //private Boolean status;
     }
 
@@ -56,7 +61,7 @@ public class RequestDTO {
     @AllArgsConstructor
     public static class LikeRequestDTO {
         private Long requestId;
-        private Long postUserId;
+        //private Long postUserId;
     }
 
     // 매칭 승낙 or 거절
