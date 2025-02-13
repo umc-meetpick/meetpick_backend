@@ -1,18 +1,17 @@
 package com.umc.meetpick.dto;
 
-import com.umc.meetpick.enums.MateType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AlarmResponseDto {
-    String mateType;
-    String content;
-    String createdAt;
-    Long mappingId;
+public class ReviewDTO {
+
+    private Long senderID;
+    private Long receiverID;
+    private String reviewContent; //리뷰내용
 }

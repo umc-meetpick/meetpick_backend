@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public enum University {
+
+    //TODO 진짜 있는건지 확인 필요
     SEOUL_NATIONAL_UNIVERSITY("서울대학교", "서울특별시 관악구 관악로 1"),
     KOREA_UNIVERSITY("고려대학교", "서울특별시 성북구 안암로 145"),
     YONSEI_UNIVERSITY("연세대학교", "서울특별시 서대문구 연세로 50"),
@@ -26,40 +28,52 @@ public enum University {
     SEOUL_NATIONAL_SCIENCE_TECHNOLOGY("서울과학기술대학교", "서울특별시 노원구 공릉로 232"),
     KOREAN_AIR_UNIVERSITY("한국항공대학교", "서울특별시 강서구 화곡로 76"),
     DEOKSEONG_WOMANS_UNIVERSITY("덕성여자대학교", "서울특별시 도봉구 덕성로 132"),
-    UNKNOWN_UNIVERSITY("알 수 없는 대학교", "위치 정보 없음"); // 🔹 기본값 추가
+    MYONGJI_UNIVERSITY("명지대학교", "서울특별시 서대문구 거북골로 34"),
+    SEOUL_WOMANS_UNIVERSITY("서울여자대학교", "서울특별시 노원구 화랑로 621"),
+    DUKSUNG_WOMANS_UNIVERSITY("덕성여자대학교", "서울특별시 도봉구 덕성로 76"),
+    SUNGSHIN_WOMANS_UNIVERSITY("성신여자대학교", "서울특별시 성북구 보문로34다길 2"),
+    SOOKMYUNG_WOMANS_UNIVERSITY("숙명여자대학교", "서울특별시 용산구 청파로47길 100"),
+    HANYANG_WOMANS_UNIVERSITY("한양여자대학교", "서울특별시 성동구 왕십리로 222"),
+    KOREA_NATIONAL_OPEN_UNIVERSITY("한국방송통신대학교", "서울특별시 종로구 대학로 86"),
+    SEOUL_CHRISTIAN_UNIVERSITY("서울기독대학교", "서울특별시 은평구 갈현로 5"),
+    SEOUL_JANGSIN_UNIVERSITY("서울장신대학교", "서울특별시 강북구 오현로 77"),
+    KOREA_THEOLOGICAL_SEMINARY("한국신학대학교", "서울특별시 서초구 반포대로 56"),
+    SAMYOOK_UNIVERSITY("삼육대학교", "서울특별시 노원구 화랑로 815"),
+    KYUNGIN_UNIVERSITY("경인교육대학교", "서울특별시 종로구 대학로 1"),
+    SEOUL_ART_UNIVERSITY("서울예술대학교", "서울특별시 중구 필동로 1길 13"),
+    KOREA_THEOLOGICAL_UNIVERSITY("한국신학대학교", "서울특별시 서초구 남부순환로 220"),
+    SEOUL_PHYSICAL_EDUCATION_UNIVERSITY("서울체육대학교", "서울특별시 송파구 올림픽로 424"),
+    SEOUL_MEDICAL_SCIENCE_UNIVERSITY("서울보건대학교", "서울특별시 강동구 강동대로 110"),
+    KYUNGIN_WOMANS_UNIVERSITY("경인여자대학교", "서울특별시 강서구 화곡로 150"),
+    BAIKSEOK_WOMANS_UNIVERSITY("백석여자대학교", "서울특별시 강남구 도산대로 535"),
+    CHUNGGYE_WOMANS_UNIVERSITY("청계여자대학교", "서울특별시 종로구 청계천로 45");
+
+
 
     private final String universityName;
     private final String address;
 
+    // 생성자
     University(String universityName, String address) {
         this.universityName = universityName;
         this.address = address;
     }
 
-    public String getUniversityName() {
-        return universityName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    /**
-     * ✅ 문자열을 `University` Enum으로 변환하는 메서드
-     * - 존재하지 않는 경우 `UNKNOWN_UNIVERSITY` 반환
-     */
     public static University fromString(String universityName) {
         for (University university : University.values()) {
             if (university.universityName.equalsIgnoreCase(universityName.trim())) {
                 return university;
             }
         }
-        return UNKNOWN_UNIVERSITY; // ✅ 존재하지 않는 경우 안전하게 기본값 반환
+        return SEOUL_NATIONAL_UNIVERSITY; // ✅ 존재하지 않는 경우 안전하게 기본값 반환
     }
 
-    /**
-     * ✅ 키워드를 포함하는 대학교 검색 기능
-     */
+    public String getKoreanName() {
+        return this.universityName;
+    }
+
+    // 검색 후 일치하는 목록 반환
+    // TODO 나중에 리팩토링
     public static List<Map<String, String>> search(String keyword) {
         List<Map<String, String>> result = new ArrayList<>();
         for (University university : University.values()) {
@@ -89,3 +103,4 @@ public enum University {
         return result;
     }
 }
+

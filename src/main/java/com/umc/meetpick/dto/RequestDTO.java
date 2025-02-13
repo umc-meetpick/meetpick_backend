@@ -1,6 +1,6 @@
 package com.umc.meetpick.dto;
 
-import com.umc.meetpick.entity.Personality;
+//import com.umc.meetpick.entity.Personality;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
 import com.umc.meetpick.enums.*;
@@ -22,18 +22,19 @@ public class RequestDTO {
         //private String majorName;
         private Gender gender;
         private List<String> subMajorName;
-        private StudentNumber studentNumber;
+        private String studentNumber;
         private int minAge;
         private int maxAge;
-        private List<String> personality;
-        private Set<MBTI> mbti;
-        private boolean isHobbySame;
+        //private List<String> personality;
+        //private Set<MBTI> mbti;
+        private String mbti;
+        private Boolean isHobbySame;
         private List<MemberSecondProfileTimesDTO> memberSecondProfileTimes;
         private int maxPeople;
         private String comment;
-        private Set<ExerciseType> exerciseTypes;
+        private String exerciseTypes;
         private Boolean isSchool;
-        private Set<FoodType> food;
+        private List<String> food;
         private MateType type;
     }
 

@@ -2,24 +2,20 @@ package com.umc.meetpick;
 
 import com.umc.meetpick.domain.factory.MemberFactory;
 import com.umc.meetpick.domain.factory.MemberSecondProfileFactory;
-import com.umc.meetpick.dto.ReportDTO;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
-import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
-import com.umc.meetpick.service.MatchingService;
-import com.umc.meetpick.service.MemberService;
-import com.umc.meetpick.service.UniversityService;
+import com.umc.meetpick.service.matching.MatchingService;
+import com.umc.meetpick.service.member.MemberService;
+import com.umc.meetpick.service.home.HomeService;
 import com.umc.meetpick.service.report.ReportService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -43,7 +39,7 @@ public class TestAPI {
     private ReportService reportService;
 
     @Autowired
-    private UniversityService universityService;
+    private HomeService homeService;
 
     @Autowired
     private MemberSecondProfileRepository memberSecondProfileRepository;
@@ -94,8 +90,4 @@ public class TestAPI {
 
     }*/
 
-    @Test
-    void testAPI3(){
-        System.out.println(matchingService.getAlarms(5L, MateType.ALL).get(0).getContent());
-    }
 }

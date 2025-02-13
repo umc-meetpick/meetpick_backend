@@ -1,7 +1,5 @@
 package com.umc.meetpick.service.request;
 
-import com.umc.meetpick.common.exception.handler.GeneralHandler;
-import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.MatchResponseDto;
 import com.umc.meetpick.dto.RequestDTO;
 import com.umc.meetpick.entity.*;
@@ -12,11 +10,9 @@ import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
 
-import com.umc.meetpick.enums.PersonalityEnum;
+//import com.umc.meetpick.enums.PersonalityEnum;
 
-import com.umc.meetpick.enums.FoodType;
-import com.umc.meetpick.enums.Hobby;
-import com.umc.meetpick.enums.MateType;
+import com.umc.meetpick.enums.*;
 
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
@@ -24,9 +20,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.umc.meetpick.enums.StudentNumber.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +35,8 @@ public class RequestServiceImpl implements RequestService {
     private final MemberLikesRepository memberLikesRepository;
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
-    private final PersonalityRepository personalityRepository;
+    //private final PersonalityRepository personalityRepository;
+    private final MemberSecondProfileSubMajorRepository memberSecondProfileSubMajorRepository;
 
     @Override
     public RequestDTO.NewRequestDTO createNewRequest(RequestDTO.NewRequestDTO newRequest) {
@@ -59,54 +57,75 @@ public class RequestServiceImpl implements RequestService {
             throw new IllegalArgumentException("이미 요청이 존재");
         }
 
-        // 동일 작성자인 경우
+         //동일 작성자인 경우
         if (memberSecondProfileRepository.existsByMemberId(writer.getId())){
             throw new IllegalArgumentException("하나의 요청만 가능합니다.");
         }
 
         // Personality 변환 및 저장
-        if (newRequest.getPersonality().size() != 4) {
-            throw new IllegalArgumentException("personality는 4개가 입력되어야 함");
-        }
+//        if (newRequest.getPersonality().size() != 4) {
+//            throw new IllegalArgumentException("personality는 4개가 입력되어야 함");
+//        }
+//
+//        Personality personality = new Personality(
+//                PersonalityEnum.valueOf(newRequest.getPersonality().get(0)), // groupA
+//                PersonalityEnum.valueOf(newRequest.getPersonality().get(1)), // groupB
+//                PersonalityEnum.valueOf(newRequest.getPersonality().get(2)), // groupC
+//                PersonalityEnum.valueOf(newRequest.getPersonality().get(3))  // groupD
+//        );
+//
+//        Personality savedPersonality = personalityRepository.save(personality);
 
-        Personality personality = new Personality(
-                PersonalityEnum.valueOf(newRequest.getPersonality().get(0)), // groupA
-                PersonalityEnum.valueOf(newRequest.getPersonality().get(1)), // groupB
-                PersonalityEnum.valueOf(newRequest.getPersonality().get(2)), // groupC
-                PersonalityEnum.valueOf(newRequest.getPersonality().get(3))  // groupD
-        );
 
-        Personality savedPersonality = personalityRepository.save(personality);
+        // studentNumber 변환 -> 프론트에서 받은 string을 enum으로
+        StudentNumber studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
+
+        // 운동 타입 변환 (nullable 처리)
+        Set<ExerciseType> exerciseTypes = Optional.ofNullable(newRequest.getExerciseTypes())
+                .map(types -> Arrays.stream(types.split(","))
+                        .map(String::trim)
+                        .map(ExerciseType::fromString)
+                        .collect(Collectors.toSet()))
+                .orElse(Collections.emptySet());
+
+        // 음식 타입 변환 (nullable 처리)
+        Set<FoodType> foodTypes = Optional.ofNullable(newRequest.getFood())
+                .orElse(Collections.emptyList())  // food가 null이면 빈 리스트 처리
+                .stream()
+                .map(FoodType::fromString)
+                .collect(Collectors.toSet());
+
 
         // 새로운 MemberSecondProfile 생성
         MemberSecondProfile newMemberSecondProfile = MemberSecondProfile.builder()
                 .member(writer)
                 .gender(newRequest.getGender())
-                .studentNumber(newRequest.getStudentNumber())
+                .studentNumber(studentNumberEnum)
                 .mbti(newRequest.getMbti())
                 .minAge(newRequest.getMinAge())
                 .maxAge(newRequest.getMaxAge())
                 .maxPeople(newRequest.getMaxPeople())
                 .currentPeople(0)
-                .personality(savedPersonality)
-                .isHobbySame(newRequest.isHobbySame())
+                //.personality(savedPersonality)
+                .isHobbySame(newRequest.getIsHobbySame())
                 .comment(newRequest.getComment())
                 .mateType(newRequest.getType())
-                .foodTypes(newRequest.getFood())
-                .exerciseTypes(newRequest.getExerciseTypes())
+                .foodTypes(foodTypes)
+                //.exerciseType(exerciseTypes)
                 .isSchool(newRequest.getIsSchool())
                 .build();
 
         MemberSecondProfile savedProfile = memberSecondProfileRepository.save(newMemberSecondProfile);
 
-        // membersecondprofiletimesd dto를 entity로 변환
+        // memberSecondProfileTimes 변환 및 저장
         List<MemberSecondProfileTimes> timesList = newRequest.getMemberSecondProfileTimes().stream()
                 .map(dto -> MemberSecondProfileTimes.builder()
-                        .week(dto.getWeek())
+                        .week(Week.fromString(dto.getWeek()))  // ✅ week 변환
                         .times(dto.getTimes())
-                        .memberSecondProfile(savedProfile) // 프로필과 연결
+                        .memberSecondProfile(savedProfile)
                         .build())
                 .toList();
+
 
         memberSecondProfileTimesRepository.saveAll(timesList);
 
@@ -125,9 +144,11 @@ public class RequestServiceImpl implements RequestService {
                 })
                         .toList();
 
+        memberSecondProfileSubMajorRepository.saveAll(subMajorList);
+
         return RequestDTO.NewRequestDTO.builder()
                 .writerId(savedProfile.getMember().getId())
-                .studentNumber(savedProfile.getStudentNumber())
+                .studentNumber(savedProfile.getStudentNumber().name())
                 .mbti(savedProfile.getMbti())
                 .minAge(savedProfile.getMinAge())
                 .maxAge(savedProfile.getMaxAge())
@@ -146,18 +167,85 @@ public class RequestServiceImpl implements RequestService {
 
         request.addPerson();
 
-        // 유저 join으로 찾기
-        Member member = memberRepository.findById(newJoinRequest.getPostUserId())
+        // 유저 join으로 찾기 - 매칭 신청한 유저
+        Member joinMember = memberRepository.findById(newJoinRequest.getPostUserId())
                 .orElseThrow(() -> new EntityNotFoundException("매칭 신청 유저 오류" + newJoinRequest.getPostUserId()));
 
+        MemberProfile joinMemberProfile = joinMember.getMemberProfile();
+
+        // 매칭 등록 유저 찾아오기
+        Member requestOwnerMember = memberRepository.findById(request.getMember().getId())
+                .orElseThrow(()-> new EntityNotFoundException("매칭 등록 유저 오류"));
+
+        MemberProfile requestOwnerMemberProfile = requestOwnerMember.getMemberProfile();
+
+        // 조건에 맞는지 판단 - 성별
+        if(!(request.getGender() == null) && joinMember.getGender() != request.getGender()){
+            throw new IllegalArgumentException("성별 조건 안 맞음");
+        }
+
+        // 조건에 맞는지 판단 - 나이 범위
+        if(!(request.getMinAge() == null)){
+            if (request.getMinAge() > joinMember.getAge() || request.getMaxAge() < joinMember.getAge()) {
+                throw new IllegalArgumentException("나이 조건 안 맞음");
+            }
+        }
+
+        // 조건에 맞는지 판단 - 학번
+        if(request.getStudentNumber() == PEER){
+            if (!(joinMemberProfile.getStudentNumber() == requestOwnerMemberProfile.getStudentNumber())){
+                throw new IllegalArgumentException("학번 조건 안 맞음");
+            }
+        } else if(request.getStudentNumber() == SENIOR ){
+            if (!(joinMemberProfile.getStudentNumber() < requestOwnerMemberProfile.getStudentNumber())){
+                throw new IllegalArgumentException("학번 조건 안 맞음");
+            }
+        } else if(request.getStudentNumber() == JUNIOR){
+            if (!(joinMemberProfile.getStudentNumber() > requestOwnerMemberProfile.getStudentNumber())){
+                throw new IllegalArgumentException("학번 조건 안 맞음");
+            }
+        }
+
+        // 조건에 맞는지 판단 - submajor - 나중에
+
+        // 취미 동일 여부 - 하나라도 같으면 통과
+        if(request.getIsHobbySame()){
+            if(!(Collections.disjoint(joinMemberProfile.getHobbies(),requestOwnerMemberProfile.getHobbies()))){
+                throw new IllegalArgumentException("취미 조건 안 맞음");
+            }
+        }
+
+        // 성격 판단 - 입력받은 mbti 가져와서 판단
+        String joinMemberMBTI = joinMemberProfile.getMBTI().name();
+        String requestMBTI = request.getMbti();
+        for (int i = 0; i < 4; i++){
+            if(!(requestMBTI.charAt(i) == joinMemberMBTI.charAt(i)) && !(requestMBTI.charAt(i) == 'x')){
+                throw new IllegalArgumentException("성격 조건 안 맞음");
+            }
+        }
+
+//        if (!((request.getPersonality().getGroupA() == PersonalityEnum.CHEERFUL && joinMemberMBTI.charAt(0) == 'E') ||
+//                (request.getPersonality().getGroupA() == PersonalityEnum.QUIET && joinMemberMBTI.charAt(0) == 'I'))) {
+//            throw new IllegalArgumentException("성격 조건 안 맞음");
+//        }else if (!((request.getPersonality().getGroupB() == PersonalityEnum.REALISTIC && joinMemberMBTI.charAt(1) == 'S') ||
+//                (request.getPersonality().getGroupB() == PersonalityEnum.CREATIVE && joinMemberMBTI.charAt(1) == 'N'))) {
+//            throw new IllegalArgumentException("성격 조건 안 맞음");
+//        }else if (!((request.getPersonality().getGroupC() == PersonalityEnum.OBJECTIVE && joinMemberMBTI.charAt(2) == 'T') ||
+//                (request.getPersonality().getGroupC() == PersonalityEnum.SUBJECTIVE && joinMemberMBTI.charAt(2) == 'F'))) {
+//            throw new IllegalArgumentException("성격 조건 안 맞음");
+//        }else if (!((request.getPersonality().getGroupD() == PersonalityEnum.SYSTEMATIC && joinMemberMBTI.charAt(3) == 'J') ||
+//                (request.getPersonality().getGroupD() == PersonalityEnum.FLEXIBLE && joinMemberMBTI.charAt(3) == 'P'))) {
+//            throw new IllegalArgumentException("성격 조건 안 맞음");
+//        }
+
         // 중복 신청 방지
-        if(memberMappingRepository.existsByMemberSecondProfileAndMember(request, member)){
+        if(memberMappingRepository.existsByMemberSecondProfileAndMember(request, joinMember)){
             throw new IllegalArgumentException("중복신청 불가");
         }
 
         // MemberMapping 생성
         MemberSecondProfileMapping memberSecondProfileMapping = MemberSecondProfileMapping.builder()
-                .member(member)
+                .member(joinMember)
                 .memberSecondProfile(request)
                 .status(false)
                 .build();

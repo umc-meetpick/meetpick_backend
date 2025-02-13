@@ -29,7 +29,9 @@ public enum SuccessCode implements BaseCode {
 
     MAJOR_SET_SUCCESS(HttpStatus.OK, "MAJOR200", "전공이 설정되었습니다."),
     // 취미 설정 성공 코드
-    HOBBY_SET_SUCCESS(HttpStatus.OK, "HOBBY200", "취미가 성공적으로 설정되었습니다.");
+    HOBBY_SET_SUCCESS(HttpStatus.OK, "HOBBY200", "취미가 성공적으로 설정되었습니다."),
+    _ADDITIONAL_INFO(HttpStatus.OK, "LOGIN201", "로그인 성공. 회원가입 필요합니다");
+    ;
 
 
     private final HttpStatus httpStatus;
@@ -52,6 +54,7 @@ public enum SuccessCode implements BaseCode {
                 .code(code)
                 .isSuccess(true)
                 .httpStatus(httpStatus)
-                .build();
+                .build()
+                ;
     }
 }

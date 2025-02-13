@@ -22,6 +22,10 @@ public enum ErrorCode implements BaseErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
     MEMBER_LOGIN_FAILURE(HttpStatus.BAD_REQUEST, "MEMBER4003", "아이디 혹은 비밀번호를 잘못 입력하였습니다."),
     NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임은 필수 입니다."),
+    NICKNAME_DUPLICATE(HttpStatus.BAD_REQUEST, "MEMBER4003", "존재하는 닉네임입니다"),
+    SUBMAJOR_NOT_EXSIT(HttpStatus.BAD_REQUEST, "MEMBER4004", "존재하지 않는 전공입니다"),
+    PROFILE_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4005", "1차 프로필이 없습니다"),
+    PROFILE2_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4005", "2차 프로필이 없습니다"),
 
     MEMBER_SIGNUP_ERROR(HttpStatus.BAD_REQUEST, "SIGNUP4001", "회원가입 유효성 검사 실패"),
     EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "SIGNUP4002", "이미 존재하는 이메일입니다."),
@@ -35,8 +39,13 @@ public enum ErrorCode implements BaseErrorCode {
     NICKNAME_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "NICKNAME4002", "닉네임을 입력해야 합니다."),
 
     //프로필 관련 에러
-    PROFILE_NOT_FOUND(HttpStatus.BAD_REQUEST, "PROFILE4001", "프로필을 찾을 수 없습니다."),
     PROFILE_IMAGE_INVALID(HttpStatus.BAD_REQUEST, "PROFILE4002", "잘못된 프로필 이미지입니다."),
+    INVALID_UNIVERSITY(HttpStatus.BAD_REQUEST, "UNIV4001" ,"대학교명 형식 오류: 예) xx대학교와 같이 입력하세요."),
+
+    // ENUM 관련
+    INVALID_MATE_TYPE(HttpStatus.BAD_REQUEST, "TYPE4000", "유효하지 않은 메이트 타입입니다"),
+    INVALID_ENUM(HttpStatus.BAD_REQUEST, "TYPE4001", "유효하지 않은 enum입니다"),
+
 
     // 학번 관련 에러
     INVALID_STUDENT_NUMBER(HttpStatus.BAD_REQUEST, "STUDENT_NUMBER4001", "숫자만 입력하세요."),

@@ -1,61 +1,82 @@
 package com.umc.meetpick.common.config;
 
-import com.umc.meetpick.JwtUtil;
-import com.umc.meetpick.common.exception.handler.OAuth2AuthenticationSuccessHandler;
-import com.umc.meetpick.service.CustomOAuth2UserService;
-import com.umc.meetpick.service.JwtAuthenticationFilter;
+import com.umc.meetpick.common.jwt.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtUtil jwtUtil;
-    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter; // Bean으로 등록된 JWT 필터
+    private final CustomOAuth2UserService customOAuth2UserService;
+
+    //TODO 리프레시 토큰 추가 및 권한 추가
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable()) // CSRF 비활성화
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 사용 안함
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/terms/**", "/api/signup/**", "/api/verify/**",
-                                "/api/success/**", "/api/auth/**", "/api/login/**")
-                        .permitAll() // 인증 없이 접근 허용
-                        .anyRequest().authenticated() // 나머지는 인증 필요
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        return httpSecurity
+                .httpBasic(AbstractHttpConfigurer::disable) // UI를 사용하는 것을 기본값으로 가진 시큐리티 설정 비활성화
+                //.cors(AbstractHttpConfigurer::disable) // CORS 비활성화
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) //CORS 설정 추가
+                .csrf(AbstractHttpConfigurer::disable) // CSRF 비활성화
+                .headers(headers ->
+                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable) // H2 콘솔을 위한 프레임 허용
                 )
+                .sessionManagement((sessionManagement) ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                ) // stateless로 설정
+                //TODO 나중에 이 부분 리팩토링
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint(endpoint ->
-                                endpoint.baseUri("/oauth2/authorization"))
+                                endpoint.baseUri("/oauth2/authorize"))
                         .redirectionEndpoint(endpoint ->
                                 endpoint.baseUri("/login/oauth2/code/*"))
                         .successHandler(oAuth2AuthenticationSuccessHandler) // ✅ OAuth2 성공 핸들러 설정
                         .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
                 )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
-                )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // ✅ JWT 필터 적용
-
-        return http.build();
+                .authorizeHttpRequests(registry -> registry
+                        .requestMatchers( "/**").permitAll()
+                        /*"/sign-api/**", "/swagger-ui/**", "/swagger-ui.html/**", "/v3/api-docs/**", "/oauth2/**", "/h2-console/**", "/api/university/**", "/api/members/random-user", "/login/**"*/
+                        .anyRequest().authenticated()) // 로그인 관련만 허용
+                // 애플리케이션에 들어오는 요청에 대한 사용권한을 체크한다.
+                .exceptionHandling((exceptionConfig) ->
+                        exceptionConfig.authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)
+                ) // 인증 실패 및 권한이 없는 경우
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
-}
 
-//사용자가 /oauth2/authorization/kakao 요청
-//카카오 로그인 후 리다이렉트 → /login/oauth2/code/kakao
-//CustomOAuth2UserService에서 사용자 정보 로드
-//OAuth2AuthenticationSuccessHandler에서 JWT 생성 및 반환
-//클라이언트가 JWT 저장 (로컬 스토리지, 쿠키 등)
-//이후 API 요청 시 Authorization: Bearer <JWT> 포함
+    // CORS 설정을 추가 메서드
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // 허용할 헤더
+        configuration.setAllowCredentials(true); // 인증 정보 포함 허용 (JWT 사용 시 필요)
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+}

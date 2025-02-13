@@ -1,5 +1,8 @@
 package com.umc.meetpick.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Hobby {
     READING("독서"),
     TRAVELING("여행"),
@@ -29,8 +32,12 @@ public enum Hobby {
         this.koreanName = koreanName;
     }
 
-    public String getKoreanName() {
-        return koreanName;
+    public static Hobby fromString(String koreanName) {
+        for (Hobby hobby : Hobby.values()) {
+            if (hobby.koreanName.equals(koreanName)) {
+                return hobby;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with koreanName: " + koreanName);
     }
 }
-

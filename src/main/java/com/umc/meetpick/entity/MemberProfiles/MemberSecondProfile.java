@@ -2,7 +2,7 @@ package com.umc.meetpick.entity.MemberProfiles;
 
 import com.umc.meetpick.entity.BaseTimeEntity;
 import com.umc.meetpick.entity.Member;
-import com.umc.meetpick.entity.Personality;
+//import com.umc.meetpick.entity.Personality;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
 import com.umc.meetpick.enums.*;
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -29,8 +30,9 @@ public class MemberSecondProfile extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "member_id",nullable = false)
+    // Member와의 관계 (N:1)
+    @ManyToOne
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Enumerated(EnumType.STRING)  // null 시 상관 없음
@@ -53,15 +55,16 @@ public class MemberSecondProfile extends BaseTimeEntity {
     @Column(nullable = true)
     private Integer maxAge;
 
-    @OneToOne
-    @JoinColumn
-    private Personality personality;
+//    @OneToOne
+//    @JoinColumn
+//    private Personality personality;
 
-    @ElementCollection
-    @Builder.Default
-    private Set<MBTI> mbti = new HashSet<>();
+    //@ElementCollection
+    //@Builder.Default
+    //private Set<MBTI> mbti = new HashSet<>();
+    private String mbti;
 
-    boolean isHobbySame;
+    private Boolean isHobbySame;
 
     @Builder.Default
     @OneToMany
@@ -73,28 +76,43 @@ public class MemberSecondProfile extends BaseTimeEntity {
 
     private String comment;
 
-    @ElementCollection
+    // 운동 관련
+
+    @Enumerated(EnumType.STRING)  // null 시 상관 없음
     @Column(nullable = true)
-    @Builder.Default
-    private Set<ExerciseType> exerciseTypes = new HashSet<>();
+    private ExerciseType exerciseType;
 
     @Column(nullable = true)
     private Boolean isSchool;
+
+    // 음식 관련
 
     @ElementCollection
     @Column(nullable = true)
     @Builder.Default
     private Set<FoodType> foodTypes = new HashSet<>();
 
+    // 공부 관련
+    @Enumerated(EnumType.STRING)  // null 시 상관 없음
+    @Column(nullable = true)
+    private StudyType studyType;
+
+    private String majorName;
+
+    private String professorName;
+
+    // 온라인인지 - 같이도 그냥 온라인 (매칭 시 같이면 둘다 ㄱㅊ다는 뜻이니깐...)
+    private boolean isOnline;
+
+    // 몇번인지
+    private int times;
+
+    // 공부 or 운동 장소
+    private String place;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private MateType mateType;
-
-    // 문자열로 mbti 받고 해당 하는 mbti 리스트 가져오는 함수
-    public Set<MBTI> getMbtis(String mbti) {
-        // 이후 구현
-        return Set.of();
-    }
 
     // 인원 수 초과 방지
     public void addPerson() {

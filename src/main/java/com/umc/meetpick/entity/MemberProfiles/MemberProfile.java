@@ -1,13 +1,15 @@
 package com.umc.meetpick.entity.MemberProfiles;
 import com.umc.meetpick.entity.BaseTimeEntity;
 import com.umc.meetpick.entity.Major;
-import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.ContactType;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.Hobby;
 import com.umc.meetpick.enums.MBTI;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
@@ -46,7 +48,7 @@ public class MemberProfile extends BaseTimeEntity {
     private MBTI MBTI;
 
     @ManyToOne
-    @JoinColumn(name = "major_id", nullable = true)
+    @JoinColumn(nullable = false)
     private Major major;
 
     @Enumerated(EnumType.STRING)
