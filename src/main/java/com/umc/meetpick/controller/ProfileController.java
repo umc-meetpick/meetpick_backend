@@ -6,6 +6,7 @@ import com.umc.meetpick.service.CurrentUser;
 import com.umc.meetpick.service.ProfileService;  // ProfileService로 통합
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -85,10 +86,13 @@ public class ProfileController {
     @PostMapping("/student-number/set")
     public ApiResponse<ProfileDTO.StudentNumberDTO.StudentNumberResponseDTO> setStudentNumber(
             @CurrentUser Long memberId,
-            @RequestBody ProfileDTO.StudentNumberDTO.StudentNumberRequestDTO requestDTO) {
+            @Valid @RequestBody ProfileDTO.StudentNumberDTO.StudentNumberRequestDTO requestDTO) {
+
         log.info("📚 학번 설정 요청 - memberId={}, studentNumber={}", memberId, requestDTO.getStudentNumber());
-        return profileService.setStudentNumber(memberId, requestDTO);  // ProfileService로 호출
+
+        return profileService.setStudentNumber(memberId, requestDTO);  // ProfileService 호출
     }
+
 
     // 사용자의 연락처 설정 API
     @Operation(summary = "사용자의 연락처 설정 API", description = "회원 ID와 연락처 유형 및 정보를 바탕으로 연락처를 설정합니다.")

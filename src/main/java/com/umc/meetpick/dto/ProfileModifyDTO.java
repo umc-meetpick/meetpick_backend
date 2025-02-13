@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.umc.meetpick.enums.ContactType;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.util.Set;
@@ -216,7 +217,7 @@ public class ProfileModifyDTO {
         public static class StudentNumberRequestDTO {
 
             @NotNull(message = "학번을 입력해야 합니다.")
-            @Min(value = 0, message = "숫자만 입력하세요.")
+            @Pattern(regexp = "\\d+", message = "숫자만 입력하세요.")
             private String studentNumber;
         }
 

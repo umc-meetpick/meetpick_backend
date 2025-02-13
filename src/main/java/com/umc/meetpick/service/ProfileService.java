@@ -273,14 +273,17 @@ public class ProfileService {
 
     // 학번 설정
     @Transactional
-    public ApiResponse<ProfileDTO.StudentNumberDTO.StudentNumberResponseDTO> setStudentNumber(Long memberId, ProfileDTO.StudentNumberDTO.StudentNumberRequestDTO requestDTO) {
+    public ApiResponse<ProfileDTO.StudentNumberDTO.StudentNumberResponseDTO> setStudentNumber(
+            Long memberId, ProfileDTO.StudentNumberDTO.StudentNumberRequestDTO requestDTO) {
+
         String studentNumberStr = requestDTO.getStudentNumber();
         log.info("🔍 학번 설정 요청 - memberId={}, studentNumber={}", memberId, studentNumberStr);
 
-        // 숫자 검증 (추가)
+        // 숫자만 포함되어 있는지 검증
         if (studentNumberStr == null || !studentNumberStr.matches("\\d+")) {
+            log.warn("❌ 학번 입력값이 잘못됨 - memberId={}, 입력값={}", memberId, studentNumberStr);
             return ApiResponse.onFailure(
-                    ErrorCode.INVALID_STUDENT_NUMBER.getCode(),
+                    ErrorCode.INVALID_STUDENT_NUMBER.getCode(),  // 🔥 ErrorCode 사용
                     ErrorCode.INVALID_STUDENT_NUMBER.getMessage(),
                     null
             );
@@ -321,4 +324,5 @@ public class ProfileService {
                 new ProfileDTO.StudentNumberDTO.StudentNumberResponseDTO(memberId, memberProfile.getId(), studentNumber)
         );
     }
+
 }

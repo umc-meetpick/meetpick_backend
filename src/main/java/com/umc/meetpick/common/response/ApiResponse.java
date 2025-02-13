@@ -1,11 +1,15 @@
 package com.umc.meetpick.common.response;
 
+import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.common.response.status.SuccessCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Getter
 @AllArgsConstructor
@@ -34,6 +38,7 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> onFailure(String code, String message, T data) {
         return new ApiResponse<>(false, code, message, data);
     }
+
     public static <T> ApiResponse<T> ofFailure(BaseErrorCode code, T result) {
         return new ApiResponse<>(false, code.getReasonHttpStatus().getCode(), code.getReasonHttpStatus().getMessage(), result);
     }
