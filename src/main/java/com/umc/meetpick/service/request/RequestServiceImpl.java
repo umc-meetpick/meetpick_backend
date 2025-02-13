@@ -195,7 +195,7 @@ public class RequestServiceImpl implements RequestService {
 
     // 매칭에 참가하기 api
     @Override
-    public RequestDTO.JoinRequestDTO createJoinRequest(RequestDTO.JoinRequestDTO newJoinRequest) {
+    public RequestDTO.JoinRequestDTO createJoinRequest(Long memberId,RequestDTO.JoinRequestDTO newJoinRequest) {
         // requestId가 존재하는지 판단
         MemberSecondProfile request = memberSecondProfileRepository.findById(newJoinRequest.getRequestId())
                 .orElseThrow(()-> new EntityNotFoundException("잘못된 매칭에 대한 요청" + newJoinRequest.getRequestId()));
@@ -203,8 +203,8 @@ public class RequestServiceImpl implements RequestService {
         request.addPerson();
 
         // 유저 join으로 찾기 - 매칭 신청한 유저
-        Member joinMember = memberRepository.findById(newJoinRequest.getPostUserId())
-                .orElseThrow(() -> new EntityNotFoundException("매칭 신청 유저 오류" + newJoinRequest.getPostUserId()));
+        Member joinMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("매칭 신청 유저 오류"));
 
         MemberProfile joinMemberProfile = joinMember.getMemberProfile();
 
@@ -288,7 +288,7 @@ public class RequestServiceImpl implements RequestService {
 
         return RequestDTO.JoinRequestDTO.builder()
                 .requestId(savedMapping.getMemberSecondProfile().getId())
-                .postUserId(savedMapping.getMember().getId())
+                //.postUserId(savedMapping.getMember().getId())
                 //.status(savedMapping.getStatus())
                 .build();
 
@@ -307,11 +307,11 @@ public class RequestServiceImpl implements RequestService {
 
     // 매칭에 좋아요 등록
     @Override
-    public RequestDTO.LikeRequestDTO likeRequest(Long requestId, Long userId) {
+    public RequestDTO.LikeRequestDTO likeRequest(Long memberId,Long requestId) {
         MemberSecondProfile request = memberSecondProfileRepository.findById(requestId)
                 .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭에 대한 요청"));
 
-        Member member = memberRepository.findById(userId)
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new EntityNotFoundException("존재하지 않는 유저의 신청"));
 
         MemberSecondProfileLikes memberLikes = MemberSecondProfileLikes.builder()
@@ -323,17 +323,17 @@ public class RequestServiceImpl implements RequestService {
 
         return RequestDTO.LikeRequestDTO.builder()
                 .requestId(savedMemberLikes.getMemberSecondProfile().getId())
-                .postUserId(savedMemberLikes.getMember().getId())
+                //.postUserId(savedMemberLikes.getMember().getId())
                 .build();
     }
 
     @Override
-    public void deleteLikeRequest(Long requestId, Long userId){
+    public void deleteLikeRequest(Long memberId, Long requestId){
 
         MemberSecondProfileLikes memberLikes = memberLikesRepository.findByMemberSecondProfileId(requestId)
                 .orElseThrow(()->new IllegalArgumentException("찜하기 찾을 수 없음"));
 
-        if (!memberLikes.getMember().getId().equals(userId)) {
+        if (!memberLikes.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("취소 권한 없음");
         }
         memberLikesRepository.delete(memberLikes);
@@ -341,7 +341,7 @@ public class RequestServiceImpl implements RequestService {
 
     // 매칭 요청에 대한 수락 or 거절
     @Override
-    public RequestDTO.isAcceptedDTO acceptRequest(Long matchingRequestId, Long userId, Boolean isAccepted) {
+    public RequestDTO.isAcceptedDTO acceptRequest(Long memberId, Long matchingRequestId, Boolean isAccepted) {
 
 //        MemberSecondProfile request = memberSecondProfileRepository.findById(requestId)
 //                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭"));
@@ -349,7 +349,7 @@ public class RequestServiceImpl implements RequestService {
         MemberSecondProfileMapping memberSecondProfileMapping = memberMappingRepository.findById(matchingRequestId)
                 .orElseThrow(()-> new EntityNotFoundException("신청을 찾을 수 없음"));
 
-        if(!memberSecondProfileMapping.getMemberSecondProfile().getMember().getId().equals(userId)) {
+        if(!memberSecondProfileMapping.getMemberSecondProfile().getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("권한 없음");
         }
 

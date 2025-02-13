@@ -15,7 +15,7 @@ public class ReportDTO {
     @AllArgsConstructor
     public static class PostReportDTO {
         private Long reportedId; // 신고 당한 사람
-        private Long reporterId; // 신고 한 사람
+        //private Long reporterId; // 신고 한 사람
         private String content;
         private String reportType;
     }
