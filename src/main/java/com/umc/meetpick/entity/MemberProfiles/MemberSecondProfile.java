@@ -102,10 +102,10 @@ public class MemberSecondProfile extends BaseTimeEntity {
     private String professorName;
 
     // 온라인인지 - 같이도 그냥 온라인 (매칭 시 같이면 둘다 ㄱㅊ다는 뜻이니깐...)
-    private boolean isOnline;
+    private Boolean isOnline;
 
     // 몇번인지
-    private int times;
+    private int studyTimes;
 
     // 공부 or 운동 장소
     private String place;
