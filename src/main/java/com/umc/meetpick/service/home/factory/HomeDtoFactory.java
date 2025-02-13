@@ -5,9 +5,13 @@ import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 
+import static com.umc.meetpick.service.home.validator.MemberValidator.MemberValidatorFromMember;
+
 public class HomeDtoFactory {
 
     public static MemberResponseDTO MemberProfileToMemberProfileResponseDTO(MemberSecondProfile memberSecondProfile) {
+
+        MemberValidatorFromMember(memberSecondProfile);
 
         Member member = memberSecondProfile.getMember();
         MemberProfile memberProfile = member.getMemberProfile(); //TODO JOIN을 더 최소하 할 수 있는 방법이 있을까?
