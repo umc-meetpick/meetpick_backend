@@ -6,13 +6,14 @@ import com.umc.meetpick.enums.MateType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface MemberSecondProfileRepository extends JpaRepository<MemberSecondProfile, Long> {
+public interface MemberSecondProfileRepository extends JpaRepository<MemberSecondProfile, Long>, JpaSpecificationExecutor<MemberSecondProfile> {
 
     boolean existsByMemberIdAndMateType(Long writerId, MateType mateType);
 
@@ -30,5 +31,10 @@ public interface MemberSecondProfileRepository extends JpaRepository<MemberSecon
 
     Optional<MemberSecondProfile> findFirstBy();
 
+    Optional<MemberSecondProfile> findByMemberIdAndMateType(Long memberId, MateType mateType);
 
-}
+
+    Page<MemberSecondProfile> findAllByMateType(MateType mateType, Pageable pageable); //페이징
+    }
+
+
