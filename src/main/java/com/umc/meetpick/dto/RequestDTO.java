@@ -50,7 +50,7 @@ public class RequestDTO {
     @AllArgsConstructor
     public static class JoinRequestDTO {
         private Long requestId;
-        private Long postUserId;
+        //private Long postUserId;
         //private Boolean status;
     }
 
@@ -61,7 +61,7 @@ public class RequestDTO {
     @AllArgsConstructor
     public static class LikeRequestDTO {
         private Long requestId;
-        private Long postUserId;
+        //private Long postUserId;
     }
 
     // 매칭 승낙 or 거절
