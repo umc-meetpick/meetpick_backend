@@ -1,20 +1,20 @@
 package com.umc.meetpick.entity.MemberProfiles;
 import com.umc.meetpick.entity.BaseTimeEntity;
 import com.umc.meetpick.entity.Major;
+import com.umc.meetpick.entity.Member;
+import com.umc.meetpick.entity.SubMajor;
 import com.umc.meetpick.enums.ContactType;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.Hobby;
 import com.umc.meetpick.enums.MBTI;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
 @Getter
 @Setter
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -50,6 +50,10 @@ public class MemberProfile extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Major major;
+
+    @ManyToOne
+    @JoinColumn(name = "sub_major_id")
+    private SubMajor subMajor;
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.LAZY)

@@ -45,27 +45,27 @@ public class RegisterController {
         return registerService.saveMemberProfile(memberId, signUpDTO);
     }
 
-    // 이메일 인증 코드 발송
-    @Operation(summary = "이메일 인증 코드 요청")
-    @PostMapping("/verify/sendCode")
-    public ApiResponse<String> sendVerificationCode(@RequestBody RegisterDTO.EmailVerificationRequestDTO requestDTO) {
-        log.info("📧 이메일 인증 코드 요청 - memberId={}, email={}, university={}",
-                requestDTO.getMemberId(), requestDTO.getEmail(), requestDTO.getUnivName());
-
-        return registerService.sendVerificationCode(
-                requestDTO.getMemberId(), requestDTO.getEmail(), requestDTO.getUnivName());
-    }
-
-    // 이메일 인증 코드 검증
-    @Operation(summary = "이메일 인증 코드 검증")
-    @PostMapping("/verify/verifyCode")
-    public ApiResponse<String> verifyCode(@RequestBody RegisterDTO.EmailVerificationCodeDTO codeDTO) {
-        log.info("🔍 이메일 인증 코드 검증 - memberId={}, email={}, university={}, code={}",
-                codeDTO.getMemberId(), codeDTO.getEmail(), codeDTO.getUnivName(), codeDTO.getVerificationCode());
-
-        return registerService.verifyEmailCode(
-                codeDTO.getMemberId(), codeDTO.getEmail(), codeDTO.getUnivName(), codeDTO.getVerificationCode());
-    }
+//    // 이메일 인증 코드 발송
+//    @Operation(summary = "이메일 인증 코드 요청")
+//    @PostMapping("/verify/sendCode")
+//    public ApiResponse<String> sendVerificationCode(@RequestBody RegisterDTO.EmailVerificationRequestDTO requestDTO) {
+//        log.info("📧 이메일 인증 코드 요청 - email={}, university={}",
+//                requestDTO.getEmail(), requestDTO.getUnivName());
+//
+//        return registerService.sendVerificationCode(
+//                 requestDTO.getEmail(), requestDTO.getUnivName());
+//    }
+//
+//    // 이메일 인증 코드 검증
+//    @Operation(summary = "이메일 인증 코드 검증")
+//    @PostMapping("/verify/verifyCode")
+//    public ApiResponse<String> verifyCode(@RequestBody RegisterDTO.EmailVerificationCodeDTO codeDTO) {
+//        log.info("🔍 이메일 인증 코드 검증 -  email={}, university={}, code={}",
+//                 codeDTO.getEmail(), codeDTO.getUnivName(), codeDTO.getVerificationCode());
+//
+//        return registerService.verifyEmailCode(
+//                codeDTO.getEmail(), codeDTO.getUnivName(), codeDTO.getVerificationCode());
+//    }
 
     // 약관 동의 확인
     @Operation(summary = "약관 동의 확인")

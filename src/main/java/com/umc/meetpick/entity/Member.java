@@ -3,6 +3,8 @@ import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.enums.*;
 import jakarta.persistence.*;
+import java.util.List;
+import java.util.ArrayList;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -11,6 +13,7 @@ import java.util.Date;
 import lombok.*;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @Entity

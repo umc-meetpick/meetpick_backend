@@ -3,7 +3,7 @@ package com.umc.meetpick.service;
 import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.common.response.status.SuccessCode;
 import com.umc.meetpick.dto.ProfileDTO;
-import com.umc.meetpick.dto.ProfileModifyDTO;
+import com.umc.meetpick.dto.ProfileDTO;
 import com.umc.meetpick.common.response.ApiResponse;
 import com.umc.meetpick.entity.Major;
 import com.umc.meetpick.entity.Member;
@@ -33,7 +33,7 @@ public class ProfileModifyService {
     private final SubMajorRepository subMajorRepository;
 
     // 연락처 수정
-    public ApiResponse<ProfileModifyDTO.ContactDTO.ContactResponseDTO> modifyContact(ProfileModifyDTO.ContactDTO.ContactRequestDTO contactRequestDTO) {
+    public ApiResponse<ProfileDTO.ContactDTO.ContactResponseDTO> modifyContact(ProfileDTO.ContactDTO.ContactRequestDTO contactRequestDTO) {
         Long memberId = contactRequestDTO.getMemberId();
         ContactType contactType = contactRequestDTO.getContactType();
         String contactInfo = contactRequestDTO.getContactInfo();
@@ -64,7 +64,7 @@ public class ProfileModifyService {
         memberProfile.setContactInfo(contactInfo);
         memberProfileRepository.save(memberProfile);
 
-        ProfileModifyDTO.ContactDTO.ContactResponseDTO responseDTO = new ProfileModifyDTO.ContactDTO.ContactResponseDTO(
+        ProfileDTO.ContactDTO.ContactResponseDTO responseDTO = new ProfileDTO.ContactDTO.ContactResponseDTO(
                 memberProfile.getId(),
                 memberProfile.getContact(),
                 memberProfile.getContactInfo());
@@ -72,7 +72,7 @@ public class ProfileModifyService {
     }
 
     // 취미 수정
-    public ApiResponse<ProfileModifyDTO.HobbyDTO.HobbyResponseDTO> modifyHobbies(ProfileModifyDTO.HobbyDTO.HobbyRequestDTO hobbyRequestDTO) {
+    public ApiResponse<ProfileDTO.HobbyDTO.HobbyResponseDTO> modifyHobbies(ProfileDTO.HobbyDTO.HobbyRequestDTO hobbyRequestDTO) {
         Long memberId = hobbyRequestDTO.getMemberId();
         Set<Integer> hobbyIds = hobbyRequestDTO.getHobbyIds();
 
@@ -94,7 +94,7 @@ public class ProfileModifyService {
         memberProfile.setHobbies(selectedHobbies);
         memberProfileRepository.save(memberProfile);
 
-        ProfileModifyDTO.HobbyDTO.HobbyResponseDTO hobbyResponseDTO = new ProfileModifyDTO.HobbyDTO.HobbyResponseDTO(
+        ProfileDTO.HobbyDTO.HobbyResponseDTO hobbyResponseDTO = new ProfileDTO.HobbyDTO.HobbyResponseDTO(
                 memberProfile.getId(),
                 selectedHobbies.stream()
                         .map(Hobby::getKoreanName)
@@ -106,7 +106,7 @@ public class ProfileModifyService {
 
     // MBTI 수정
     @Transactional
-    public ApiResponse<ProfileModifyDTO.MBTIDTO.MBTIResponseDTO> modifyMBTI(Long memberId, ProfileModifyDTO.MBTIDTO.MBTIRequestDTO requestDTO) {
+    public ApiResponse<ProfileDTO.MBTIDTO.MBTIResponseDTO> modifyMBTI(Long memberId, ProfileDTO.MBTIDTO.MBTIRequestDTO requestDTO) {
         if (requestDTO == null || requestDTO.getMBTI() == null) {
             return ApiResponse.onFailure(
                     ErrorCode.INVALID_MBTI.getCode(),
@@ -147,12 +147,12 @@ public class ProfileModifyService {
         memberProfileRepository.save(memberProfile);
 
         return ApiResponse.of(SuccessCode.MBTI_SET_SUCCESS,
-                new ProfileModifyDTO.MBTIDTO.MBTIResponseDTO(memberId, memberProfile.getId(), mbtiEnum.name(), mbtiEnum.name() + " 메이트이시군요!"));
+                new ProfileDTO.MBTIDTO.MBTIResponseDTO(memberId, memberProfile.getId(), mbtiEnum.name(), mbtiEnum.name() + " 메이트이시군요!"));
     }
 
     // 전공 수정
     @Transactional
-    public ApiResponse<ProfileModifyDTO.MajorDTO.MajorResponseDTO> modifyMajor(Long memberId, ProfileModifyDTO.MajorDTO.MajorRequestDTO requestDTO) {
+    public ApiResponse<ProfileDTO.MajorDTO.MajorResponseDTO> modifyMajor(Long memberId, ProfileDTO.MajorDTO.MajorRequestDTO requestDTO) {
         Long subMajorId = requestDTO.getSubMajorId();
 
         SubMajor subMajor = subMajorRepository.findById(subMajorId)
@@ -171,13 +171,13 @@ public class ProfileModifyService {
         memberProfile.setMajor(major);
         memberProfileRepository.save(memberProfile);
 
-        return ApiResponse.of(SuccessCode.MAJOR_SET_SUCCESS, new ProfileModifyDTO
+        return ApiResponse.of(SuccessCode.MAJOR_SET_SUCCESS, new ProfileDTO
                 .MajorDTO.MajorResponseDTO(memberId, subMajor.getId(), subMajor.getName(), major.getId(), major.getName()));
     }
 
     // 프로필 이미지 설정
     @Transactional
-    public ApiResponse<ProfileModifyDTO.ProfileImageDTO.ProfileImageResponseDTO> modifyProfileImage(Long memberId, ProfileModifyDTO.ProfileImageDTO.ProfileImageRequestDTO requestDTO) {
+    public ApiResponse<ProfileDTO.ProfileImageDTO.ProfileImageResponseDTO> modifyProfileImage(Long memberId, ProfileDTO.ProfileImageDTO.ProfileImageRequestDTO requestDTO) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("❌ 해당 ID의 Member를 찾을 수 없습니다."));
 
@@ -194,10 +194,10 @@ public class ProfileModifyService {
         memberProfile.setProfileImage(requestDTO.getImageUrl());
         memberProfileRepository.save(memberProfile);
 
-        return ApiResponse.onSuccess(new ProfileModifyDTO.ProfileImageDTO.ProfileImageResponseDTO(memberId, memberProfile.getId(), memberProfile.getProfileImage()));
+        return ApiResponse.onSuccess(new ProfileDTO.ProfileImageDTO.ProfileImageResponseDTO(memberId, memberProfile.getId(), memberProfile.getProfileImage()));
     }
     // 닉네임 중복 검사
-    public ApiResponse<ProfileModifyDTO.NicknameDTO.NicknameCheckResponseDTO> checkNicknameAvailability(Long memberId, String nickname) {
+    public ApiResponse<ProfileDTO.NicknameDTO.NicknameCheckResponseDTO> checkNicknameAvailability(Long memberId, String nickname) {
         boolean exists = memberProfileRepository.existsByNickname(nickname);
         boolean isAvailable = !exists || (memberId != null && memberProfileRepository.findByMemberId(memberId)
                 .map(profile -> profile.getNickname().equals(nickname))
@@ -207,7 +207,7 @@ public class ProfileModifyService {
             return ApiResponse.onFailure(
                     ErrorCode.NICKNAME_ALREADY_EXISTS.getCode(),
                     ErrorCode.NICKNAME_ALREADY_EXISTS.getMessage(),
-                    ProfileModifyDTO.NicknameDTO.NicknameCheckResponseDTO.builder()
+                    ProfileDTO.NicknameDTO.NicknameCheckResponseDTO.builder()
                             .isAvailable(false)
                             .build()
             );
@@ -215,7 +215,7 @@ public class ProfileModifyService {
 
         return ApiResponse.of(
                 SuccessCode.NICKNAME_AVAILABLE,
-                ProfileModifyDTO.NicknameDTO.NicknameCheckResponseDTO.builder()
+                ProfileDTO.NicknameDTO.NicknameCheckResponseDTO.builder()
                         .isAvailable(true)
                         .build()
         );
@@ -223,7 +223,7 @@ public class ProfileModifyService {
 
     // 닉네임 설정
     @Transactional
-    public ApiResponse<ProfileModifyDTO.NicknameDTO.NicknameResponseDTO> modifyNickname(Long memberId, ProfileModifyDTO.NicknameDTO.NicknameRequestDTO requestDTO) {
+    public ApiResponse<ProfileDTO.NicknameDTO.NicknameResponseDTO> modifyNickname(Long memberId, ProfileDTO.NicknameDTO.NicknameRequestDTO requestDTO) {
         String nickname = requestDTO.getNickname();
         log.info("🔍 닉네임 설정 요청 - memberId={}, nickname={}", memberId, nickname);
 
@@ -265,13 +265,13 @@ public class ProfileModifyService {
         log.info("✅ 닉네임 설정 완료 - memberId={}, profileId={}, nickname={}", memberId, memberProfile.getId(), nickname);
         return ApiResponse.of(
                 SuccessCode.NICKNAME_SET_SUCCESS,
-                new ProfileModifyDTO.NicknameDTO.NicknameResponseDTO(memberId, memberProfile.getId(), nickname)
+                new ProfileDTO.NicknameDTO.NicknameResponseDTO(memberId, memberProfile.getId(), nickname)
         );
     }
 
     // 학번 변경
     @Transactional
-    public ApiResponse<ProfileModifyDTO.StudentNumberDTO.StudentNumberResponseDTO> modifyStudentNumber(Long memberId, ProfileModifyDTO.StudentNumberDTO.StudentNumberRequestDTO requestDTO) {
+    public ApiResponse<ProfileDTO.StudentNumberDTO.StudentNumberResponseDTO> modifyStudentNumber(Long memberId, ProfileDTO.StudentNumberDTO.StudentNumberRequestDTO requestDTO) {
         String studentNumberStr = requestDTO.getStudentNumber();
         log.info("🔍 학번 설정 요청 - memberId={}, studentNumber={}", memberId, studentNumberStr);
 
@@ -316,7 +316,7 @@ public class ProfileModifyService {
         log.info("✅ 학번 설정 완료 - memberId={}, profileId={}, studentNumber={}", memberId, memberProfile.getId(), studentNumber);
         return ApiResponse.of(
                 SuccessCode.STUDENT_NUMBER_SET_SUCCESS,
-                new ProfileModifyDTO.StudentNumberDTO.StudentNumberResponseDTO(memberId, memberProfile.getId(), studentNumber)
+                new ProfileDTO.StudentNumberDTO.StudentNumberResponseDTO(memberId, memberProfile.getId(), studentNumber)
         );
     }
 }

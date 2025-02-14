@@ -6,6 +6,7 @@ import com.umc.meetpick.enums.Hobby;
 import com.umc.meetpick.enums.MBTI;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 

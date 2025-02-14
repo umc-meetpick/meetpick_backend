@@ -7,7 +7,7 @@ import com.umc.meetpick.enums.Gender;
 import com.umc.meetpick.enums.University;
 import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.common.response.status.ErrorCode;
-import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -38,13 +38,13 @@ public class RegisterService {
      * 회원 기본 정보 저장
      */
     @Transactional
-    public ApiResponse<RegisterDTO.SignUpDTO> saveMemberProfile(Long memberId, RegisterDTO.SignUpDTO signUpDTO) {
+    public ApiResponse<RegisterDTO.SignUpDTO> saveMemberProfile(long memberId ,RegisterDTO.SignUpDTO signUpDTO) {
         try {
             Member member = memberRepository.findById(memberId)
                     .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
 
             Gender newGender = signUpDTO.getGender().equals("남성") ? Gender.MALE : Gender.FEMALE;
-            Date newBirthday = Date.valueOf(signUpDTO.getBirthday());
+            Date newBirthday = new Date(signUpDTO.getBirthday().getTime());
 
             if (newGender.equals(member.getGender()) && newBirthday.equals(member.getBirthday())) {
                 return ApiResponse.onSuccess(signUpDTO);
@@ -56,7 +56,7 @@ public class RegisterService {
             member.setBirthday(newBirthday);
             memberRepository.save(member);  // 업데이트 후 저장
 
-            signUpDTO.setMemberId(memberId);
+            //signUpDTO.setMemberId(memberId);
             return ApiResponse.onSuccess(signUpDTO);
 
         } catch (Exception e) {
@@ -144,7 +144,7 @@ public class RegisterService {
                 .orElseThrow(() -> new RuntimeException("Member not found with id: " + memberId));
 
         University universityEnum = University.fromString(universityName.trim());
-        if (universityEnum == University.UNKNOWN_UNIVERSITY) {
+        if (universityEnum == University.SEOUL_NATIONAL_UNIVERSITY) {
             // 대학교가 알 수 없는 경우 처리
         }
 
@@ -180,7 +180,7 @@ public class RegisterService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("회원 정보를 찾을 수 없습니다. memberId=" + memberId));
 
-        RegisterDTO.SignupSuccessDTO successInfo = new RegisterDTO.SignupSuccessDTO(member.getId(), "회원가입이 성공적으로 완료되었습니다!");
+        RegisterDTO.SignupSuccessDTO successInfo = new RegisterDTO.SignupSuccessDTO(member.getId());
 
         // ApiResponse에서 onSuccess 메서드를 사용하여 성공 응답 생성
         return ApiResponse.onSuccess(successInfo);
