@@ -213,50 +213,50 @@ public class RequestServiceImpl implements RequestService {
 
         MemberProfile requestOwnerMemberProfile = requestOwnerMember.getMemberProfile();
 
-        // 조건에 맞는지 판단 - 성별
-        if(!(request.getGender() == null) && joinMember.getGender() != request.getGender()){
-            throw new IllegalArgumentException("성별 조건 안 맞음");
-        }
+//        // 조건에 맞는지 판단 - 성별
+//        if(!(request.getGender() == null) && joinMember.getGender() != request.getGender()){
+//            throw new IllegalArgumentException("성별 조건 안 맞음");
+//        }
+//
+//        // 조건에 맞는지 판단 - 나이 범위
+//        if(!(request.getMinAge() == null)){
+//            if (request.getMinAge() > joinMember.getAge() || request.getMaxAge() < joinMember.getAge()) {
+//                throw new IllegalArgumentException("나이 조건 안 맞음");
+//            }
+//        }
 
-        // 조건에 맞는지 판단 - 나이 범위
-        if(!(request.getMinAge() == null)){
-            if (request.getMinAge() > joinMember.getAge() || request.getMaxAge() < joinMember.getAge()) {
-                throw new IllegalArgumentException("나이 조건 안 맞음");
-            }
-        }
-
-        // 조건에 맞는지 판단 - 학번
-        if(request.getStudentNumber() == PEER){
-            if (!(joinMemberProfile.getStudentNumber() == requestOwnerMemberProfile.getStudentNumber())){
-                throw new IllegalArgumentException("학번 조건 안 맞음");
-            }
-        } else if(request.getStudentNumber() == SENIOR ){
-            if (!(joinMemberProfile.getStudentNumber() < requestOwnerMemberProfile.getStudentNumber())){
-                throw new IllegalArgumentException("학번 조건 안 맞음");
-            }
-        } else if(request.getStudentNumber() == JUNIOR){
-            if (!(joinMemberProfile.getStudentNumber() > requestOwnerMemberProfile.getStudentNumber())){
-                throw new IllegalArgumentException("학번 조건 안 맞음");
-            }
-        }
+//        // 조건에 맞는지 판단 - 학번
+//        if(request.getStudentNumber() == PEER){
+//            if (!(joinMemberProfile.getStudentNumber() == requestOwnerMemberProfile.getStudentNumber())){
+//                throw new IllegalArgumentException("학번 조건 안 맞음");
+//            }
+//        } else if(request.getStudentNumber() == SENIOR ){
+//            if (!(joinMemberProfile.getStudentNumber() < requestOwnerMemberProfile.getStudentNumber())){
+//                throw new IllegalArgumentException("학번 조건 안 맞음");
+//            }
+//        } else if(request.getStudentNumber() == JUNIOR){
+//            if (!(joinMemberProfile.getStudentNumber() > requestOwnerMemberProfile.getStudentNumber())){
+//                throw new IllegalArgumentException("학번 조건 안 맞음");
+//            }
+//        }
 
         // 조건에 맞는지 판단 - submajor - 나중에
 
-        // 취미 동일 여부 - 하나라도 같으면 통과
-        if(request.getIsHobbySame()){
-            if(!(Collections.disjoint(joinMemberProfile.getHobbies(),requestOwnerMemberProfile.getHobbies()))){
-                throw new IllegalArgumentException("취미 조건 안 맞음");
-            }
-        }
-
-        // 성격 판단 - 입력받은 mbti 가져와서 판단
-        String joinMemberMBTI = joinMemberProfile.getMBTI().name();
-        String requestMBTI = request.getMbti();
-        for (int i = 0; i < 4; i++){
-            if(!(requestMBTI.charAt(i) == joinMemberMBTI.charAt(i)) && !(requestMBTI.charAt(i) == 'x')){
-                throw new IllegalArgumentException("성격 조건 안 맞음");
-            }
-        }
+//        // 취미 동일 여부 - 하나라도 같으면 통과
+//        if(request.getIsHobbySame()){
+//            if(!(Collections.disjoint(joinMemberProfile.getHobbies(),requestOwnerMemberProfile.getHobbies()))){
+//                throw new IllegalArgumentException("취미 조건 안 맞음");
+//            }
+//        }
+//
+//        // 성격 판단 - 입력받은 mbti 가져와서 판단
+//        String joinMemberMBTI = joinMemberProfile.getMBTI().name();
+//        String requestMBTI = request.getMbti();
+//        for (int i = 0; i < 4; i++){
+//            if(!(requestMBTI.charAt(i) == joinMemberMBTI.charAt(i)) && !(requestMBTI.charAt(i) == 'x')){
+//                throw new IllegalArgumentException("성격 조건 안 맞음");
+//            }
+//        }
 
 //        if (!((request.getPersonality().getGroupA() == PersonalityEnum.CHEERFUL && joinMemberMBTI.charAt(0) == 'E') ||
 //                (request.getPersonality().getGroupA() == PersonalityEnum.QUIET && joinMemberMBTI.charAt(0) == 'I'))) {
