@@ -314,6 +314,10 @@ public class RequestServiceImpl implements RequestService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new EntityNotFoundException("존재하지 않는 유저의 신청"));
 
+        if(memberLikesRepository.existsByMemberAndMemberSecondProfile(member, request)){
+            throw new IllegalArgumentException("이미 좋아요 누르셨습니다.");
+        }
+
         MemberSecondProfileLikes memberLikes = MemberSecondProfileLikes.builder()
                 .member(member)
                 .memberSecondProfile(request)
