@@ -8,8 +8,8 @@ import lombok.Getter;
 public enum ContactType{
 
     KAKAO_TALK_ID ("카카오톡"),    // 카카오톡ID
-    OPEN_CHAT_LINK ("오픈 채팅"),   // 오픈채팅링크
-    PHONE_NUMBER ("전화 번호");      // 전화번호
+    OPEN_CHAT_LINK ("오픈채팅"),   // 오픈채팅링크
+    PHONE_NUMBER ("전화번호");      // 전화번호
 
     private final String koreanName;
 
