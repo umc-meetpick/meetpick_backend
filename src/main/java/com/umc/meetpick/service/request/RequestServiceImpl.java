@@ -35,7 +35,6 @@ public class RequestServiceImpl implements RequestService {
     private final MemberLikesRepository memberLikesRepository;
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
-    //private final PersonalityRepository personalityRepository;
     private final MemberSecondProfileSubMajorRepository memberSecondProfileSubMajorRepository;
 
     @Override
@@ -308,6 +307,7 @@ public class RequestServiceImpl implements RequestService {
     // 매칭에 좋아요 등록
     @Override
     public RequestDTO.LikeRequestDTO likeRequest(Long memberId,Long requestId) {
+
         MemberSecondProfile request = memberSecondProfileRepository.findById(requestId)
                 .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭에 대한 요청"));
 
@@ -372,6 +372,7 @@ public class RequestServiceImpl implements RequestService {
     //TODO 다시 코딩
     @Override
     public List<MatchResponseDto> getLikes(Long memberId, MateType mateType) {
+
         List<MemberSecondProfileLikes> memberSecondProfileLikes =
                 memberLikesRepository.findAllByMember(memberRepository.findMemberById(memberId));
 

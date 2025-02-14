@@ -1,5 +1,7 @@
 package com.umc.meetpick.enums;
 
+import com.umc.meetpick.common.exception.handler.GeneralHandler;
+import com.umc.meetpick.common.response.status.ErrorCode;
 import lombok.Getter;
 
 @Getter
@@ -38,6 +40,6 @@ public enum Hobby {
                 return hobby;
             }
         }
-        throw new IllegalArgumentException("No enum constant with koreanName: " + koreanName);
+        throw new GeneralHandler(ErrorCode.INVALID_ENUM);
     }
 }

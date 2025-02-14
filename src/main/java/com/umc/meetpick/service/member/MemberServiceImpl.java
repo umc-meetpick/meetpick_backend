@@ -89,21 +89,22 @@ public class MemberServiceImpl implements MemberService {
 
         //TODO 유효성 검사 및 이미지 처리 로직 구현
 
-        SubMajor subMajor = subMajorRepository.findByName(signUpProfileDTO.getName()).orElseThrow(()-> new GeneralHandler(ErrorCode.SUBMAJOR_NOT_EXSIT));
+        SubMajor subMajor = subMajorRepository.findByName(signUpProfileDTO.getSubMajor()).orElseThrow(()-> new GeneralHandler(ErrorCode.SUBMAJOR_NOT_EXSIT));
 
         Set<Hobby> hobbies = signUpProfileDTO.getHobbyList()
                 .stream()
-                .map(hobby -> Hobby.fromString(hobby.getKoreanName()))
+                .map(Hobby::fromString)
                 .collect(Collectors.toSet());
 
+        // TODO 나중에 구조 바꾸기
             MemberProfile memberProfile = MemberProfile.builder()
-                    .nickname(signUpProfileDTO.getName())
-                    .profileImage(null)
+                    .nickname(signUpProfileDTO.getNickName())
+                    .profileImage("example")
                     .studentNumber(signUpProfileDTO.getStudentNumber())
                     .MBTI(signUpProfileDTO.getMbti())
                     .subMajor(subMajor)
                     .hobbies(hobbies)
-                    .contact(signUpProfileDTO.getContactType())
+                    .contact(ContactType.fromString(signUpProfileDTO.getContactType()))
                     .contactInfo(signUpProfileDTO.getContactInfo())
                     .build();
 

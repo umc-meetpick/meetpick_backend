@@ -78,7 +78,7 @@ public class MemberController {
 
     // 이게 맞나 생각해보니
     @Operation(summary = "멤버 연락처 정보 반환")
-    @GetMapping("contact-info/{mappingId}")
+    @GetMapping("/contact-info/{mappingId}")
     public ApiResponse<ContactResponseDto> getContactInfo(@AuthUser Long memberId, @PathVariable Long mappingId) {
 
         return ApiResponse.onSuccess(memberService.getContactInfo(memberId, mappingId));  // ProfileService로 호출
