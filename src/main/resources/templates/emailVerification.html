@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Verification</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #333; }
+    form { margin-bottom: 20px; }
+    label { font-weight: bold; display: block; margin: 10px 0 5px; }
+    input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+    button { padding: 10px 15px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background-color: #45a049; }
+    .message { margin-top: 20px; font-weight: bold; }
+    .message.correct { color: blue; }
+    .message.wrong { color: red; }
+    .message.success { color: green; }
+  </style>
+</head>
+<body>
+<h1>Email Verification</h1>
+
+<form th:action="@{/verify}" method="post">
+  <input type="hidden" name="memberId" th:value="${memberId}">
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" th:value="${email}" required>
+
+  <label for="univName">University Name:</label>
+  <input type="text" id="univName" name="univName" th:value="${univName}" required placeholder="예) 한국대학교">
+
+  <button type="submit">Send Verification Code</button>
+</form>
+
+<div class="message success" th:if="${isCodeSent}" th:text="'Verification code sent successfully!'"></div>
+
+<form th:action="@{/verify/verifyCode}" method="post">
+  <input type="hidden" name="memberId" th:value="${memberId}">
+  <label for="verificationCode">Enter Verification Code:</label>
+  <input type="text" id="verificationCode" name="verificationCode" required>
+  <button type="submit">Verify Code</button>
+</form>
+
+<div class="message wrong" th:if="${message}" th:text="${message}"></div>
+
+</body>
+</html>

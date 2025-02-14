@@ -87,5 +87,20 @@ public enum University {
         return result;
     }
 
+    /**
+     * ✅ "대학교"로 끝나는 대학만 필터링
+     */
+    public static List<Map<String, String>> getUniversitiesEndingWithUniversity() {
+        List<Map<String, String>> result = new ArrayList<>();
+        for (University university : University.values()) {
+            if (university.universityName.endsWith("대학교")) {
+                Map<String, String> map = new HashMap<>();
+                map.put("universityName", university.universityName);
+                map.put("address", university.address);
+                result.add(map);
+            }
+        }
+        return result;
+    }
 }
 

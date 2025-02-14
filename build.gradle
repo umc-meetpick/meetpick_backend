@@ -15,15 +15,27 @@ java {
 
 repositories {
     mavenCentral()
-    maven{url 'https://jitpack.io'}
+    maven { url 'https://jitpack.io' }  // JitPack 추가
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // Spring Data JPA
-    implementation 'org.springframework.boot:spring-boot-starter-web' // Spring WEB
+    // Spring Boot 기본 설정
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+   // implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // Lombok 설정
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2' // H2
     annotationProcessor 'org.projectlombok:lombok'
+
+    // MySQL 드라이버
+    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
+
+    // 테스트 관련 의존성
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0' // Swagger
     implementation 'com.mysql:mysql-connector-j:8.0.33'  // 최신 버전의 MySQL 드라이버
@@ -45,6 +57,14 @@ dependencies {
 
     //대학 인증
     implementation 'com.github.in-seo:univcert:master-SNAPSHOT'
+
+    // JWT 관련 라이브러리
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // Spring Boot Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 }
 
