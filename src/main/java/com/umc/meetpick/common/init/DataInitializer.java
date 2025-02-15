@@ -4,6 +4,8 @@ import com.umc.meetpick.entity.*;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
 import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
@@ -23,7 +25,8 @@ public class DataInitializer implements CommandLineRunner {
     private final MemberProfileRepository memberProfileRepository;
     private final MemberRepository memberRepository;
     private final MemberSecondProfileRepository memberSecondProfileRepository;
-    //private final PersonalityRepository personalityRepository;
+    private final MemberSecondProfileSubMajorRepository memberSecondProfileSubMajorRepository;
+    private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
     private final MemberMappingRepository memberMappingRepository;
 
     /*@PostConstruct
@@ -139,7 +142,7 @@ public class DataInitializer implements CommandLineRunner {
 // ===== Pair 1 =====
                 MemberProfile profile3 = memberProfileRepository.save(MemberProfile.builder()
                         .nickname("책벌레")
-                        .profileImage("https://example.com/profile3.jpg")
+                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                         .studentNumber(21)
                         // "윤리교육과"는 socialScience 계열에 있음
                         .subMajor(subMajorRepository.findByNameOrderByName("윤리교육과"))
@@ -151,7 +154,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile4 = memberProfileRepository.save(MemberProfile.builder()
                         .nickname("스포츠킹")
-                        .profileImage("https://example.com/profile4.jpg")
+                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                         .studentNumber(22)
                         // "국어국문학과"는 humanities 계열에 있음
                         .subMajor(subMajorRepository.findByNameOrderByName("국어국문학과"))
@@ -171,6 +174,7 @@ public class DataInitializer implements CommandLineRunner {
                         .status(MemberStatus.ACTIVE)
                         .role(MemberRole.MEMBER)
                         .memberProfile(profile3)
+                        .isVerified(true)
                         .build());
 
                 Member member4 = memberRepository.save(Member.builder()
@@ -183,6 +187,7 @@ public class DataInitializer implements CommandLineRunner {
                         .status(MemberStatus.ACTIVE)
                         .role(MemberRole.MEMBER)
                         .memberProfile(profile4)
+                        .isVerified(true)
                         .build());
 
                 MemberSecondProfile secondProfile3 = memberSecondProfileRepository.save(MemberSecondProfile.builder()
@@ -213,6 +218,20 @@ public class DataInitializer implements CommandLineRunner {
                 secondProfile4.setMember(member4);
                 memberSecondProfileRepository.save(secondProfile3);
                 memberSecondProfileRepository.save(secondProfile4);
+
+                MemberSecondProfileSubMajor major3 = MemberSecondProfileSubMajor.builder()
+                        .memberSecondProfile(secondProfile3)
+                        .subMajor(subMajorRepository.findByNameOrderByName("간호학과"))
+                        .build();
+
+                MemberSecondProfileTimes time3 = MemberSecondProfileTimes.builder()
+                        .week(Week.MON)
+                        .times(Set.of(1,2,3))
+                        .memberSecondProfile(secondProfile3)
+                        .build();
+
+                memberSecondProfileSubMajorRepository.save(major3);
+                memberSecondProfileTimesRepository.save(time3);
 
                 MemberSecondProfileMapping mapping3 = memberMappingRepository.save(MemberSecondProfileMapping.builder()
                         .member(member3)
