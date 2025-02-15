@@ -25,6 +25,9 @@ public class RequestDTO {
         private String studentNumber;
         private int minAge;
         private int maxAge;
+
+        private Long requestId;  // 추가
+
         //private List<String> personality;
         //private Set<MBTI> mbti;
         private String mbti;
