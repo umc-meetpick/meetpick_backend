@@ -1,5 +1,6 @@
 package com.umc.meetpick.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.umc.meetpick.enums.ContactType;
 import jakarta.validation.constraints.Min;
@@ -109,6 +110,7 @@ public class ProfileDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+
     public static class MBTIDTO {
         private String MBTI;
 
@@ -119,9 +121,10 @@ public class ProfileDTO {
         @Getter
         @NoArgsConstructor
         @AllArgsConstructor
+        @JsonIgnoreProperties(ignoreUnknown = true)
         public static class MBTIRequestDTO {
 
-            @JsonProperty("MBTI") // JSON 매핑을 강제 적용
+           // @JsonProperty("MBTI") // JSON 매핑을 강제 적용
             private String MBTI;
 
             public void setMBTI(String MBTI) {

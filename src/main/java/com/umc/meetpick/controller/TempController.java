@@ -56,7 +56,6 @@ public class TempController {
     public ApiResponse<String> generateToken()
     {
         Member member = memberRepository.findFirstBy();
-
         return ApiResponse.onSuccess(jwtUtil.generateToken(member.getId()));
     }
 

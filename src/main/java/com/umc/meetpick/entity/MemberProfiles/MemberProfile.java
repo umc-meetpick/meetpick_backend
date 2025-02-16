@@ -8,6 +8,7 @@ import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.Hobby;
 import com.umc.meetpick.enums.MBTI;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.*;
 
 import java.util.Set;
@@ -27,7 +28,7 @@ public class MemberProfile extends BaseTimeEntity {
 
     //추가
     @OneToOne
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = true)
     private Member member;
 
     // 닉네임
@@ -48,7 +49,7 @@ public class MemberProfile extends BaseTimeEntity {
     private MBTI MBTI;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private Major major;
 
     @ManyToOne
@@ -80,7 +81,5 @@ public class MemberProfile extends BaseTimeEntity {
         if (this.MBTI == null) this.MBTI = MBTI.INTJ; // 기본 MBTI 설정
         if (this.contact == null) this.contact = ContactType.KAKAO_TALK_ID; // 기본 연락처 타입 설정
         if (this.contactInfo == null || this.contactInfo.isEmpty()) this.contactInfo = "contact@default.com"; // 기본 연락처 정보
-
     }
-
 }

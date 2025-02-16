@@ -46,8 +46,8 @@ public enum University {
     SEOUL_MEDICAL_SCIENCE_UNIVERSITY("서울보건대학교", "서울특별시 강동구 강동대로 110"),
     KYUNGIN_WOMANS_UNIVERSITY("경인여자대학교", "서울특별시 강서구 화곡로 150"),
     BAIKSEOK_WOMANS_UNIVERSITY("백석여자대학교", "서울특별시 강남구 도산대로 535"),
-    CHUNGGYE_WOMANS_UNIVERSITY("청계여자대학교", "서울특별시 종로구 청계천로 45");
-
+    CHUNGGYE_WOMANS_UNIVERSITY("청계여자대학교", "서울특별시 종로구 청계천로 45"),
+    UNKNOWN_UNIVERSITY("111","111");
 
 
     private final String universityName;

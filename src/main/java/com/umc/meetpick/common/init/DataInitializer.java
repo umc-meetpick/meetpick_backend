@@ -7,6 +7,7 @@ import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
+import com.umc.meetpick.repository.member.MemberProfileRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,6 @@ public class DataInitializer implements CommandLineRunner {
     private final MemberProfileRepository memberProfileRepository;
     private final MemberRepository memberRepository;
     private final MemberSecondProfileRepository memberSecondProfileRepository;
-    //private final PersonalityRepository personalityRepository;
     private final MemberMappingRepository memberMappingRepository;
 
     /*@PostConstruct
@@ -130,6 +130,19 @@ public class DataInitializer implements CommandLineRunner {
             subMajorRepository.save(new SubMajor("정보보안학과", convergenceAndSpecialization));
             subMajorRepository.save(new SubMajor("자유전공학부", convergenceAndSpecialization));
             subMajorRepository.save(new SubMajor("특성화 학과", convergenceAndSpecialization));
+            SubMajor 윤리교육과 = subMajorRepository.findByNameOrderByName("윤리교육과");
+
+            if (윤리교육과 == null) {
+                System.out.println("❌ '윤리교육과' 전공이 데이터베이스에 없습니다! 새로운 데이터를 저장합니다.");
+                윤리교육과 = subMajorRepository.save(new SubMajor("윤리교육과", socialScience));
+            } else {
+                System.out.println("✅ '윤리교육과' 전공이 데이터베이스에 이미 존재합니다: " + 윤리교육과.getName());
+            }
+            List<SubMajor> subMajors = subMajorRepository.findAll();
+            System.out.println("✅ 저장된 SubMajor 목록:");
+            for (SubMajor subMajor : subMajors) {
+                System.out.println("  - " + subMajor.getName());
+            }
         }
 
         // 사용자 기본값 저장
@@ -230,10 +243,16 @@ public class DataInitializer implements CommandLineRunner {
 
                 memberMappingRepository.save(mapping3);
                 memberMappingRepository.save(mapping4);
+                System.out.println("📌 Profile3 생성 완료: " + profile3.getNickname());
+                if (profile3.getSubMajor() == null) {
+                    System.out.println("❌ Profile3의 SubMajor가 NULL입니다!");
+                } else {
+                    System.out.println("✅ Profile3의 SubMajor: " + profile3.getSubMajor().getName());
+                }
+
             }
 
         }
 
     }
 }
-
