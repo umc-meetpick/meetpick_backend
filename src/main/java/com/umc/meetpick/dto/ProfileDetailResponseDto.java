@@ -26,6 +26,7 @@ public class ProfileDetailResponseDto {
     private int age;                  // From Member
     private int studentNumber;        // From MemberProfile
     private String mbti;              // From MemberProfile
+    private Long requestId; //추가 MemberSecondProfile id
 
     // 매칭 선호도 정보-내부 클래스
     private PreferenceInfo preferenceInfo;
@@ -98,6 +99,7 @@ public class ProfileDetailResponseDto {
 
         // 최종 DTO 생성
         return ProfileDetailResponseDto.builder()
+                .requestId(secondProfile.getId())  // 추가 requestId
                 .nickname(memberProfile.getNickname())
                 .gender(member.getGender().getKoreanName())
                 .age(member.getAge())
