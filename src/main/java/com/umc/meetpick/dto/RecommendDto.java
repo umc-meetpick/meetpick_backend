@@ -26,6 +26,8 @@ public class RecommendDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class FoodRecommendDto {
+        private Long memberSecondProfileId;
+        private String nickName;
         private String studentNumber;
         private Set<String> foodTypes;
         private String gender;

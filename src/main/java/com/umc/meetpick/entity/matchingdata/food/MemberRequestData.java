@@ -1,5 +1,6 @@
 package com.umc.meetpick.entity.matchingdata.food;
 
+import com.umc.meetpick.entity.BaseTimeEntity;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.University;
 import jakarta.persistence.*;
@@ -14,7 +15,7 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class MemberRequestData {
+public class MemberRequestData extends BaseTimeEntity {
 
     // 벡터 계산에 사용되는 데이터
 

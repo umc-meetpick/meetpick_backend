@@ -142,7 +142,7 @@ public class DataInitializer implements CommandLineRunner {
 
 // ===== Pair 1 =====
                 MemberProfile profile3 = memberProfileRepository.save(MemberProfile.builder()
-                        .nickname("책벌레")
+                        .nickname("밋픽의 왕")
                         .profileImage("https://example.com/profile3.jpg")
                         .studentNumber(21)
                         // "윤리교육과"는 socialScience 계열에 있음
@@ -166,7 +166,7 @@ public class DataInitializer implements CommandLineRunner {
                         .build());
 
                 Member member3 = memberRepository.save(Member.builder()
-                        .name("철수")
+                        .name("밋픽의 왕")
                         .gender(Gender.MALE)
                         .birthday(new java.util.Date(1996 - 1900, Calendar.DECEMBER, 5))
                         .university(University.YONSEI_UNIVERSITY)
@@ -192,13 +192,13 @@ public class DataInitializer implements CommandLineRunner {
                 MemberSecondProfile secondProfile3 = memberSecondProfileRepository.save(MemberSecondProfile.builder()
                         .member(member3)
                         .mateType(MateType.MEAL)
-                        .gender(Gender.MALE)
-                        .mbti("INFJ")
+                        .gender(Gender.FEMALE)
+                        .mbti("ENFP")
                         .minAge(20)
-                        .maxAge(26)
+                        .maxAge(22)
                         .maxPeople(3)
                         .exerciseType(ExerciseType.RUNNING)
-                        .foodTypes(Set.of(FoodType.CHINESE, FoodType.VIETNAMESE))
+                        .foodTypes(Set.of(FoodType.KOREAN, FoodType.VIETNAMESE))
                         .isSchool(true)
                         .comment("조용하게 공부할 동료를 찾습니다.")
                         .build());

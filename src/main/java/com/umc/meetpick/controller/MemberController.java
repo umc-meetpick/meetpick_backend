@@ -26,9 +26,9 @@ public class MemberController {
     private final MemberService memberService;
 
     @Operation(summary = "사용자 상세 프로필 보기", description = "사용자 상세 프로필 보기") // [변경 2]
-    @GetMapping("/detail/{memberId}")
-    public ApiResponse<Map<String, Object>> getMemberDetail(@PathVariable("memberId") Long memberId){
-        return ApiResponse.onSuccess(memberService.getMemberDetail(memberId));
+    @GetMapping("/detail/{memberprofileId}")
+    public ApiResponse<Map<String, Object>> getMemberDetail(@PathVariable("memberprofileId") Long memberprofileId){
+        return ApiResponse.onSuccess(memberService.getMemberDetail(memberprofileId));
     }
 
     // 회원 기본 정보 저장

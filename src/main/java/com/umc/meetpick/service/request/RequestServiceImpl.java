@@ -16,6 +16,8 @@ import com.umc.meetpick.enums.*;
 
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
+import com.umc.meetpick.service.matching.processor.MatchingDataProcessor;
+import com.umc.meetpick.service.matching.processor.MemberDataProcessor;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,9 @@ import static com.umc.meetpick.enums.StudentNumber.*;
 @Service
 @RequiredArgsConstructor
 public class RequestServiceImpl implements RequestService {
-    private final NewRequestRepository newRequestRepository;
+
+    private final MemberDataProcessor memberDataProcessor;
+    private final MatchingDataProcessor matchingDataProcessor;
     private final MemberRepository memberRepository;
     private final SubMajorRepository subMajorRepository;
     private final MemberMappingRepository memberMappingRepository;
@@ -179,6 +183,9 @@ public class RequestServiceImpl implements RequestService {
                         .toList();
 
         memberSecondProfileSubMajorRepository.saveAll(subMajorList);
+
+        memberDataProcessor.process(newMemberSecondProfile);
+        matchingDataProcessor.process(newMemberSecondProfile);
 
         return RequestDTO.NewRequestDTO.builder()
                 //.writerId(memberId)

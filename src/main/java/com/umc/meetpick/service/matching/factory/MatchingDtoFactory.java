@@ -105,10 +105,12 @@ public class MatchingDtoFactory {
                     MemberProfile memberProfile = member.getMemberProfile();
 
                     return RecommendDto.FoodRecommendDto.builder()
+                            .memberSecondProfileId(memberSecondProfile.getId())
                             .studentNumber(memberProfile.getStudentNumber() + "학번")
                             .foodTypes(memberSecondProfile.getFoodTypes().stream().map(FoodType::getKoreanName).collect(Collectors.toSet()))
                             .gender(member.getGender().getKoreanName())
                             .mbti(memberProfile.getMBTI())
+                            .nickName(memberProfile.getNickname())
                             .build();
                 }
         ).toList();

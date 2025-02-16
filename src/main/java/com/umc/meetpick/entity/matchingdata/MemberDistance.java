@@ -1,4 +1,4 @@
-package com.umc.meetpick.entity;
+package com.umc.meetpick.entity.matchingdata;
 
 import com.umc.meetpick.entity.matchingdata.food.MemberData;
 import lombok.AllArgsConstructor;

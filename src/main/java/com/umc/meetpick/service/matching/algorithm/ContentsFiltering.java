@@ -1,11 +1,10 @@
 package com.umc.meetpick.service.matching.algorithm;
 
-import com.nimbusds.jose.Algorithm;
 import com.umc.meetpick.common.exception.handler.GeneralHandler;
 import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.RecommendDto;
 import com.umc.meetpick.entity.Member;
-import com.umc.meetpick.entity.MemberDistance;
+import com.umc.meetpick.entity.matchingdata.MemberDistance;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.entity.matchingdata.food.MemberData;
 import com.umc.meetpick.entity.matchingdata.food.MemberRequestData;
