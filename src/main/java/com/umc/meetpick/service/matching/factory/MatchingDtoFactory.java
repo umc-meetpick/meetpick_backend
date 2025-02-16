@@ -1,19 +1,27 @@
 package com.umc.meetpick.service.matching.factory;
 
+import com.umc.meetpick.common.exception.handler.GeneralHandler;
+import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.AlarmDto;
 import com.umc.meetpick.dto.MatchPageDto;
 import com.umc.meetpick.dto.MatchRequestDto;
+import com.umc.meetpick.dto.RecommendDto;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
+import com.umc.meetpick.entity.matchingdata.food.MemberData;
+import com.umc.meetpick.enums.FoodType;
+import com.umc.meetpick.enums.MateType;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.umc.meetpick.common.util.DateTimeUtil.getTime;
+import static com.umc.meetpick.common.util.MemberSecondProfileUtil.findByMateType;
 
 public class MatchingDtoFactory {
 
@@ -82,4 +90,34 @@ public class MatchingDtoFactory {
                 .hasNextPage(mappingList.hasNext())
                 .build();
     }
+
+    public static RecommendDto.FoodRecommendPageDto memberSecondProfileToFoodRecommendtDto(List<MemberData> memberList) {
+
+        List<MemberSecondProfile> memberSecondProfiles = memberList.stream()
+                .map(memberData -> findByMateType(memberData.getMember().getMemberSecondProfiles(), MateType.MEAL).orElseThrow(()-> new GeneralHandler(ErrorCode.PROFILE2_NOT_FOUND)))
+                .toList();
+
+
+        List<RecommendDto.FoodRecommendDto> foodRecommendDtos = memberSecondProfiles.stream().map(
+                memberSecondProfile -> {
+
+                    Member member = memberSecondProfile.getMember();
+                    MemberProfile memberProfile = member.getMemberProfile();
+
+                    return RecommendDto.FoodRecommendDto.builder()
+                            .studentNumber(memberProfile.getStudentNumber() + "학번")
+                            .foodTypes(memberSecondProfile.getFoodTypes().stream().map(FoodType::getKoreanName).collect(Collectors.toSet()))
+                            .gender(member.getGender().getKoreanName())
+                            .mbti(memberProfile.getMBTI())
+                            .build();
+                }
+        ).toList();
+
+        return RecommendDto.FoodRecommendPageDto.builder()
+                .foodRecommendDtos(foodRecommendDtos)
+                .hasNextPage(false)
+                .currentPage(0)
+                .build();
+    }
+
 }

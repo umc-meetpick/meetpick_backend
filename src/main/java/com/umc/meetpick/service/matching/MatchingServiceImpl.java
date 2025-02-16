@@ -17,6 +17,7 @@ import com.umc.meetpick.repository.member.MemberLikesRepository;
 import com.umc.meetpick.repository.member.MemberProfileRepository;
 import com.umc.meetpick.service.home.factory.MemberQueryStrategyFactory;
 import com.umc.meetpick.service.home.strategy.MemberQueryStrategy;
+import com.umc.meetpick.service.matching.algorithm.MatchingAlgorithm;
 import com.umc.meetpick.service.matching.factory.AlarmQueryStrategyFactory;
 import com.umc.meetpick.service.matching.factory.MatchQueryStrategyFactory;
 import com.umc.meetpick.service.matching.strategy.AlarmQueryStrategy;
@@ -51,6 +52,7 @@ public class MatchingServiceImpl implements MatchingService {
     private final MemberRepository memberRepository;
     private final MemberMappingRepository memberMappingRepository;
     private final MemberLikesRepository memberLikesRepository;// 좋아요 여부 확인용
+    private final MatchingAlgorithm matchingAlgorithm;
     private final MemberProfileRepository memberProfileRepository;// 프로필 정보 조회용
     private final int minCondition = 3;
     private int page = 0;
@@ -58,52 +60,11 @@ public class MatchingServiceImpl implements MatchingService {
     private Pageable pageable = PageRequest.of(page, pageSize);
 
     @Override
-    public List<MatchResponseDto> match(Long memberId, MateType mateType){
+    public RecommendDto.FoodRecommendPageDto match(Long memberId, MateType mateType){
 
         Member member = memberRepository.findMemberById(memberId);
 
-        List<MatchResponseDto> matchResponseDtoList = new ArrayList<>();
-
-        int recommendationNumber = 5;
-
-        while(page < 5) {
-
-            List<MemberSecondProfile> requestList = getMatchingType(mateType);
-
-            //TODO 추천 로직 변경하기
-            requestList.forEach(memberSecondProfile -> {
-
-                int conditionMatching = 0;
-
-                // 나이 조건 체크
-                if((memberSecondProfile.getMinAge() <= member.getAge() && memberSecondProfile.getMaxAge() >= member.getAge()) || memberSecondProfile.getMaxAge() == null){
-                    conditionMatching++;
-                }
-
-                // 성별 조건 체크
-                if(memberSecondProfile.getGender() == member.getGender() || memberSecondProfile.getGender() == null){
-                    conditionMatching++;
-                }
-
-                // MBTI 조건 체크
-                if(memberSecondProfile.getMbti() == null || memberSecondProfile.getMbti().contains(member.getMemberProfile().getMBTI().name())){
-                    conditionMatching++;
-                }
-
-                // 조건이 충족되면 matchResponseDtoList에 추가
-                if(conditionMatching >= minCondition){
-                    matchResponseDtoList.add(requestToMatchResponseDto(member, memberSecondProfile));
-                }
-            });
-
-            // 페이지를 넘어가면 다음 페이지로 이동
-            if (matchResponseDtoList.size() < recommendationNumber) {
-                page++;
-                pageable = PageRequest.of(page, pageSize);
-            }
-        }
-
-        return matchResponseDtoList;
+        return matchingAlgorithm.recommend(member);
     }
 
     @Override

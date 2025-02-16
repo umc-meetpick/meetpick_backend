@@ -36,8 +36,10 @@ public enum ErrorCode implements BaseErrorCode {
 
     // ENUM 관련
     INVALID_MATE_TYPE(HttpStatus.BAD_REQUEST, "TYPE4000", "유효하지 않은 메이트 타입입니다"),
-    INVALID_ENUM(HttpStatus.BAD_REQUEST, "TYPE4001", "유효하지 않은 enum입니다");
+    INVALID_ENUM(HttpStatus.BAD_REQUEST, "TYPE4001", "유효하지 않은 enum입니다"),
 
+    //데이터 관련
+    MEMBER_DATA_NOT_PRESENT(HttpStatus.INTERNAL_SERVER_ERROR, "DATA5000", "해당 멤버의 데이터가 전처리되지 않았습니다");
 
     ;
 

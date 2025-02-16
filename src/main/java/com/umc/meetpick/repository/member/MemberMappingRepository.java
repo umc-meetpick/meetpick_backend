@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -29,4 +30,6 @@ public interface MemberMappingRepository extends JpaRepository<MemberSecondProfi
     Page<MemberSecondProfileMapping> findAllByMemberSecondProfile_MemberAndIsAccepted(@Param("member") Member member, Pageable pageable, @Param("isAccepted") boolean isAccepted);
 
     Optional<MemberSecondProfileMapping> findByMemberSecondProfileAndMember(@Param("memberSecondProfile") MemberSecondProfile memberSecondProfile, @Param("member") Member member);
+
+    List<MemberSecondProfileMapping> findAllByMemberSecondProfile_Member(@Param("member") Member member);
 }

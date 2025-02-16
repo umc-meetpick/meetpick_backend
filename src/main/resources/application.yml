@@ -1,19 +1,16 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:mysql://localhost:3306/meetpick?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: lee95749574
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: update
   h2:
     console:
-      enabled: true
-      path: /h2-console
-      settings:
-        web-allow-others: true  # 원격 연결 허용 설정
+      enabled: false
   security:
     oauth2:
       client:

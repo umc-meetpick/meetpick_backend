@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface MatchingService {
-    List<MatchResponseDto> match(Long memberId, MateType mateType);
+    RecommendDto.FoodRecommendPageDto match(Long memberId, MateType mateType);
 
     MatchPageDto getMatchRequests(Long memberId, String mateType, Pageable pageable);
 
