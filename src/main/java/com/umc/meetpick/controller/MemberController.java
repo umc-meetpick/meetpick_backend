@@ -64,7 +64,7 @@ public class MemberController {
     @GetMapping("/nickname/check")
     public ApiResponse<String> checkNickname(@AuthUser Long memberId, String nickname) {
 
-        return ApiResponse.onSuccess(memberService.nickDuplicate(memberId, nickname));  // ProfileService로 호출
+        return ApiResponse.onSuccessTemp(memberService.nickDuplicate(memberId, nickname));  // ProfileService로 호출
     }
 
     @Operation(summary = "로그인 한 유저 정보 반환")
@@ -78,7 +78,7 @@ public class MemberController {
 
     // 이게 맞나 생각해보니
     @Operation(summary = "멤버 연락처 정보 반환")
-    @GetMapping("contact-info/{mappingId}")
+    @GetMapping("/contact-info/{mappingId}")
     public ApiResponse<ContactResponseDto> getContactInfo(@AuthUser Long memberId, @PathVariable Long mappingId) {
 
         return ApiResponse.onSuccess(memberService.getContactInfo(memberId, mappingId));  // ProfileService로 호출

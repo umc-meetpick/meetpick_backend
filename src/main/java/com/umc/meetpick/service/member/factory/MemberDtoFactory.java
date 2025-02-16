@@ -216,10 +216,10 @@ public class MemberDtoFactory {
             professorName = memberSecondProfile.getProfessorName();
         }
 
-        String studyTimes = memberSecondProfile.getTimes() + "-" + memberSecondProfile.getTimes() + 1 + "회";
+        String studyTimes = memberSecondProfile.getStudyTimes() + "-" + memberSecondProfile.getStudyTimes() + 1 + "회";
 
         String isOnline;
-        if(memberSecondProfile.isOnline()){
+        if(memberSecondProfile.getIsOnline()){
             isOnline = "온라인";
         } else {
             isOnline = "오프라인";

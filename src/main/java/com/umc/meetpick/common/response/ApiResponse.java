@@ -26,6 +26,11 @@ public class ApiResponse<T> {
         return new ApiResponse<>(true, SuccessCode._OK.getCode(), SuccessCode._OK.getMessage(), result);
     }
 
+    //TODO 원래 이러면 안되지만...
+    public static <T> ApiResponse<T> onSuccessTemp(T result) {
+        return new ApiResponse<>(false, SuccessCode._OK.getCode(), SuccessCode._OK.getMessage(), result);
+    }
+
     public static <T> ApiResponse<T> of(BaseCode code, T result) {
         return new ApiResponse<>(true, code.getReasonHttpStatus().getCode(), code.getReasonHttpStatus().getMessage(), result);
     }
