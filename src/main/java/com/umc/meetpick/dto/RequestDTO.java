@@ -23,11 +23,8 @@ public class RequestDTO {
         private Gender gender;
         private List<String> subMajorName;
         private String studentNumber;
-        private int minAge;
-        private int maxAge;
-
-        //private Long requestId;  // 추가
-
+        private Integer minAge;
+        private Integer maxAge;
         //private List<String> personality;
         //private Set<MBTI> mbti;
         private String mbti;

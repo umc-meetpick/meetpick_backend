@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.umc.meetpick.enums.MateType.*;
 import static com.umc.meetpick.enums.StudentNumber.*;
 
 @Service
@@ -52,7 +53,7 @@ public class RequestServiceImpl implements RequestService {
 //                .orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getMajorName()));
 
         // 나이 범위 검증
-        if (newRequest.getMinAge() >= newRequest.getMaxAge()) {
+        if (newRequest.getMinAge() != null && newRequest.getMaxAge() != null && newRequest.getMinAge() >= newRequest.getMaxAge()) {
             throw new IllegalArgumentException("나이 범위 에러");
         }
 
@@ -84,47 +85,53 @@ public class RequestServiceImpl implements RequestService {
         // studentNumber 변환 -> 프론트에서 받은 string을 enum으로
         StudentNumber studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
 
-        // 운동 타입 변환 (nullable 처리)
+        ExerciseType exerciseTypes = null;
+        Set<FoodType> foodTypes = Collections.emptySet();
+        StudyType studyType = null;
+        String majorName = null;
+        String professorName = null;
+        Boolean isOnline = null;
+
+        MateType requestMateType = newRequest.getType();
+        if (requestMateType == EXERCISE){
+            // 운동 타입 변환 (nullable 처리)
 //        Set<ExerciseType> exerciseTypes = Optional.ofNullable(newRequest.getExerciseTypes())
 //                .map(types -> Arrays.stream(types.split(","))
 //                        .map(String::trim)
 //                        .map(ExerciseType::fromString)
 //                        .collect(Collectors.toSet()))
 //                .orElse(Collections.emptySet());
-        ExerciseType exerciseTypes = null;
-        if (newRequest.getExerciseTypes() != null) {
-            exerciseTypes = ExerciseType.fromString(newRequest.getExerciseTypes());
-        }
+            //ExerciseType exerciseTypes = null;
+            if (newRequest.getExerciseTypes() != null) {
+                exerciseTypes = ExerciseType.fromString(newRequest.getExerciseTypes());
+            }
+        }else if(requestMateType == MEAL){
+            // 음식 타입 변환 (nullable 처리)
+            foodTypes = Optional.ofNullable(newRequest.getFood())
+                    .orElse(Collections.emptyList())  // food가 null이면 빈 리스트 처리
+                    .stream()
+                    .map(FoodType::fromString)
+                    .collect(Collectors.toSet());
+        }else if(requestMateType == STUDY){
+            // 스터디 타입 변환
+            if (newRequest.getStudyType() != null) {
+                studyType = StudyType.fromString(newRequest.getStudyType());
+            }
 
-        // 음식 타입 변환 (nullable 처리)
-        Set<FoodType> foodTypes = Optional.ofNullable(newRequest.getFood())
-                .orElse(Collections.emptyList())  // food가 null이면 빈 리스트 처리
-                .stream()
-                .map(FoodType::fromString)
-                .collect(Collectors.toSet());
+            // 과목/교수 파싱 후 각각 넣기
+            if(newRequest.getMajorNameAndProfessorName() != null) {
+                String[] parts = newRequest.getMajorNameAndProfessorName().split("-");
+                majorName = parts[0];
+                professorName = parts[1];
+            }
 
-        // 스터디 타입 변환
-        StudyType studyType = null;
-        if (newRequest.getStudyType() != null) {
-            studyType = StudyType.fromString(newRequest.getStudyType());
-        }
-
-        // 과목/교수 파싱 후 각각 넣기
-        String majorName = null;
-        String professorName = null;
-        if(newRequest.getMajorNameAndProfessorName() != null) {
-            String[] parts = newRequest.getMajorNameAndProfessorName().split("-");
-            majorName = parts[0];
-            professorName = parts[1];
-        }
-
-        // 공부 관련 온라인 여부
-        Boolean isOnline = null;
-        if(newRequest.getIsOnline() != null) {
-            if(newRequest.getIsOnline() == "오프라인"){
-                isOnline = false;
-            } else {
-                isOnline = true;
+            // 공부 관련 온라인 여부
+            if(newRequest.getIsOnline() != null) {
+                if(newRequest.getIsOnline().equals("오프라인")){
+                    isOnline = false;
+                } else {
+                    isOnline = true;
+                }
             }
         }
 
@@ -218,6 +225,10 @@ public class RequestServiceImpl implements RequestService {
                 .orElseThrow(()-> new EntityNotFoundException("매칭 등록 유저 오류"));
 
         MemberProfile requestOwnerMemberProfile = requestOwnerMember.getMemberProfile();
+
+        if (joinMember == requestOwnerMember) {
+            throw new IllegalArgumentException("본인 매칭에 신청 불가");
+        }
 
 //        // 조건에 맞는지 판단 - 성별
 //        if(!(request.getGender() == null) && joinMember.getGender() != request.getGender()){
