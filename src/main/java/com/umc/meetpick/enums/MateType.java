@@ -1,5 +1,6 @@
 package com.umc.meetpick.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.umc.meetpick.common.exception.handler.GeneralHandler;
 import com.umc.meetpick.common.response.status.ErrorCode;
 import lombok.Getter;
@@ -18,6 +19,11 @@ public enum MateType {
         this.koreanName = koreanName;
     }
 
+    //json직렬화/역직렬화
+    @JsonValue
+    public String getKoreanName() {
+        return koreanName;
+    }
     public static MateType fromString(String type) {
         for (MateType mateType : MateType.values()) {
             if (mateType.koreanName.equalsIgnoreCase(type)) {
