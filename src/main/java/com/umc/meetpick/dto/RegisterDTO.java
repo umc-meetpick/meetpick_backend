@@ -50,6 +50,7 @@ public class RegisterDTO {
 
         @Pattern(regexp = "^[가-힣a-zA-Z]{1,10}$", message = "닉네임은 공백을 제외한 한글 또는 영문만 가능하며, 최대 10자까지 가능합니다.")
         private String nickName;
+
         //TODO 나중에 enum으로 다르게 관리하기
         private int imageNumber;
 
