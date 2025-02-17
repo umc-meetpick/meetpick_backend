@@ -22,10 +22,10 @@ public class SubMajor {
 
     @ManyToOne
     @JoinColumn(name = "sub_major")
-    private Major Major;
+    private Major major;
 
     public SubMajor(String name,Major Major) {
         this.name = name;
-        this.Major = Major;
+        this.major = Major;
     }
 }

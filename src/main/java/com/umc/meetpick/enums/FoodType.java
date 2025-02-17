@@ -1,5 +1,6 @@
 package com.umc.meetpick.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
@@ -10,6 +11,14 @@ public enum FoodType {
     CHINESE("중식"),
     VIETNAMESE("베트남식"),
     OTHER("기타");
+
+
+    // json직렬화/역직렬화를 위해 추가
+    @JsonValue
+    public String getKoreanName() {
+        return koreanName;
+    }
+
 
     public static FoodType fromString(String foodType) {
         switch (foodType) {

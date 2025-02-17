@@ -1,5 +1,7 @@
 package com.umc.meetpick.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum ExerciseType {
     BOWLING("볼링"),
     CLIMBING("클라이밍"),
@@ -42,7 +44,10 @@ public enum ExerciseType {
         this.displayName = displayName;
     }
 
+    // json직렬화/역직렬화를 위해 추가
+    @JsonValue
     public String getDisplayName() {
         return displayName;
     }
+
 }

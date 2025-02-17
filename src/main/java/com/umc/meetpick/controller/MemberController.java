@@ -2,10 +2,7 @@ package com.umc.meetpick.controller;
 
 import com.umc.meetpick.common.annotation.AuthUser;
 import com.umc.meetpick.common.response.ApiResponse;
-import com.umc.meetpick.dto.ContactResponseDto;
-import com.umc.meetpick.dto.MemberDetailResponseDto;
-import com.umc.meetpick.dto.MyProfileDto;
-import com.umc.meetpick.dto.RegisterDTO;
+import com.umc.meetpick.dto.*;
 import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -80,7 +77,12 @@ public class MemberController {
     @Operation(summary = "멤버 연락처 정보 반환")
     @GetMapping("/contact-info/{mappingId}")
     public ApiResponse<ContactResponseDto> getContactInfo(@AuthUser Long memberId, @PathVariable Long mappingId) {
-
         return ApiResponse.onSuccess(memberService.getContactInfo(memberId, mappingId));  // ProfileService로 호출
+    }
+
+    @Operation(summary = "전공 정보 반환하기")
+    @GetMapping("/get-major")
+    public ApiResponse<MajorDto.InfoDto> getMajorList() {
+        return ApiResponse.onSuccess(memberService.getMajorList());  // ProfileService로 호출
     }
 }

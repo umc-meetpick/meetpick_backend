@@ -2,15 +2,14 @@ package com.umc.meetpick.service.member;
 
 import com.umc.meetpick.common.exception.handler.GeneralHandler;
 import com.umc.meetpick.common.response.status.ErrorCode;
-import com.umc.meetpick.dto.ContactResponseDto;
-import com.umc.meetpick.dto.MemberDetailResponseDto;
-import com.umc.meetpick.dto.MyProfileDto;
-import com.umc.meetpick.dto.RegisterDTO;
+import com.umc.meetpick.dto.*;
+import com.umc.meetpick.entity.Major;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.SubMajor;
 import com.umc.meetpick.enums.*;
+import com.umc.meetpick.repository.MajorRepository;
 import com.umc.meetpick.repository.SubMajorRepository;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.repository.member.MemberProfileRepository;
@@ -30,7 +29,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.json.JSONObject;
-import java.sql.Date;
+
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -49,10 +50,12 @@ public class MemberServiceImpl implements MemberService {
     private static final String API_KEY = "c5efad4c-356f-4989-949f-cbb056439ba6";
     private static final String EMAIL_VERIFY_URL = "https://univcert.com/api/v1/certify";
     private static final String CODE_VERIFY_URL = "https://univcert.com/api/v1/certifycode";
+    private static final String baseUrl = "https://hangeulbucket.s3.ap-northeast-2.amazonaws.com";
     private final MemberProfileRepository memberProfileRepository;
     private final SubMajorRepository subMajorRepository;
     private final MemberValidator memberValidator;
     private final MemberMappingRepository memberMappingRepository;
+    private final MajorRepository majorRepository;
 
     @Override
     public Map<String, Object> getMemberDetail(Long memberSecondProfileId) {
@@ -99,7 +102,7 @@ public class MemberServiceImpl implements MemberService {
         // TODO 나중에 구조 바꾸기
             MemberProfile memberProfile = MemberProfile.builder()
                     .nickname(signUpProfileDTO.getNickName())
-                    .profileImage("example")
+                    .profileImage(setImage(signUpProfileDTO.getImageNumber()))
                     .studentNumber(signUpProfileDTO.getStudentNumber())
                     .MBTI(signUpProfileDTO.getMbti())
                     .subMajor(subMajor)
@@ -235,6 +238,47 @@ public class MemberServiceImpl implements MemberService {
                         .contactType(mapping.getMember().getMemberProfile().getContact().getKoreanName())
                         .build())
                 .orElseThrow(() -> new GeneralHandler(ErrorCode._BAD_REQUEST));
+    }
+
+    private String setImage(int input){
+        return switch (input) {
+            case 1 -> baseUrl + "/default.png";
+            case 2 -> baseUrl + "/hamburger.png";
+            case 3 -> baseUrl + "/study.png";
+            case 4 -> baseUrl + "/muffler.png";
+            case 5 -> baseUrl + "/hoody.png";
+            case 6 -> baseUrl + "/graduate.png";
+            case 7 -> baseUrl + "/earphone.png";
+            case 8 -> baseUrl + "/boxing.png";
+            case 9 -> baseUrl + "/magician.png";
+            default -> throw new GeneralHandler(ErrorCode._BAD_REQUEST);
+        };
+    }
+
+    // TODO 나중에 리팩토링
+    @Override
+    public MajorDto.InfoDto getMajorList() {
+        List<Major> majors = majorRepository.findAll();
+
+        List<MajorDto.MajorInfoDto> majorInfoDtoList = majors.stream()
+                .map(major -> {
+                    List<MajorDto.SubMajorInfoDto> subMajorInfoDtos = subMajorRepository.findAllByMajor(major).stream()
+                            .map(subMajor -> MajorDto.SubMajorInfoDto.builder()
+                                    .subMajorId(subMajor.getId())
+                                    .subMajorName(subMajor.getName())
+                                    .build())
+                            .collect(Collectors.toList());
+
+                    return MajorDto.MajorInfoDto.builder()
+                            .majorName(major.getName())
+                            .subMajorInfoDtoList(subMajorInfoDtos)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        return MajorDto.InfoDto.builder()
+                .subMajors(majorInfoDtoList)
+                .build();
     }
 
 
