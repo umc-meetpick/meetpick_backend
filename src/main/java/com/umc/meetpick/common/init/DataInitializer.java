@@ -156,7 +156,7 @@ public class DataInitializer implements CommandLineRunner {
                         // "국어국문학과"는 humanities 계열에 있음
                         .subMajor(subMajorRepository.findByNameOrderByName("국어국문학과"))
                         .MBTI(MBTI.ESTP)
-                        .hobbies(Set.of(Hobby.SPORTS, Hobby.GARDENING))
+                        .hobbies(Set.of(Hobby.DRAWING, Hobby.GARDENING))
                         .contact(ContactType.PHONE_NUMBER)
                         .contactInfo("sportsking@example.com")
                         .build());
