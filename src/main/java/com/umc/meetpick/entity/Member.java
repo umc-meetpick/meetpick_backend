@@ -3,16 +3,17 @@ import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.enums.*;
 import jakarta.persistence.*;
+import java.util.List;
+import java.util.ArrayList;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import lombok.*;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @Entity
@@ -23,6 +24,7 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 
     // 이름
     @Column(nullable = false)
@@ -37,9 +39,8 @@ public class Member {
     @Column(nullable = false)
     private Date birthday;
 
-    //university
-    @Enumerated(EnumType.STRING)  // enum 값을 문자열로 저장
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true) //임시로 true로 설정
     private University university;
 
     //socialType
@@ -63,9 +64,9 @@ public class Member {
     @Column(nullable = false)
     private boolean isVerified = false;
 
-    @OneToOne
     @Setter
-    @JoinColumn(name = "member_profile_id")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "member_profile_id")  // ✅ FK 명시적으로 지정
     private MemberProfile memberProfile;
 
     // MemberSecondProfile과의 관계 (1:N)
@@ -82,14 +83,13 @@ public class Member {
         return Period.between(birthDate, currentDate).getYears();
     }
 
+    @Column(nullable = false)
+    private boolean termsAgreed = false;
     public void setMember(String name, Gender gender, Date birthday){
         this.name = name;
         this.gender = gender;
         this.birthday = birthday;
     }
-
-
-    //양방향 매핑 설정
 
  // Member에서 review조회가 필요할 경우
     @OneToMany(mappedBy = "writer")

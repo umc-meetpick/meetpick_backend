@@ -30,7 +30,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.json.JSONObject;
-
+import java.sql.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -72,7 +72,7 @@ public class MemberServiceImpl implements MemberService {
             Member member = memberRepository.findMemberById(memberId);
 
             if(member.isVerified()){
-                member.setMember(signUpDTO.getName(), signUpDTO.getGender(), signUpDTO.getBirthday());
+                member.setMember(signUpDTO.getName(), signUpDTO.getGender(), new Date(signUpDTO.getBirthday().getTime()));
                 memberRepository.save(member);
             } else {
                 throw new GeneralHandler(ErrorCode._BAD_REQUEST);
