@@ -64,7 +64,7 @@ public class Member {
     private boolean isVerified = false;
 
     @Setter
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "member_profile_id")  // ✅ FK 명시적으로 지정
     private MemberProfile memberProfile;
 
