@@ -1,9 +1,8 @@
-package com.umc.meetpick.service;
+package com.umc.meetpick.service.modify;
 
 import com.umc.meetpick.common.exception.handler.GeneralHandler;
 import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.common.response.status.SuccessCode;
-import com.umc.meetpick.dto.ProfileDTO;
 import com.umc.meetpick.dto.ProfileDTO;
 import com.umc.meetpick.common.response.ApiResponse;
 import com.umc.meetpick.entity.Major;
@@ -22,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

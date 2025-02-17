@@ -2,8 +2,8 @@ package com.umc.meetpick.controller;
 
 import com.umc.meetpick.common.response.ApiResponse;
 import com.umc.meetpick.dto.ProfileDTO;
-import com.umc.meetpick.service.CurrentUser;
-import com.umc.meetpick.service.ProfileModifyService;
+import com.umc.meetpick.common.annotation.CurrentUser;
+import com.umc.meetpick.service.modify.ProfileModifyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -67,16 +67,6 @@ public class ProfileModifyController {
             @RequestBody ProfileDTO.ProfileImageDTO.ProfileImageRequestDTO requestDTO) {
         log.info("🖼️ 프로필 이미지 설정 요청 - memberId={}, imageUrl={}", memberId, requestDTO.getImageUrl());
         return profileModifyService.modifyProfileImage(memberId, requestDTO);
-    }
-
-    // 닉네임 중복 검사 API
-    @Operation(summary = "닉네임 중복 검사", description = "닉네임 중복을 검사합니다.")
-    @GetMapping("/nickname/check")
-    public ApiResponse<ProfileDTO.NicknameDTO.NicknameCheckResponseDTO> checkNickname(
-            @CurrentUser Long memberId,
-            @RequestParam("nickname") String nickname) {
-        log.info("✅ 닉네임 중복 검사 - memberId={}, nickname={}", memberId, nickname);
-        return profileModifyService.checkNicknameAvailability(memberId, nickname);
     }
 
     // 닉네임 변경 API

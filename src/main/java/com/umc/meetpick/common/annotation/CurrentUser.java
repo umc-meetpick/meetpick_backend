@@ -1,4 +1,4 @@
-package com.umc.meetpick.service;
+package com.umc.meetpick.common.annotation;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.lang.annotation.*;
