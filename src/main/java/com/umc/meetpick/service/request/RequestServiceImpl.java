@@ -220,6 +220,10 @@ public class RequestServiceImpl implements RequestService {
 
         MemberProfile requestOwnerMemberProfile = requestOwnerMember.getMemberProfile();
 
+        if (joinMember == requestOwnerMember) {
+            throw new IllegalArgumentException("본인 매칭에 신청 불가");
+        }
+
 //        // 조건에 맞는지 판단 - 성별
 //        if(!(request.getGender() == null) && joinMember.getGender() != request.getGender()){
 //            throw new IllegalArgumentException("성별 조건 안 맞음");
