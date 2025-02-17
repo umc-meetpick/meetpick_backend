@@ -22,6 +22,7 @@ import com.umc.meetpick.service.matching.factory.MatchQueryStrategyFactory;
 import com.umc.meetpick.service.matching.strategy.AlarmQueryStrategy;
 import com.umc.meetpick.service.matching.strategy.MatchQueryStrategy;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +44,7 @@ import static com.umc.meetpick.service.matching.factory.MatchingDtoFactory.membe
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MatchingServiceImpl implements MatchingService {
 
     //TODO Request SERVICE랑 합치기
@@ -133,7 +135,7 @@ public class MatchingServiceImpl implements MatchingService {
 
         AlarmQueryStrategyFactory factory = new AlarmQueryStrategyFactory(memberMappingRepository);
         AlarmQueryStrategy strategy = factory.getStrategy(type);
-        Page<MemberSecondProfileMapping> memberProfile = strategy.getSecondProfilesByMateType(member, type, pageable);
+        Page<MemberSecondProfileMapping> memberProfile = strategy.getSecondProfilesByMateType(member, type, pageable, false);
 
         return memberSecondProfileToAlarmDtoList(memberProfile);
     }
