@@ -16,8 +16,13 @@ import com.umc.meetpick.enums.*;
 
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
+import com.umc.meetpick.service.matching.factory.MatchQueryStrategyFactory;
+import com.umc.meetpick.service.matching.strategy.MatchQueryStrategy;
+import com.umc.meetpick.service.request.factory.LikeQueryStrategyFactory;
+import com.umc.meetpick.service.request.strategy.LikeQueryStrategy;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -182,6 +187,7 @@ public class RequestServiceImpl implements RequestService {
 
         return RequestDTO.NewRequestDTO.builder()
                 //.writerId(memberId)
+                //.requestId(savedProfile.getId())  // 추가
                 .studentNumber(savedProfile.getStudentNumber().name())
                 .mbti(savedProfile.getMbti())
                 .minAge(savedProfile.getMinAge())
@@ -375,32 +381,15 @@ public class RequestServiceImpl implements RequestService {
 
     //TODO 다시 코딩
     @Override
-    public List<MatchResponseDto> getLikes(Long memberId, MateType mateType) {
+    public List<Object> getLikes(Long memberId, String mateType) {
 
-        List<MemberSecondProfileLikes> memberSecondProfileLikes =
-                memberLikesRepository.findAllByMember(memberRepository.findMemberById(memberId));
+        Member member = memberRepository.findMemberById(memberId);
+        MateType type = MateType.fromString(mateType);
 
-        return memberSecondProfileLikes.stream()
-                .map(like -> {
-                    MemberSecondProfile memberSecondProfile = like.getMemberSecondProfile();
-                    Member member = memberSecondProfile.getMember();
-                    MemberProfile memberProfile = member.getMemberProfile();
+        LikeQueryStrategyFactory factory = new LikeQueryStrategyFactory(memberLikesRepository);
+        LikeQueryStrategy strategy = factory.getStrategy(type);
 
-                    return MatchResponseDto.builder()
-                            .memberId(member.getId())
-                            .requestId(memberSecondProfile.getId())
-                            .memberNumber(memberProfile.getStudentNumber())
-                            .gender(member.getGender().getKoreanName())
-                            .foodType(memberSecondProfile.getFoodTypes().stream()
-                                    .map(FoodType::getKoreanName)
-                                    .collect(Collectors.toSet()))
-                            .hobby(memberProfile.getHobbies().stream()
-                                    .map(Hobby::getKoreanName)
-                                    .collect(Collectors.toSet()))
-                            .mateType(memberSecondProfile.getMateType())
-                            .build();
-                })
-                .collect(Collectors.toList());
+        return strategy.process(member);
     }
 
 

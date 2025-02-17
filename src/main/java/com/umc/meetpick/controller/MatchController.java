@@ -47,10 +47,8 @@ public class MatchController {
     @Operation(summary = "추천 매칭 목록 조회", description = "사용자에게 적절한 메이트를 추천해줍니다") // [변경 2]
     @GetMapping("/recommendation")
     public ApiResponse<List<MatchResponseDto>> getRecommendation(
-            @PathParam("mateType") String mateTypeStr, @AuthUser Long memberId)//String 수정
-
+            @PathParam("mateType") MateType mateType, @AuthUser Long memberId)
     {
-        MateType mateType = MateType.fromString(mateTypeStr); // String -> Enum 변환
         return ApiResponse.onSuccess(matchingService.match(memberId, mateType));
     }
 
@@ -81,12 +79,10 @@ public class MatchController {
 
     @Operation(summary = "찜한 목록 가져오기")
     @GetMapping("/like")
-    public ApiResponse<List<MatchResponseDto>> getLikeRequest(@AuthUser Long memberId, @PathParam("mateType") String mateTypeStr)
-
-    {
-        MateType mateType = MateType.fromString(mateTypeStr); // String -> Enum 변환
+    public ApiResponse<List<Object>> getLikeRequest(@AuthUser Long memberId, @PathParam("mateType") String mateType) {
         return ApiResponse.onSuccess(requestService.getLikes(memberId, mateType));
     }
+
     @Operation(summary = "프로필 목록 조회", description = "메이트 타입별 전체 프로필 목록을 필터링하여 조회합니다.")
     @GetMapping("/profiles")
     public ApiResponse<ProfileDetailListResponseDto> getAllProfiles(
