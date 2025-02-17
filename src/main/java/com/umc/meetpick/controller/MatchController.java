@@ -78,7 +78,7 @@ public class MatchController {
 
     @Operation(summary = "찜한 목록 가져오기")
     @GetMapping("/like")
-    public ApiResponse<List<MatchResponseDto>> getLikeRequest(@AuthUser Long memberId, @PathParam("mateType") MateType mateType) {
+    public ApiResponse<List<Object>> getLikeRequest(@AuthUser Long memberId, @PathParam("mateType") String mateType) {
         return ApiResponse.onSuccess(requestService.getLikes(memberId, mateType));
     }
 

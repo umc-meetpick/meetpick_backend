@@ -193,6 +193,8 @@ public class DataInitializer implements CommandLineRunner {
                         .maxPeople(3)
                         .exerciseType(ExerciseType.RUNNING)
                         .foodTypes(Set.of(FoodType.CHINESE, FoodType.VIETNAMESE))
+                        .studentNumber(StudentNumber.PEER)
+                        .gender(Gender.MALE)
                         .isSchool(true)
                         .comment("조용하게 공부할 동료를 찾습니다.")
                         .build());
@@ -203,6 +205,8 @@ public class DataInitializer implements CommandLineRunner {
                         .minAge(21)
                         .maxAge(28)
                         .maxPeople(3)
+                        .gender(Gender.MALE)
+                        .studentNumber(StudentNumber.PEER)
                         .exerciseType(ExerciseType.RUNNING)
                         .foodTypes(Set.of(FoodType.KOREAN))
                         .isSchool(false)
