@@ -4,6 +4,8 @@ import com.umc.meetpick.entity.*;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
+import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
 import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
@@ -24,7 +26,8 @@ public class DataInitializer implements CommandLineRunner {
     private final MemberProfileRepository memberProfileRepository;
     private final MemberRepository memberRepository;
     private final MemberSecondProfileRepository memberSecondProfileRepository;
-    //private final PersonalityRepository personalityRepository;
+    private final MemberSecondProfileSubMajorRepository memberSecondProfileSubMajorRepository;
+    private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
     private final MemberMappingRepository memberMappingRepository;
 
     /*@PostConstruct
@@ -234,7 +237,7 @@ public class DataInitializer implements CommandLineRunner {
                 // 1. MemberProfile 생성 (DB 저장 X)
                 MemberProfile profile3 = MemberProfile.builder()
                         .nickname("책벌레")
-                        .profileImage("https://example.com/profile3.jpg")
+                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                         .studentNumber(21)
                         .subMajor(subMajorRepository.findByNameOrderByName("윤리교육과"))
                         .MBTI(MBTI.INFJ)
@@ -245,7 +248,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile4 = MemberProfile.builder()
                         .nickname("스포츠킹")
-                        .profileImage("https://example.com/profile4.jpg")
+                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                         .studentNumber(22)
                         .subMajor(subMajorRepository.findByNameOrderByName("국어국문학과"))
                         .MBTI(MBTI.ESTP)
@@ -264,7 +267,8 @@ public class DataInitializer implements CommandLineRunner {
                         .socialId(1122334455L)
                         .status(MemberStatus.ACTIVE)
                         .role(MemberRole.MEMBER)
-                        .memberProfile(profile3)  // MemberProfile과 함께 저장
+                        .memberProfile(profile3)
+                        .isVerified(true)
                         .build();
 
                 Member member4 = Member.builder()
@@ -276,12 +280,9 @@ public class DataInitializer implements CommandLineRunner {
                         .socialId(2233445566L)
                         .status(MemberStatus.ACTIVE)
                         .role(MemberRole.MEMBER)
-                        .memberProfile(profile4)  // MemberProfile과 함께 저장
+                        .memberProfile(profile4)
+                        .isVerified(true)
                         .build();
-
-//                // 3. MemberProfile에 Member 설정 (양방향 관계)
-//                profile3.setMember(member3);
-//                profile4.setMember(member4);
 
                 // 4. Member와 MemberProfile을 함께 저장
                 memberRepository.save(member3);
@@ -309,6 +310,25 @@ public class DataInitializer implements CommandLineRunner {
                         .isSchool(false)
                         .comment("함께 운동할 친구를 구해요.")
                         .build());
+
+                secondProfile3.setMember(member3);
+                secondProfile4.setMember(member4);
+                memberSecondProfileRepository.save(secondProfile3);
+                memberSecondProfileRepository.save(secondProfile4);
+
+                MemberSecondProfileSubMajor major3 = MemberSecondProfileSubMajor.builder()
+                        .memberSecondProfile(secondProfile3)
+                        .subMajor(subMajorRepository.findByNameOrderByName("간호학과"))
+                        .build();
+
+                MemberSecondProfileTimes time3 = MemberSecondProfileTimes.builder()
+                        .week(Week.MON)
+                        .times(Set.of(1,2,3))
+                        .memberSecondProfile(secondProfile3)
+                        .build();
+
+                memberSecondProfileSubMajorRepository.save(major3);
+                memberSecondProfileTimesRepository.save(time3);
 
                 // 5. MemberSecondProfileMapping 저장
                 memberMappingRepository.save(MemberSecondProfileMapping.builder()

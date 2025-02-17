@@ -49,6 +49,7 @@ public class MemberServiceImpl implements MemberService {
     private static final String API_KEY = "c5efad4c-356f-4989-949f-cbb056439ba6";
     private static final String EMAIL_VERIFY_URL = "https://univcert.com/api/v1/certify";
     private static final String CODE_VERIFY_URL = "https://univcert.com/api/v1/certifycode";
+    private static final String baseUrl = "https://hangeulbucket.s3.ap-northeast-2.amazonaws.com";
     private final MemberProfileRepository memberProfileRepository;
     private final SubMajorRepository subMajorRepository;
     private final MemberValidator memberValidator;
@@ -99,7 +100,7 @@ public class MemberServiceImpl implements MemberService {
         // TODO 나중에 구조 바꾸기
             MemberProfile memberProfile = MemberProfile.builder()
                     .nickname(signUpProfileDTO.getNickName())
-                    .profileImage("example")
+                    .profileImage(setImage(signUpProfileDTO.getImageNumber()))
                     .studentNumber(signUpProfileDTO.getStudentNumber())
                     .MBTI(signUpProfileDTO.getMbti())
                     .subMajor(subMajor)
@@ -235,6 +236,21 @@ public class MemberServiceImpl implements MemberService {
                         .contactType(mapping.getMember().getMemberProfile().getContact().getKoreanName())
                         .build())
                 .orElseThrow(() -> new GeneralHandler(ErrorCode._BAD_REQUEST));
+    }
+
+    private String setImage(int input){
+        return switch (input) {
+            case 1 -> baseUrl + "/default.png";
+            case 2 -> baseUrl + "/hamburger.png";
+            case 3 -> baseUrl + "/study.png";
+            case 4 -> baseUrl + "/muffler.png";
+            case 5 -> baseUrl + "/hoody.png";
+            case 6 -> baseUrl + "/graduate.png";
+            case 7 -> baseUrl + "/earphone.png";
+            case 8 -> baseUrl + "/boxing.png";
+            case 9 -> baseUrl + "/magician.png";
+            default -> throw new GeneralHandler(ErrorCode._BAD_REQUEST);
+        };
     }
 
 
