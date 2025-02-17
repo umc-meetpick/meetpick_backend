@@ -1,9 +1,6 @@
 package com.umc.meetpick.service.member;
 
-import com.umc.meetpick.dto.ContactResponseDto;
-import com.umc.meetpick.dto.MemberDetailResponseDto;
-import com.umc.meetpick.dto.MyProfileDto;
-import com.umc.meetpick.dto.RegisterDTO;
+import com.umc.meetpick.dto.*;
 
 import java.util.Map;
 
@@ -25,4 +22,6 @@ public interface MemberService {
     MyProfileDto getMyProfile(Long memberId);
 
     ContactResponseDto getContactInfo(Long memberId, Long mappingId);
+
+    MajorDto.InfoDto getMajorList();
 }

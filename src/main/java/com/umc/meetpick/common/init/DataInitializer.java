@@ -239,6 +239,7 @@ public class DataInitializer implements CommandLineRunner {
                         .nickname("책벌레")
                         .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                         .studentNumber(21)
+                        // "윤리교육과"는 socialScience 계열에 있음
                         .subMajor(subMajorRepository.findByNameOrderByName("윤리교육과"))
                         .MBTI(MBTI.INFJ)
                         .hobbies(Set.of(Hobby.READING, Hobby.WRITING))
@@ -252,7 +253,7 @@ public class DataInitializer implements CommandLineRunner {
                         .studentNumber(22)
                         .subMajor(subMajorRepository.findByNameOrderByName("국어국문학과"))
                         .MBTI(MBTI.ESTP)
-                        .hobbies(Set.of(Hobby.SPORTS, Hobby.GARDENING))
+                        .hobbies(Set.of(Hobby.READING, Hobby.GARDENING))
                         .contact(ContactType.PHONE_NUMBER)
                         .contactInfo("sportsking@example.com")
                         .build();
@@ -294,6 +295,7 @@ public class DataInitializer implements CommandLineRunner {
                         .mateType(MateType.MEAL)
                         .minAge(20)
                         .maxAge(26)
+                        .maxPeople(3)
                         .exerciseType(ExerciseType.RUNNING)
                         .foodTypes(Set.of(FoodType.CHINESE, FoodType.VIETNAMESE))
                         .isSchool(true)

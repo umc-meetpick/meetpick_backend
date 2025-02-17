@@ -2,15 +2,14 @@ package com.umc.meetpick.service.member;
 
 import com.umc.meetpick.common.exception.handler.GeneralHandler;
 import com.umc.meetpick.common.response.status.ErrorCode;
-import com.umc.meetpick.dto.ContactResponseDto;
-import com.umc.meetpick.dto.MemberDetailResponseDto;
-import com.umc.meetpick.dto.MyProfileDto;
-import com.umc.meetpick.dto.RegisterDTO;
+import com.umc.meetpick.dto.*;
+import com.umc.meetpick.entity.Major;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.SubMajor;
 import com.umc.meetpick.enums.*;
+import com.umc.meetpick.repository.MajorRepository;
 import com.umc.meetpick.repository.SubMajorRepository;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.repository.member.MemberProfileRepository;
@@ -30,7 +29,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.json.JSONObject;
-import java.sql.Date;
+
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -54,6 +55,7 @@ public class MemberServiceImpl implements MemberService {
     private final SubMajorRepository subMajorRepository;
     private final MemberValidator memberValidator;
     private final MemberMappingRepository memberMappingRepository;
+    private final MajorRepository majorRepository;
 
     @Override
     public Map<String, Object> getMemberDetail(Long memberSecondProfileId) {
@@ -251,6 +253,32 @@ public class MemberServiceImpl implements MemberService {
             case 9 -> baseUrl + "/magician.png";
             default -> throw new GeneralHandler(ErrorCode._BAD_REQUEST);
         };
+    }
+
+    // TODO 나중에 리팩토링
+    @Override
+    public MajorDto.InfoDto getMajorList() {
+        List<Major> majors = majorRepository.findAll();
+
+        List<MajorDto.MajorInfoDto> majorInfoDtoList = majors.stream()
+                .map(major -> {
+                    List<MajorDto.SubMajorInfoDto> subMajorInfoDtos = subMajorRepository.findAllByMajor(major).stream()
+                            .map(subMajor -> MajorDto.SubMajorInfoDto.builder()
+                                    .subMajorId(subMajor.getId())
+                                    .subMajorName(subMajor.getName())
+                                    .build())
+                            .collect(Collectors.toList());
+
+                    return MajorDto.MajorInfoDto.builder()
+                            .majorName(major.getName())
+                            .subMajorInfoDtoList(subMajorInfoDtos)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        return MajorDto.InfoDto.builder()
+                .subMajors(majorInfoDtoList)
+                .build();
     }
 
 
