@@ -17,9 +17,8 @@ public class ProfileDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ContactDTO {
-        private Long memberId;
-        private ContactType contactType;  // 연락처 유형 (카카오톡 ID, 오픈채팅링크, 전화번호)
-        private String contactInfo;  // 해당 연락처 정보
+        private ContactType contactType;
+        private String contactInfo;
 
         @Getter
         @Builder
@@ -27,17 +26,17 @@ public class ProfileDTO {
         @NoArgsConstructor
         @AllArgsConstructor
         public static class ContactRequestDTO {
-        private Long memberId;
-        private ContactType contactType;  // 연락처 유형 (카카오톡 ID, 오픈채팅링크, 전화번호)
-        private String contactInfo;  // 해당 연락처 정보
-    }
+            private ContactType contactType;
+            private String contactInfo;
+        }
+
         @Getter
         @Setter
         @Builder
         @NoArgsConstructor
         @AllArgsConstructor
         public static class ContactResponseDTO {
-            private Long memberProfileId;  // member_profile의 id
+            private Long memberProfileId;
             private ContactType contactType;
             private String contactInfo;
         }
@@ -50,11 +49,7 @@ public class ProfileDTO {
     @AllArgsConstructor
     @Builder
     public static class HobbyDTO {
-        private Long memberId;
-        private Set<Integer> hobbyIds;
-
-
-
+        private Set<String> hobbyNames;
 
         @Getter
         @Setter
@@ -62,9 +57,9 @@ public class ProfileDTO {
         @AllArgsConstructor
         @Builder
         public static class HobbyRequestDTO {
-            private Long memberId;
-            private Set<Integer> hobbyIds;
+            private Set<String> hobbyNames;
         }
+
         @Getter
         @NoArgsConstructor
         @AllArgsConstructor
@@ -74,6 +69,9 @@ public class ProfileDTO {
             private Set<String> selectedHobbies;
         }
     }
+
+
+
 
     // 전공 설정 DTO
     @Builder

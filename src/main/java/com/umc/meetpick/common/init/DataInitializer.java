@@ -7,6 +7,7 @@ import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
+import com.umc.meetpick.repository.member.MemberProfileRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -278,9 +279,9 @@ public class DataInitializer implements CommandLineRunner {
                         .memberProfile(profile4)  // MemberProfile과 함께 저장
                         .build();
 
-                // 3. MemberProfile에 Member 설정 (양방향 관계)
-                profile3.setMember(member3);
-                profile4.setMember(member4);
+//                // 3. MemberProfile에 Member 설정 (양방향 관계)
+//                profile3.setMember(member3);
+//                profile4.setMember(member4);
 
                 // 4. Member와 MemberProfile을 함께 저장
                 memberRepository.save(member3);
@@ -323,8 +324,8 @@ public class DataInitializer implements CommandLineRunner {
                         .status(true)
                         .isAccepted(true)
                         .build());
-                profile3.setMember(member3);
-                profile4.setMember(member4);
+//                profile3.setMember(member3);
+//                profile4.setMember(member4);
                 memberProfileRepository.save(profile3);
                 memberProfileRepository.save(profile4);
             }
