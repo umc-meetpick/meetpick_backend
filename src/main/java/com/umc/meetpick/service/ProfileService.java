@@ -154,27 +154,53 @@ public class ProfileService {
 
     // 전공 설정
     @Transactional
-    public ApiResponse<ProfileDTO.MajorDTO.MajorResponseDTO> setMajor(Long memberId, ProfileDTO.MajorDTO.MajorRequestDTO requestDTO) {
+    public ApiResponse<ProfileDTO.MajorDTO.MajorResponseDTO> modifyMajor(Long memberId, ProfileDTO.MajorDTO.MajorRequestDTO requestDTO) {
         Long subMajorId = requestDTO.getSubMajorId();
+        log.info("🎓 전공 수정 요청 - memberId={}, subMajorId={}", memberId, subMajorId);
 
+        // 1. 서브전공 조회
         SubMajor subMajor = subMajorRepository.findById(subMajorId)
                 .orElseThrow(() -> new RuntimeException(ErrorCode.SUB_MAJOR_NOT_FOUND.getMessage()));
 
         Major major = subMajor.getMajor();
+        log.info("✅ subMajorId={} → majorId={}, majorName={}, subMajorName={}",
+                subMajorId, major.getId(), major.getName(), subMajor.getName());
 
+        // 2. 회원 조회
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException(ErrorCode.MEMBER_NOT_FOUND.getMessage()));
 
+        // 3. 회원 프로필 조회
         MemberProfile memberProfile = member.getMemberProfile();
         if (memberProfile == null) {
             throw new RuntimeException("❌ MemberProfile이 존재하지 않습니다.");
         }
 
-        memberProfile.setMajor(major);
-        memberProfileRepository.save(memberProfile);
+        log.info("📝 기존 전공 정보 - memberProfileId={}, 기존 major={}, 기존 subMajor={}",
+                memberProfile.getId(),
+                (memberProfile.getMajor() != null ? memberProfile.getMajor().getName() : "없음"),
+                (memberProfile.getSubMajor() != null ? memberProfile.getSubMajor().getName() : "없음"));
 
-        return ApiResponse.of(SuccessCode.MAJOR_SET_SUCCESS, new ProfileDTO.MajorDTO.MajorResponseDTO(memberId, subMajor.getId(), subMajor.getName(), major.getId(), major.getName()));
+        // 4. 전공 변경
+        memberProfile.setMajor(major);
+        memberProfile.setSubMajor(subMajor);
+        memberProfileRepository.saveAndFlush(memberProfile);  // 즉시 반영
+
+        // 5. 최신 DB 데이터 다시 조회
+        MemberProfile updatedProfile = memberProfileRepository.findById(memberProfile.getId())
+                .orElseThrow(() -> new RuntimeException("❌ 업데이트된 MemberProfile을 찾을 수 없습니다."));
+
+        log.info("🔍 최종 반영 확인 - memberProfileId={}, 저장된 major={}, 저장된 subMajor={}",
+                updatedProfile.getId(),
+                (updatedProfile.getMajor() != null ? updatedProfile.getMajor().getName() : "없음"),
+                (updatedProfile.getSubMajor() != null ? updatedProfile.getSubMajor().getName() : "없음"));
+
+        return ApiResponse.of(SuccessCode.MAJOR_SET_SUCCESS, new ProfileDTO.MajorDTO.MajorResponseDTO(
+                memberId, subMajor.getId(), subMajor.getName(), updatedProfile.getMajor().getId(), updatedProfile.getMajor().getName()
+        ));
     }
+
+
 
     // 프로필 이미지 설정
     @Transactional

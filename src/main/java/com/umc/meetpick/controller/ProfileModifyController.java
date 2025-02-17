@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name="프로필 수정 관련 API", description = "사용자 프로필 수정 API 입니다.")
+@Tag(name = "프로필 수정 관련 API", description = "사용자 프로필 수정 API 입니다.")
 @RestController
 @RequestMapping("/api/modify")
 @RequiredArgsConstructor
@@ -90,6 +90,7 @@ public class ProfileModifyController {
         log.info("✅ 닉네임 설정 요청 - memberId={}, nickname={}", memberId, requestDTO.getNickname());
         return profileModifyService.modifyNickname(memberId, requestDTO);
     }
+
     // 학번 변경 API
     @Operation(summary = "학번 변경", description = "회원의 학번을 변경합니다.")
     @PostMapping("/student-number/set")

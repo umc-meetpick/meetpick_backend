@@ -135,33 +135,126 @@ public class DataInitializer implements CommandLineRunner {
         // 사용자 기본값 저장
         if (memberRepository.count() == 0) {
             if (memberRepository.count() == 0) {
-
 // ===== Pair 1 =====
-                MemberProfile profile3 = memberProfileRepository.save(MemberProfile.builder()
+//                MemberProfile profile3 = memberProfileRepository.save(MemberProfile.builder()
+//                        .nickname("책벌레")
+//                        .profileImage("https://example.com/profile3.jpg")
+//                        .studentNumber(21)
+//                        // "윤리교육과"는 socialScience 계열에 있음
+//                        .subMajor(subMajorRepository.findByNameOrderByName("윤리교육과"))
+//                        .MBTI(MBTI.INFJ)
+//                        .hobbies(Set.of(Hobby.READING, Hobby.WRITING))
+//                        .contact(ContactType.KAKAO_TALK_ID)
+//                        .contactInfo("bookworm_kakao")
+//                        .build());
+//
+//                MemberProfile profile4 = memberProfileRepository.save(MemberProfile.builder()
+//                        .nickname("스포츠킹")
+//                        .profileImage("https://example.com/profile4.jpg")
+//                        .studentNumber(22)
+//                        // "국어국문학과"는 humanities 계열에 있음
+//                        .subMajor(subMajorRepository.findByNameOrderByName("국어국문학과"))
+//                        .MBTI(MBTI.ESTP)
+//                        .hobbies(Set.of(Hobby.SPORTS, Hobby.GARDENING))
+//                        .contact(ContactType.PHONE_NUMBER)
+//                        .contactInfo("sportsking@example.com")
+//                        .build());
+//
+//                Member member3 = memberRepository.save(Member.builder()
+//                        .name("철수")
+//                        .gender(Gender.MALE)
+//                        .birthday(new java.util.Date(1996 - 1900, Calendar.DECEMBER, 5))
+//                        .university(University.YONSEI_UNIVERSITY)
+//                        .socialType(SocialType.KAKAO)
+//                        .socialId(1122334455L)
+//                        .status(MemberStatus.ACTIVE)
+//                        .role(MemberRole.MEMBER)
+//                        .memberProfile(profile3)
+//                        .build());
+//
+//                Member member4 = memberRepository.save(Member.builder()
+//                        .name("영희")
+//                        .gender(Gender.FEMALE)
+//                        .birthday(new java.util.Date(1997 - 1900, Calendar.JANUARY, 20))
+//                        .university(University.EWHA_WOMANS_UNIVERSITY)
+//                        .socialType(SocialType.KAKAO)
+//                        .socialId(2233445566L)
+//                        .status(MemberStatus.ACTIVE)
+//                        .role(MemberRole.MEMBER)
+//                        .memberProfile(profile4)
+//                        .build());
+//
+//                MemberSecondProfile secondProfile3 = memberSecondProfileRepository.save(MemberSecondProfile.builder()
+//                        .member(member3)
+//                        .mateType(MateType.MEAL)
+//                        .minAge(20)
+//                        .maxAge(26)
+//                        .maxPeople(3)
+//                        .exerciseType(ExerciseType.RUNNING)
+//                        .foodTypes(Set.of(FoodType.CHINESE, FoodType.VIETNAMESE))
+//                        .isSchool(true)
+//                        .comment("조용하게 공부할 동료를 찾습니다.")
+//                        .build());
+//
+//                MemberSecondProfile secondProfile4 = memberSecondProfileRepository.save(MemberSecondProfile.builder()
+//                        .member(member4)
+//                        .mateType(MateType.MEAL)
+//                        .minAge(21)
+//                        .maxAge(28)
+//                        .maxPeople(3)
+//                        .exerciseType(ExerciseType.RUNNING)
+//                        .foodTypes(Set.of(FoodType.KOREAN))
+//                        .isSchool(false)
+//                        .comment("함께 운동할 친구를 구해요.")
+//                        .build());
+//
+//                secondProfile3.setMember(member3);
+//                secondProfile4.setMember(member4);
+//                memberSecondProfileRepository.save(secondProfile3);
+//                memberSecondProfileRepository.save(secondProfile4);
+//
+//                MemberSecondProfileMapping mapping3 = memberMappingRepository.save(MemberSecondProfileMapping.builder()
+//                        .member(member3)
+//                        .memberSecondProfile(secondProfile4)
+//                        .status(false)
+//                        .isAccepted(false)
+//                        .build());
+//
+//                MemberSecondProfileMapping mapping4 = memberMappingRepository.save(MemberSecondProfileMapping.builder()
+//                        .member(member4)
+//                        .memberSecondProfile(secondProfile3)
+//                        .status(true)
+//                        .isAccepted(true)
+//                        .build());
+//
+//                memberMappingRepository.save(mapping3);
+//                memberMappingRepository.save(mapping4);
+                // ===== Pair 1 =====
+                // 1. MemberProfile 생성 (DB 저장 X)
+                MemberProfile profile3 = MemberProfile.builder()
                         .nickname("책벌레")
                         .profileImage("https://example.com/profile3.jpg")
                         .studentNumber(21)
-                        // "윤리교육과"는 socialScience 계열에 있음
                         .subMajor(subMajorRepository.findByNameOrderByName("윤리교육과"))
                         .MBTI(MBTI.INFJ)
                         .hobbies(Set.of(Hobby.READING, Hobby.WRITING))
                         .contact(ContactType.KAKAO_TALK_ID)
                         .contactInfo("bookworm_kakao")
-                        .build());
+                        .build();
 
-                MemberProfile profile4 = memberProfileRepository.save(MemberProfile.builder()
+                MemberProfile profile4 = MemberProfile.builder()
                         .nickname("스포츠킹")
                         .profileImage("https://example.com/profile4.jpg")
                         .studentNumber(22)
-                        // "국어국문학과"는 humanities 계열에 있음
                         .subMajor(subMajorRepository.findByNameOrderByName("국어국문학과"))
                         .MBTI(MBTI.ESTP)
                         .hobbies(Set.of(Hobby.SPORTS, Hobby.GARDENING))
                         .contact(ContactType.PHONE_NUMBER)
                         .contactInfo("sportsking@example.com")
-                        .build());
+                        .build();
 
-                Member member3 = memberRepository.save(Member.builder()
+                // 2. Member 생성 (MemberProfile 포함)
+                Member member3 = Member.builder()
                         .name("철수")
                         .gender(Gender.MALE)
                         .birthday(new java.util.Date(1996 - 1900, Calendar.DECEMBER, 5))
@@ -170,10 +263,10 @@ public class DataInitializer implements CommandLineRunner {
                         .socialId(1122334455L)
                         .status(MemberStatus.ACTIVE)
                         .role(MemberRole.MEMBER)
-                        .memberProfile(profile3)
-                        .build());
+                        .memberProfile(profile3)  // MemberProfile과 함께 저장
+                        .build();
 
-                Member member4 = memberRepository.save(Member.builder()
+                Member member4 = Member.builder()
                         .name("영희")
                         .gender(Gender.FEMALE)
                         .birthday(new java.util.Date(1997 - 1900, Calendar.JANUARY, 20))
@@ -182,15 +275,23 @@ public class DataInitializer implements CommandLineRunner {
                         .socialId(2233445566L)
                         .status(MemberStatus.ACTIVE)
                         .role(MemberRole.MEMBER)
-                        .memberProfile(profile4)
-                        .build());
+                        .memberProfile(profile4)  // MemberProfile과 함께 저장
+                        .build();
 
+                // 3. MemberProfile에 Member 설정 (양방향 관계)
+                profile3.setMember(member3);
+                profile4.setMember(member4);
+
+                // 4. Member와 MemberProfile을 함께 저장
+                memberRepository.save(member3);
+                memberRepository.save(member4);
+
+                // ===== Pair 2 (MemberSecondProfile) =====
                 MemberSecondProfile secondProfile3 = memberSecondProfileRepository.save(MemberSecondProfile.builder()
                         .member(member3)
                         .mateType(MateType.MEAL)
                         .minAge(20)
                         .maxAge(26)
-                        .maxPeople(3)
                         .exerciseType(ExerciseType.RUNNING)
                         .foodTypes(Set.of(FoodType.CHINESE, FoodType.VIETNAMESE))
                         .isSchool(true)
@@ -202,38 +303,32 @@ public class DataInitializer implements CommandLineRunner {
                         .mateType(MateType.MEAL)
                         .minAge(21)
                         .maxAge(28)
-                        .maxPeople(3)
                         .exerciseType(ExerciseType.RUNNING)
                         .foodTypes(Set.of(FoodType.KOREAN))
                         .isSchool(false)
                         .comment("함께 운동할 친구를 구해요.")
                         .build());
 
-                secondProfile3.setMember(member3);
-                secondProfile4.setMember(member4);
-                memberSecondProfileRepository.save(secondProfile3);
-                memberSecondProfileRepository.save(secondProfile4);
-
-                MemberSecondProfileMapping mapping3 = memberMappingRepository.save(MemberSecondProfileMapping.builder()
+                // 5. MemberSecondProfileMapping 저장
+                memberMappingRepository.save(MemberSecondProfileMapping.builder()
                         .member(member3)
                         .memberSecondProfile(secondProfile4)
                         .status(false)
                         .isAccepted(false)
                         .build());
 
-                MemberSecondProfileMapping mapping4 = memberMappingRepository.save(MemberSecondProfileMapping.builder()
+                memberMappingRepository.save(MemberSecondProfileMapping.builder()
                         .member(member4)
                         .memberSecondProfile(secondProfile3)
                         .status(true)
                         .isAccepted(true)
                         .build());
-
-                memberMappingRepository.save(mapping3);
-                memberMappingRepository.save(mapping4);
+                profile3.setMember(member3);
+                profile4.setMember(member4);
+                memberProfileRepository.save(profile3);
+                memberProfileRepository.save(profile4);
             }
-
         }
-
     }
 }
 

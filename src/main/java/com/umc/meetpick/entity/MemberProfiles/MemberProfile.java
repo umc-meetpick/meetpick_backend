@@ -27,7 +27,7 @@ public class MemberProfile extends BaseTimeEntity {
 
     //추가
     @OneToOne
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = true)
     private Member member;
 
     // 닉네임
@@ -48,7 +48,7 @@ public class MemberProfile extends BaseTimeEntity {
     private MBTI MBTI;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private Major major;
 
     @ManyToOne

@@ -121,7 +121,7 @@ public class ProfileDTO {
         @AllArgsConstructor
         public static class MBTIRequestDTO {
 
-            @JsonProperty("MBTI") // JSON 매핑을 강제 적용
+         //   @JsonProperty("MBTI") // JSON 매핑을 강제 적용
             private String MBTI;
 
             public void setMBTI(String MBTI) {
