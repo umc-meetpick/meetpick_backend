@@ -1,5 +1,6 @@
 package com.umc.meetpick.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
@@ -15,5 +16,22 @@ public enum CertificateType {
 
     CertificateType(String koreanName) {
         this.koreanName = koreanName;
+    }
+
+
+    // json직렬화/역직렬화 추가
+    @JsonValue
+    public String getKoreanName() {
+        return koreanName;
+    }
+
+    // fromString 메소드 추가
+    public static CertificateType fromString(String type) {
+        for (CertificateType certificateType : CertificateType.values()) {
+            if (certificateType.koreanName.equalsIgnoreCase(type)) {
+                return certificateType;
+            }
+        }
+        throw new IllegalArgumentException("Invalid certificate type: " + type);
     }
 }

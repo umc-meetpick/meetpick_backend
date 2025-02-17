@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Tag(name = "Match", description = "매칭 관련 API")  // [변경 1]
 @RestController
@@ -46,8 +47,10 @@ public class MatchController {
     @Operation(summary = "추천 매칭 목록 조회", description = "사용자에게 적절한 메이트를 추천해줍니다") // [변경 2]
     @GetMapping("/recommendation")
     public ApiResponse<List<MatchResponseDto>> getRecommendation(
-            @PathParam("mateType") MateType mateType, @AuthUser Long memberId)
+            @PathParam("mateType") String mateTypeStr, @AuthUser Long memberId)//String 수정
+
     {
+        MateType mateType = MateType.fromString(mateTypeStr); // String -> Enum 변환
         return ApiResponse.onSuccess(matchingService.match(memberId, mateType));
     }
 
@@ -78,16 +81,18 @@ public class MatchController {
 
     @Operation(summary = "찜한 목록 가져오기")
     @GetMapping("/like")
-    public ApiResponse<List<MatchResponseDto>> getLikeRequest(@AuthUser Long memberId, @PathParam("mateType") MateType mateType) {
+    public ApiResponse<List<MatchResponseDto>> getLikeRequest(@AuthUser Long memberId, @PathParam("mateType") String mateTypeStr)
+
+    {
+        MateType mateType = MateType.fromString(mateTypeStr); // String -> Enum 변환
         return ApiResponse.onSuccess(requestService.getLikes(memberId, mateType));
     }
-
     @Operation(summary = "프로필 목록 조회", description = "메이트 타입별 전체 프로필 목록을 필터링하여 조회합니다.")
     @GetMapping("/profiles")
     public ApiResponse<ProfileDetailListResponseDto> getAllProfiles(
             //필수
             @AuthUser Long memberId,
-            @RequestParam MateType mateType,
+            @RequestParam String mateTypeStr, //MateType -> String
 
             // 공통 필터
             @RequestParam(required = false) Gender gender,
@@ -102,13 +107,33 @@ public class MatchController {
             @RequestParam(required = false) CertificateType certificateType,
 
             // EXERCISE 필터
-            @RequestParam(required = false) Set<ExerciseType> exerciseTypes,
+            //@RequestParam(required = false) Set<ExerciseType> exerciseTypes,
+            @RequestParam(required = false) Set<String> exerciseTypesStr,        // 수정 후
 
             // MEAL 필터
-            @RequestParam(required = false) Set<FoodType> foodTypes,
+            //@RequestParam(required = false) Set<FoodType> foodTypes,
+            @RequestParam(required = false) Set<String> foodTypesStr,
 
             @PageableDefault(size = 10) Pageable pageable
     ) {
+        MateType mateType = MateType.fromString(mateTypeStr); // String -> Enum 변환
+
+        // Set<String> -> Set<ExerciseType> 변환
+        Set<ExerciseType> exerciseTypes = null;
+        if (exerciseTypesStr != null) {
+            exerciseTypes = exerciseTypesStr.stream()
+                    .map(ExerciseType::fromString)
+                    .collect(Collectors.toSet());
+        }
+
+        // Set<String> -> Set<FoodType> 변환
+        Set<FoodType> foodTypes = null;
+        if (foodTypesStr != null) {
+            foodTypes = foodTypesStr.stream()
+                    .map(FoodType::fromString)
+                    .collect(Collectors.toSet());
+        }
+
         FilterRequestDTO filterRequest = FilterRequestDTO.builder()
                 .gender(gender)
                 .studentNumber(studentNumber)
