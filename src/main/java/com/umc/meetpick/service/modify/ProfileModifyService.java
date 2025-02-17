@@ -1,8 +1,8 @@
-package com.umc.meetpick.service;
+package com.umc.meetpick.service.modify;
 
+import com.umc.meetpick.common.exception.handler.GeneralHandler;
 import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.common.response.status.SuccessCode;
-import com.umc.meetpick.dto.ProfileDTO;
 import com.umc.meetpick.dto.ProfileDTO;
 import com.umc.meetpick.common.response.ApiResponse;
 import com.umc.meetpick.entity.Major;
@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,20 +33,12 @@ public class ProfileModifyService {
     private final SubMajorRepository subMajorRepository;
 
     // 연락처 수정
-    public ApiResponse<ProfileDTO.ContactDTO.ContactResponseDTO> modifyContact(ProfileDTO.ContactDTO.ContactRequestDTO contactRequestDTO) {
-        Long memberId = contactRequestDTO.getMemberId();
+    public ApiResponse<ProfileDTO.ContactDTO.ContactResponseDTO> modifyContact(Long memberId, ProfileDTO.ContactDTO.ContactRequestDTO contactRequestDTO) {
         ContactType contactType = contactRequestDTO.getContactType();
         String contactInfo = contactRequestDTO.getContactInfo();
 
-        boolean isValidContactType = false;
-        for (ContactType type : ContactType.values()) {
-            if (type == contactType) {
-                isValidContactType = true;
-                break;
-            }
-        }
-
-        if (!isValidContactType) {
+        // 연락처 유형 검증
+        if (Arrays.stream(ContactType.values()).noneMatch(type -> type == contactType)) {
             return ApiResponse.ofFailure(ErrorCode.CONTACT_TYPE_INVALID, null);
         }
 
@@ -54,95 +46,84 @@ public class ProfileModifyService {
             return ApiResponse.ofFailure(ErrorCode.CONTACT_INFO_INVALID, null);
         }
 
-        Optional<MemberProfile> optionalMemberProfile = memberProfileRepository.findByMemberId(memberId);
-        if (optionalMemberProfile.isEmpty()) {
-            return ApiResponse.ofFailure(ErrorCode.MEMBER_NOT_FOUND, null);
-        }
+        // 프로필 조회
+        MemberProfile memberProfile = getMemberProfileOrThrow(memberId);
 
-        MemberProfile memberProfile = optionalMemberProfile.get();
+        // 연락처 정보 업데이트
         memberProfile.setContact(contactType);
         memberProfile.setContactInfo(contactInfo);
         memberProfileRepository.save(memberProfile);
 
+        // 응답 생성
         ProfileDTO.ContactDTO.ContactResponseDTO responseDTO = new ProfileDTO.ContactDTO.ContactResponseDTO(
                 memberProfile.getId(),
                 memberProfile.getContact(),
-                memberProfile.getContactInfo());
+                memberProfile.getContactInfo()
+        );
         return ApiResponse.onSuccess(responseDTO);
     }
 
-    // 취미 수정
-    public ApiResponse<ProfileDTO.HobbyDTO.HobbyResponseDTO> modifyHobbies(ProfileDTO.HobbyDTO.HobbyRequestDTO hobbyRequestDTO) {
-        Long memberId = hobbyRequestDTO.getMemberId();
-        Set<Integer> hobbyIds = hobbyRequestDTO.getHobbyIds();
 
-        if (hobbyIds.size() > 5) {
+    // 취미 수정
+    public ApiResponse<ProfileDTO.HobbyDTO.HobbyResponseDTO> modifyHobbies(Long memberId, ProfileDTO.HobbyDTO.HobbyRequestDTO hobbyRequestDTO) {
+        Set<String> hobbyNames = hobbyRequestDTO.getHobbyNames();
+
+        // 취미 최대 선택 개수 검증 (최대 5개)
+        if (hobbyNames.size() > 5) {
             return ApiResponse.ofFailure(ErrorCode.HOBBY_SELECTION_ERROR, null);
         }
 
-        Optional<MemberProfile> optionalMemberProfile = memberProfileRepository.findByMemberId(memberId);
-        if (optionalMemberProfile.isEmpty()) {
-            return ApiResponse.ofFailure(ErrorCode.MEMBER_NOT_FOUND, null);
+        // 프로필 조회
+        MemberProfile memberProfile = getMemberProfileOrThrow(memberId);
+
+        // 선택된 취미 변환 (유효성 검사 포함)
+        Set<Hobby> selectedHobbies;
+        try {
+            selectedHobbies = hobbyNames.stream()
+                    .map(Hobby::fromString) // String -> Hobby Enum 변환
+                    .collect(Collectors.toSet());
+        } catch (GeneralHandler e) {
+            return ApiResponse.ofFailure(ErrorCode.INVALID_ENUM, null); // 존재하지 않는 취미 입력 시 오류 반환
         }
 
-        MemberProfile memberProfile = optionalMemberProfile.get();
-        Set<Hobby> selectedHobbies = hobbyIds.stream()
-                .map(id -> Hobby.values()[id - 1])
-                .filter(hobby -> hobby != null)
-                .collect(Collectors.toSet());
-
+        // 프로필에 취미 설정 후 저장
         memberProfile.setHobbies(selectedHobbies);
         memberProfileRepository.save(memberProfile);
 
+        // 응답 DTO 생성 및 반환
         ProfileDTO.HobbyDTO.HobbyResponseDTO hobbyResponseDTO = new ProfileDTO.HobbyDTO.HobbyResponseDTO(
                 memberProfile.getId(),
                 selectedHobbies.stream()
-                        .map(Hobby::getKoreanName)
+                        .map(Hobby::getKoreanName) // 한글 이름 변환
                         .collect(Collectors.toSet())
         );
 
         return ApiResponse.onSuccess(hobbyResponseDTO);
     }
 
+
+
     // MBTI 수정
     @Transactional
     public ApiResponse<ProfileDTO.MBTIDTO.MBTIResponseDTO> modifyMBTI(Long memberId, ProfileDTO.MBTIDTO.MBTIRequestDTO requestDTO) {
+        // 요청 값 검증
         if (requestDTO == null || requestDTO.getMBTI() == null) {
-            return ApiResponse.onFailure(
-                    ErrorCode.INVALID_MBTI.getCode(),
-                    "MBTI 값이 비어 있습니다.",
-                    null
-            );
+            return ApiResponse.onFailure(ErrorCode.INVALID_MBTI.getCode(), "MBTI 값이 비어 있습니다.", null);
         }
 
+        // MBTI 문자열 변환 및 유효성 검사
         String mbtiString = requestDTO.getMBTI().toUpperCase();
         MBTI mbtiEnum;
         try {
             mbtiEnum = MBTI.valueOf(mbtiString);
         } catch (IllegalArgumentException e) {
-            return ApiResponse.onFailure(
-                    ErrorCode.INVALID_MBTI.getCode(),
-                    "유효하지 않은 MBTI 값입니다.",
-                    null
-            );
+            return ApiResponse.onFailure(ErrorCode.INVALID_MBTI.getCode(), "유효하지 않은 MBTI 값입니다.", null);
         }
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("❌ 해당 ID의 Member를 찾을 수 없습니다."));
+        // 프로필 조회 (없으면 PROFILE_NOT_FOUND 반환)
+        MemberProfile memberProfile = getMemberProfileOrThrow(memberId);
 
-        MemberProfile memberProfile = memberProfileRepository.findByMember(member)
-                .orElseGet(() -> {
-                    MemberProfile newProfile = MemberProfile.builder()
-                            .member(member)
-                            .nickname("Default Nickname")
-                            .profileImage("default.png")
-                            .studentNumber(0)
-                            .MBTI(mbtiEnum)
-                            .build();
-                    memberProfileRepository.save(newProfile);
-                    return newProfile;
-                });
-
+        // MBTI 업데이트
         memberProfile.setMBTI(mbtiEnum);
         memberProfileRepository.save(memberProfile);
 
@@ -150,58 +131,67 @@ public class ProfileModifyService {
                 new ProfileDTO.MBTIDTO.MBTIResponseDTO(memberId, memberProfile.getId(), mbtiEnum.name(), mbtiEnum.name() + " 메이트이시군요!"));
     }
 
+
     // 전공 수정
     @Transactional
     public ApiResponse<ProfileDTO.MajorDTO.MajorResponseDTO> modifyMajor(Long memberId, ProfileDTO.MajorDTO.MajorRequestDTO requestDTO) {
         Long subMajorId = requestDTO.getSubMajorId();
+        log.info("🎓 전공 수정 요청 - memberId={}, subMajorId={}", memberId, subMajorId);
 
+        // 1. 서브전공 조회 (없으면 SUB_MAJOR_NOT_FOUND 반환)
         SubMajor subMajor = subMajorRepository.findById(subMajorId)
                 .orElseThrow(() -> new RuntimeException(ErrorCode.SUB_MAJOR_NOT_FOUND.getMessage()));
 
         Major major = subMajor.getMajor();
+        log.info("✅ subMajorId={} → majorId={}, majorName={}, subMajorName={}",
+                subMajorId, major.getId(), major.getName(), subMajor.getName());
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException(ErrorCode.MEMBER_NOT_FOUND.getMessage()));
+        // 2. 회원 프로필 조회 (없으면 PROFILE_NOT_FOUND 반환)
+        MemberProfile memberProfile = getMemberProfileOrThrow(memberId);
 
-        MemberProfile memberProfile = member.getMemberProfile();
-        if (memberProfile == null) {
-            throw new RuntimeException("❌ MemberProfile이 존재하지 않습니다.");
-        }
+        log.info("📝 기존 전공 정보 - memberProfileId={}, 기존 major={}, 기존 subMajor={}",
+                memberProfile.getId(),
+                (memberProfile.getMajor() != null ? memberProfile.getMajor().getName() : "없음"),
+                (memberProfile.getSubMajor() != null ? memberProfile.getSubMajor().getName() : "없음"));
 
+        // 3. 전공 변경 및 즉시 반영
         memberProfile.setMajor(major);
-        memberProfileRepository.save(memberProfile);
+        memberProfile.setSubMajor(subMajor);
+        memberProfileRepository.saveAndFlush(memberProfile);
 
-        return ApiResponse.of(SuccessCode.MAJOR_SET_SUCCESS, new ProfileDTO
-                .MajorDTO.MajorResponseDTO(memberId, subMajor.getId(), subMajor.getName(), major.getId(), major.getName()));
+        log.info("🔍 최종 반영 확인 - memberProfileId={}, 저장된 major={}, 저장된 subMajor={}",
+                memberProfile.getId(),
+                (memberProfile.getMajor() != null ? memberProfile.getMajor().getName() : "없음"),
+                (memberProfile.getSubMajor() != null ? memberProfile.getSubMajor().getName() : "없음"));
+
+        return ApiResponse.of(SuccessCode.MAJOR_SET_SUCCESS, new ProfileDTO.MajorDTO.MajorResponseDTO(
+                memberId, subMajor.getId(), subMajor.getName(), memberProfile.getMajor().getId(), memberProfile.getMajor().getName()
+        ));
     }
 
     // 프로필 이미지 설정
     @Transactional
     public ApiResponse<ProfileDTO.ProfileImageDTO.ProfileImageResponseDTO> modifyProfileImage(Long memberId, ProfileDTO.ProfileImageDTO.ProfileImageRequestDTO requestDTO) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("❌ 해당 ID의 Member를 찾을 수 없습니다."));
+        log.info("🖼️ 프로필 이미지 설정 요청 - memberId={}, imageUrl={}", memberId, requestDTO.getImageUrl());
 
-        MemberProfile memberProfile = memberProfileRepository.findByMember(member)
-                .orElseGet(() -> {
-                    MemberProfile newProfile = MemberProfile.builder()
-                            .member(member)
-                            .profileImage("default.png")
-                            .build();
-                    memberProfileRepository.save(newProfile);
-                    return newProfile;
-                });
+        // 프로필 조회 (없으면 PROFILE_NOT_FOUND 반환)
+        MemberProfile memberProfile = getMemberProfileOrThrow(memberId);
 
+        // 프로필 이미지 업데이트
         memberProfile.setProfileImage(requestDTO.getImageUrl());
         memberProfileRepository.save(memberProfile);
 
         return ApiResponse.onSuccess(new ProfileDTO.ProfileImageDTO.ProfileImageResponseDTO(memberId, memberProfile.getId(), memberProfile.getProfileImage()));
     }
+
     // 닉네임 중복 검사
     public ApiResponse<ProfileDTO.NicknameDTO.NicknameCheckResponseDTO> checkNicknameAvailability(Long memberId, String nickname) {
         boolean exists = memberProfileRepository.existsByNickname(nickname);
-        boolean isAvailable = !exists || (memberId != null && memberProfileRepository.findByMemberId(memberId)
+        boolean isAvailable = !exists || (memberId != null && memberRepository.findById(memberId)
+                .map(Member::getMemberProfile)  // Member가 직접 Profile을 가지는 경우
                 .map(profile -> profile.getNickname().equals(nickname))
                 .orElse(false));
+
 
         if (!isAvailable) {
             return ApiResponse.onFailure(
@@ -236,31 +226,12 @@ public class ProfileModifyService {
             );
         }
 
-        // Member 조회
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("❌ 해당 ID의 Member를 찾을 수 없습니다."));
-
-        // MemberProfile 조회 (없으면 새로 생성)
-        MemberProfile memberProfile = memberProfileRepository.findByMemberId(memberId)
-                .orElseGet(() -> {
-                    MemberProfile newProfile = MemberProfile.builder()
-                            .member(member)
-                            .nickname(nickname)
-                            .profileImage("default.png")
-                            .build();
-                    memberProfileRepository.save(newProfile);
-                    return newProfile;
-                });
+        // 프로필 조회 (없으면 PROFILE_NOT_FOUND 반환)
+        MemberProfile memberProfile = getMemberProfileOrThrow(memberId);
 
         // 닉네임 업데이트
         memberProfile.setNickname(nickname);
         memberProfileRepository.save(memberProfile);
-
-        // Member 테이블의 member_profile 컬럼 업데이트
-        if (member.getMemberProfile() == null || !member.getMemberProfile().getId().equals(memberProfile.getId())) {
-            member.setMemberProfile(memberProfile);
-            memberRepository.save(member);
-        }
 
         log.info("✅ 닉네임 설정 완료 - memberId={}, profileId={}, nickname={}", memberId, memberProfile.getId(), nickname);
         return ApiResponse.of(
@@ -269,13 +240,14 @@ public class ProfileModifyService {
         );
     }
 
+
     // 학번 변경
     @Transactional
     public ApiResponse<ProfileDTO.StudentNumberDTO.StudentNumberResponseDTO> modifyStudentNumber(Long memberId, ProfileDTO.StudentNumberDTO.StudentNumberRequestDTO requestDTO) {
         String studentNumberStr = requestDTO.getStudentNumber();
         log.info("🔍 학번 설정 요청 - memberId={}, studentNumber={}", memberId, studentNumberStr);
 
-        // 숫자 검증 (추가)
+        // 숫자 검증
         if (studentNumberStr == null || !studentNumberStr.matches("\\d+")) {
             return ApiResponse.onFailure(
                     ErrorCode.INVALID_STUDENT_NUMBER.getCode(),
@@ -286,32 +258,12 @@ public class ProfileModifyService {
 
         int studentNumber = Integer.parseInt(studentNumberStr); // 숫자로 변환
 
-        // Member 조회
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("❌ 해당 ID의 Member를 찾을 수 없습니다."));
-
-        // MemberProfile 조회 (없으면 새로 생성)
-        MemberProfile memberProfile = memberProfileRepository.findByMember(member)
-                .orElseGet(() -> {
-                    MemberProfile newProfile = MemberProfile.builder()
-                            .member(member)
-                            .nickname("Default Nickname")
-                            .profileImage("default.png")
-                            .studentNumber(studentNumber)
-                            .build();
-                    memberProfileRepository.save(newProfile);
-                    return newProfile;
-                });
+        // 프로필 조회 (없으면 PROFILE_NOT_FOUND 반환)
+        MemberProfile memberProfile = getMemberProfileOrThrow(memberId);
 
         // 학번 업데이트
         memberProfile.setStudentNumber(studentNumber);
         memberProfileRepository.save(memberProfile);
-
-        // Member 테이블의 member_profile 컬럼 업데이트
-        if (member.getMemberProfile() == null || !member.getMemberProfile().getId().equals(memberProfile.getId())) {
-            member.setMemberProfile(memberProfile);
-            memberRepository.save(member);
-        }
 
         log.info("✅ 학번 설정 완료 - memberId={}, profileId={}, studentNumber={}", memberId, memberProfile.getId(), studentNumber);
         return ApiResponse.of(
@@ -319,4 +271,10 @@ public class ProfileModifyService {
                 new ProfileDTO.StudentNumberDTO.StudentNumberResponseDTO(memberId, memberProfile.getId(), studentNumber)
         );
     }
+
+    private MemberProfile getMemberProfileOrThrow(Long memberProfileId) {
+        return memberProfileRepository.findById(memberProfileId)
+                .orElseThrow(() -> new RuntimeException(ErrorCode.PROFILE_NOT_FOUND.getMessage()));
+    }
+
 }
