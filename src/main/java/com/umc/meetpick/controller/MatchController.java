@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Tag(name = "Match", description = "매칭 관련 API")  // [변경 1]
 @RestController
@@ -87,7 +88,7 @@ public class MatchController {
     public ApiResponse<ProfileDetailListResponseDto> getAllProfiles(
             //필수
             @AuthUser Long memberId,
-            @RequestParam MateType mateType,
+            @RequestParam String mateTypeStr, //MateType -> String
 
             // 공통 필터
             @RequestParam(required = false) Gender gender,
@@ -102,13 +103,33 @@ public class MatchController {
             @RequestParam(required = false) CertificateType certificateType,
 
             // EXERCISE 필터
-            @RequestParam(required = false) Set<ExerciseType> exerciseTypes,
+            //@RequestParam(required = false) Set<ExerciseType> exerciseTypes,
+            @RequestParam(required = false) Set<String> exerciseTypesStr,        // 수정 후
 
             // MEAL 필터
-            @RequestParam(required = false) Set<FoodType> foodTypes,
+            //@RequestParam(required = false) Set<FoodType> foodTypes,
+            @RequestParam(required = false) Set<String> foodTypesStr,
 
             @PageableDefault(size = 10) Pageable pageable
     ) {
+        MateType mateType = MateType.fromString(mateTypeStr); // String -> Enum 변환
+
+        // Set<String> -> Set<ExerciseType> 변환
+        Set<ExerciseType> exerciseTypes = null;
+        if (exerciseTypesStr != null) {
+            exerciseTypes = exerciseTypesStr.stream()
+                    .map(ExerciseType::fromString)
+                    .collect(Collectors.toSet());
+        }
+
+        // Set<String> -> Set<FoodType> 변환
+        Set<FoodType> foodTypes = null;
+        if (foodTypesStr != null) {
+            foodTypes = foodTypesStr.stream()
+                    .map(FoodType::fromString)
+                    .collect(Collectors.toSet());
+        }
+
         FilterRequestDTO filterRequest = FilterRequestDTO.builder()
                 .gender(gender)
                 .studentNumber(studentNumber)
