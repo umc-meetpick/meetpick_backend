@@ -8,5 +8,5 @@ import org.springframework.data.domain.Pageable;
 
 
 public interface AlarmQueryStrategy {
-    Page<MemberSecondProfileMapping> getSecondProfilesByMateType(Member member, MateType mateType, Pageable pageable);
+    Page<MemberSecondProfileMapping> getSecondProfilesByMateType(Member member, MateType mateType, Pageable pageable, Boolean isAccepted);
 }

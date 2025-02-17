@@ -378,7 +378,7 @@ public class DataInitializer implements CommandLineRunner {
                 memberRepository.save(member9);
 
                 // Profile 1
-                MemberSecondProfile secondProfile1 = memberSecondProfileRepository.save(
+                MemberSecondProfile secondProfile11 = memberSecondProfileRepository.save(
                         MemberSecondProfile.builder()
                                 .member(member1)
                                 .gender(Gender.MALE)
@@ -401,7 +401,61 @@ public class DataInitializer implements CommandLineRunner {
                                 .isOnline(false)
                                 .studyTimes(1)
                                 .place("카페")
+                                .mateType(MateType.STUDY)
+                                .build()
+                );
+
+                MemberSecondProfile secondProfile12 = memberSecondProfileRepository.save(
+                        MemberSecondProfile.builder()
+                                .member(member1)
+                                .gender(Gender.MALE)
+                                .memberSecondProfileMajorList(new ArrayList<>())
+                                .studentNumber(StudentNumber.PEER)
+                                .minAge(20)
+                                .maxAge(26)
+                                .mbti("ENTJ")
+                                .isHobbySame(true)
+                                .memberSecondProfileTimes(new ArrayList<>())
+                                .maxPeople(3)
+                                .currentPeople(0)
+                                .comment("맛있는거 먹자.")
+                                .exerciseType(ExerciseType.RUNNING)
+                                .isSchool(true)
+                                .foodTypes(Set.of(FoodType.CHINESE, FoodType.VIETNAMESE))
+                                .studyType(StudyType.STUDY)
+                                .majorName("컴퓨터공학")
+                                .professorName("김교수님")
+                                .isOnline(false)
+                                .studyTimes(1)
+                                .place("카페")
                                 .mateType(MateType.MEAL)
+                                .build()
+                );
+
+                MemberSecondProfile secondProfile13 = memberSecondProfileRepository.save(
+                        MemberSecondProfile.builder()
+                                .member(member1)
+                                .gender(Gender.MALE)
+                                .memberSecondProfileMajorList(new ArrayList<>())
+                                .studentNumber(StudentNumber.PEER)
+                                .minAge(20)
+                                .maxAge(26)
+                                .mbti("ENTJ")
+                                .isHobbySame(true)
+                                .memberSecondProfileTimes(new ArrayList<>())
+                                .maxPeople(3)
+                                .currentPeople(0)
+                                .comment("열심히 운동하자")
+                                .exerciseType(ExerciseType.RUNNING)
+                                .isSchool(true)
+                                .foodTypes(Set.of(FoodType.CHINESE, FoodType.VIETNAMESE))
+                                .studyType(StudyType.STUDY)
+                                .majorName("컴퓨터공학")
+                                .professorName("김교수님")
+                                .isOnline(false)
+                                .studyTimes(1)
+                                .place("카페")
+                                .mateType(MateType.EXERCISE)
                                 .build()
                 );
 
@@ -629,7 +683,9 @@ public class DataInitializer implements CommandLineRunner {
                                 .build()
                 );
 
-                memberSecondProfileRepository.save(secondProfile1);
+                memberSecondProfileRepository.save(secondProfile11);
+                memberSecondProfileRepository.save(secondProfile12);
+                memberSecondProfileRepository.save(secondProfile13);
                 memberSecondProfileRepository.save(secondProfile2);
                 memberSecondProfileRepository.save(secondProfile3);
                 memberSecondProfileRepository.save(secondProfile4);
@@ -640,29 +696,29 @@ public class DataInitializer implements CommandLineRunner {
                 memberSecondProfileRepository.save(secondProfile9);
 
                 memberMappingRepository.save(MemberSecondProfileMapping.builder()
-                        .member(member1)
-                        .memberSecondProfile(secondProfile1)
-                        .status(false)
-                        .isAccepted(false)
-                        .build());
-
-                memberMappingRepository.save(MemberSecondProfileMapping.builder()
                         .member(member2)
-                        .memberSecondProfile(secondProfile1)
+                        .memberSecondProfile(secondProfile11)
                         .status(false)
                         .isAccepted(false)
                         .build());
 
                 memberMappingRepository.save(MemberSecondProfileMapping.builder()
                         .member(member3)
-                        .memberSecondProfile(secondProfile1)
+                        .memberSecondProfile(secondProfile13)
+                        .status(false)
+                        .isAccepted(false)
+                        .build());
+
+                memberMappingRepository.save(MemberSecondProfileMapping.builder()
+                        .member(member4)
+                        .memberSecondProfile(secondProfile12)
                         .status(true)
                         .isAccepted(true)
                         .build());
 
                 memberMappingRepository.save(MemberSecondProfileMapping.builder()
-                        .member(member4)
-                        .memberSecondProfile(secondProfile1)
+                        .member(member5)
+                        .memberSecondProfile(secondProfile11)
                         .status(true)
                         .isAccepted(true)
                         .build());

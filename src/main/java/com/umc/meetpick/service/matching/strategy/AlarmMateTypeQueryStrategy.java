@@ -16,8 +16,8 @@ public class AlarmMateTypeQueryStrategy implements AlarmQueryStrategy {
     private final MemberMappingRepository memberMappingRepository;
 
     @Override
-    public Page<MemberSecondProfileMapping> getSecondProfilesByMateType(Member member, MateType mateType, Pageable pageable) {
+    public Page<MemberSecondProfileMapping> getSecondProfilesByMateType(Member member, MateType mateType, Pageable pageable, Boolean isAccepted) {
 
-        return memberMappingRepository.findAllByMemberSecondProfile_MemberAndMemberSecondProfile_MateType(member, mateType, pageable);
+        return memberMappingRepository.findAllByMemberSecondProfile_MemberAndMemberSecondProfile_MateTypeAndIsAccepted(member, mateType, pageable, isAccepted);
     }
 }
