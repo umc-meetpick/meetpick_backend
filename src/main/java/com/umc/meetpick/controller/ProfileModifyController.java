@@ -2,15 +2,15 @@ package com.umc.meetpick.controller;
 
 import com.umc.meetpick.common.response.ApiResponse;
 import com.umc.meetpick.dto.ProfileDTO;
-import com.umc.meetpick.service.CurrentUser;
-import com.umc.meetpick.service.ProfileModifyService;
+import com.umc.meetpick.common.annotation.CurrentUser;
+import com.umc.meetpick.service.modify.ProfileModifyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name="프로필 수정 관련 API", description = "사용자 프로필 수정 API 입니다.")
+@Tag(name = "프로필 수정 관련 API", description = "사용자 프로필 수정 API 입니다.")
 @RestController
 @RequestMapping("/api/modify")
 @RequiredArgsConstructor
@@ -19,26 +19,24 @@ public class ProfileModifyController {
 
     private final ProfileModifyService profileModifyService;
 
-    // 사용자의 연락처 변경 API
-    @Operation(summary = "사용자의 연락처 변경 API", description = "회원 ID와 연락처 유형 및 정보를 바탕으로 연락처를 변경합니다.")
+    // 연락처 변경 API
+    @Operation(summary = "사용자의 연락처 변경 API", description = "사용자의 연락처 유형 및 정보를 바탕으로 연락처를 변경합니다.")
     @PostMapping("/contact/set")
     public ApiResponse<ProfileDTO.ContactDTO.ContactResponseDTO> modifyContact(
             @CurrentUser Long memberId,
             @RequestBody ProfileDTO.ContactDTO.ContactRequestDTO contactRequestDTO) {
-        contactRequestDTO.setMemberId(memberId);
         log.info("📩 연락처 설정 요청 - memberId={}, contactType={}, contactInfo={}",
                 memberId, contactRequestDTO.getContactType(), contactRequestDTO.getContactInfo());
-        return profileModifyService.modifyContact(contactRequestDTO);
+        return profileModifyService.modifyContact(memberId, contactRequestDTO);
     }
 
     // 취미 변경 API
-    @Operation(summary = "사용자의 취미 변경 API", description = "회원 ID와 선택한 취미 목록을 바탕으로 취미를 변경합니다.")
+    @Operation(summary = "사용자의 취미 변경 API", description = "선택한 취미 목록을 바탕으로 취미를 변경합니다.")
     @PostMapping("/hobby/set")
     public ApiResponse<ProfileDTO.HobbyDTO.HobbyResponseDTO> modifyHobbies(
             @CurrentUser Long memberId,
             @RequestBody ProfileDTO.HobbyDTO.HobbyRequestDTO hobbyRequestDTO) {
-        hobbyRequestDTO.setMemberId(memberId);
-        return profileModifyService.modifyHobbies(hobbyRequestDTO);
+        return profileModifyService.modifyHobbies(memberId, hobbyRequestDTO);
     }
 
     // MBTI 변경 API
@@ -71,16 +69,6 @@ public class ProfileModifyController {
         return profileModifyService.modifyProfileImage(memberId, requestDTO);
     }
 
-    // 닉네임 중복 검사 API
-    @Operation(summary = "닉네임 중복 검사", description = "닉네임 중복을 검사합니다.")
-    @GetMapping("/nickname/check")
-    public ApiResponse<ProfileDTO.NicknameDTO.NicknameCheckResponseDTO> checkNickname(
-            @CurrentUser Long memberId,
-            @RequestParam("nickname") String nickname) {
-        log.info("✅ 닉네임 중복 검사 - memberId={}, nickname={}", memberId, nickname);
-        return profileModifyService.checkNicknameAvailability(memberId, nickname);
-    }
-
     // 닉네임 변경 API
     @Operation(summary = "닉네임 변경", description = "회원의 닉네임을 변경합니다.")
     @PostMapping("/nickname/set")
@@ -90,6 +78,7 @@ public class ProfileModifyController {
         log.info("✅ 닉네임 설정 요청 - memberId={}, nickname={}", memberId, requestDTO.getNickname());
         return profileModifyService.modifyNickname(memberId, requestDTO);
     }
+
     // 학번 변경 API
     @Operation(summary = "학번 변경", description = "회원의 학번을 변경합니다.")
     @PostMapping("/student-number/set")

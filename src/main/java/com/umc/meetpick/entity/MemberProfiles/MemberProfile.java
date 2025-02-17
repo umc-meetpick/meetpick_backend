@@ -26,9 +26,9 @@ public class MemberProfile extends BaseTimeEntity {
     private Long id;
 
     //추가
-    @OneToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+//    @OneToOne
+//    @JoinColumn(name = "member_id", nullable = true)
+//    private Member member;
 
     // 닉네임
     @Column(nullable = false)
@@ -48,7 +48,7 @@ public class MemberProfile extends BaseTimeEntity {
     private MBTI MBTI;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private Major major;
 
     @ManyToOne
@@ -73,14 +73,14 @@ public class MemberProfile extends BaseTimeEntity {
     private String contactInfo;
 
     //추가
-    @PrePersist
-    public void prePersist() {
-        if (this.nickname == null || this.nickname.isEmpty()) this.nickname = "Default Nickname";
-        if (this.profileImage == null || this.profileImage.isEmpty()) this.profileImage = "default.png";
-        if (this.MBTI == null) this.MBTI = MBTI.INTJ; // 기본 MBTI 설정
-        if (this.contact == null) this.contact = ContactType.KAKAO_TALK_ID; // 기본 연락처 타입 설정
-        if (this.contactInfo == null || this.contactInfo.isEmpty()) this.contactInfo = "contact@default.com"; // 기본 연락처 정보
-
-    }
+//    @PrePersist
+//    public void prePersist() {
+//        if (this.nickname == null || this.nickname.isEmpty()) this.nickname = "Default Nickname";
+//        if (this.profileImage == null || this.profileImage.isEmpty()) this.profileImage = "default.png";
+//        if (this.MBTI == null) this.MBTI = MBTI.INTJ; // 기본 MBTI 설정
+//        if (this.contact == null) this.contact = ContactType.KAKAO_TALK_ID; // 기본 연락처 타입 설정
+//        if (this.contactInfo == null || this.contactInfo.isEmpty()) this.contactInfo = "contact@default.com"; // 기본 연락처 정보
+//
+//    }
 
 }
