@@ -187,6 +187,7 @@ public class RequestServiceImpl implements RequestService {
 
         return RequestDTO.NewRequestDTO.builder()
                 //.writerId(memberId)
+                //.requestId(savedProfile.getId())  // 추가
                 .studentNumber(savedProfile.getStudentNumber().name())
                 .mbti(savedProfile.getMbti())
                 .minAge(savedProfile.getMinAge())

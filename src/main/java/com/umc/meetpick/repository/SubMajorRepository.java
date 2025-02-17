@@ -12,7 +12,6 @@ import java.util.Optional;
 @Repository
 public interface SubMajorRepository extends JpaRepository<SubMajor, Long> {
     Optional<SubMajor> findByName(String name);
-
     // TODO 나중에 지울 예정
     SubMajor findByNameOrderByName(String name);
 
