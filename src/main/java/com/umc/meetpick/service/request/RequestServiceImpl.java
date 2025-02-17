@@ -47,7 +47,7 @@ public class RequestServiceImpl implements RequestService {
 //                .orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getMajorName()));
 
         // 나이 범위 검증
-        if (newRequest.getMinAge() >= newRequest.getMaxAge()) {
+        if (newRequest.getMinAge() != null && newRequest.getMaxAge() != null && newRequest.getMinAge() >= newRequest.getMaxAge()) {
             throw new IllegalArgumentException("나이 범위 에러");
         }
 
