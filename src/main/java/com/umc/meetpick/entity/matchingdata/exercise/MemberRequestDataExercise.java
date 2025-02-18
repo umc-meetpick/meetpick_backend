@@ -1,32 +1,26 @@
-package com.umc.meetpick.entity.matchingdata.food;
+package com.umc.meetpick.entity.matchingdata.exercise;
 
 import com.umc.meetpick.entity.BaseTimeEntity;
-import com.umc.meetpick.entity.Major;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.University;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
-// 멤버의 정보를 저장함
 @Getter
-@Setter
 @Builder
+@Setter
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class MemberData extends BaseTimeEntity {
-
-    // 벡터 계산에 사용되는 데이터
+public class MemberRequestDataExercise extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 기본 정보 (공통) - 매칭을 원하는 상대방의 조건
     @Builder.Default
     private Double gender = 0.0;
-
-    //MBTI
 
     @Builder.Default
     private Double age = 0.0;
@@ -42,6 +36,7 @@ public class MemberData extends BaseTimeEntity {
 
     @Builder.Default
     private Double JP = 0.0;
+
 
     //학과
 
@@ -69,28 +64,38 @@ public class MemberData extends BaseTimeEntity {
     @Builder.Default
     private Double convergenceAndSpecialization = 0.0;
 
-    //음식
+
+    // 운동 관련 정보 - 원하는 운동 조건
+    @Builder.Default
+    private Double bowling = 0.0;
 
     @Builder.Default
-    private Double KOREAN = 0.0;
+    private Double climbing = 0.0;
 
     @Builder.Default
-    private Double WESTERN = 0.0;
+    private Double tableTennis = 0.0;
 
     @Builder.Default
-    private Double JAPANESE = 0.0;
+    private Double fitness = 0.0;
 
     @Builder.Default
-    private Double CHINESE = 0.0;
+    private Double running = 0.0;
 
     @Builder.Default
-    private Double VIETNAMESE = 0.0;
+    private Double soccer = 0.0;
 
-    // 핕러링의 위한 필드
-    @Enumerated(EnumType.STRING)  // enum 값을 문자열로 저장
+    @Builder.Default
+    private Double basketball = 0.0;
+
+    @Builder.Default
+    private Double tennisBadminton = 0.0;
+
+    @Builder.Default
+    private Double isSchool = 0.0;
+
+    @Enumerated(EnumType.STRING)
     private University university;
 
     @OneToOne
     private Member member;
-
 }
