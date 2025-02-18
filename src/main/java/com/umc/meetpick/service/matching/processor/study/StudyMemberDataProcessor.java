@@ -58,32 +58,32 @@ public class StudyMemberDataProcessor {
 
     private void setMbti(MemberDataStudy memberData, String mbti){
         if(mbti.charAt(0) == 'I'){
-            memberData.setIE(0.8);
+            memberData.setIE(0.0);
         }
 
         if(mbti.charAt(1) == 'S'){
-            memberData.setSN(0.8);
+            memberData.setSN(0.0);
         }
 
         if(mbti.charAt(2) == 'T'){
-            memberData.setTF(0.8);
+            memberData.setTF(0.0);
         }
 
         if(mbti.charAt(3) == 'J'){
-            memberData.setJP(0.8);
+            memberData.setJP(0.0);
         }
     }
 
     private void setMajor(MemberDataStudy memberData, String majorName){
         switch (majorName) {
-            case "공학 계열" -> memberData.setEngineering(0.5);
-            case "자연과학 계열" -> memberData.setScience(0.5);
-            case "인문학 계열" -> memberData.setHumanities(0.5);
-            case "사회과학 계열" -> memberData.setSocialScience(0.5);
-            case "의학 계열" -> memberData.setMedicine(0.5);
-            case "예술·체육 계열" -> memberData.setArtsAndPhysical(0.5);
-            case "농·생명 계열" -> memberData.setAgricultureAndLife(0.5);
-            case "융합/특성화 계열" -> memberData.setConvergenceAndSpecialization(0.5);
+            case "공학 계열" -> memberData.setEngineering(1.0);
+            case "자연과학 계열" -> memberData.setScience(1.0);
+            case "인문학 계열" -> memberData.setHumanities(1.0);
+            case "사회과학 계열" -> memberData.setSocialScience(1.0);
+            case "의학 계열" -> memberData.setMedicine(1.0);
+            case "예술·체육 계열" -> memberData.setArtsAndPhysical(1.0);
+            case "농·생명 계열" -> memberData.setAgricultureAndLife(1.0);
+            case "융합/특성화 계열" -> memberData.setConvergenceAndSpecialization(1.0);
         }
     }
 
@@ -91,7 +91,7 @@ public class StudyMemberDataProcessor {
     // 운동 도메인 -setStudyType
     private void setStudyType(MemberDataStudy memberData, StudyType studyType){
         switch (studyType) {
-            case MAJOR -> memberData.setMajor(2.0);
+            case MAJOR -> memberData.setMajor(2.5);
             case NON_MAJOR -> memberData.setNonMajor(2.0);
             case STUDY -> memberData.setStudy(2.0);
         }

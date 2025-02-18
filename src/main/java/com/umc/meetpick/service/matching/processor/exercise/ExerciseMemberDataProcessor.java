@@ -57,19 +57,19 @@ public class ExerciseMemberDataProcessor {
     // setMbti
     private void setMbti(MemberDataExercise memberData, String mbti){
         if(mbti.charAt(0) == 'I'){
-            memberData.setIE(0.8);
+            memberData.setIE(0.5);
         }
 
         if(mbti.charAt(1) == 'S'){
-            memberData.setSN(0.8);
+            memberData.setSN(0.5);
         }
 
         if(mbti.charAt(2) == 'T'){
-            memberData.setTF(0.8);
+            memberData.setTF(0.5);
         }
 
         if(mbti.charAt(3) == 'J'){
-            memberData.setJP(0.8);
+            memberData.setJP(0.5);
         }
     }
 
@@ -90,14 +90,14 @@ public class ExerciseMemberDataProcessor {
     // 운동 도메인 -setExerciseType
     private void setExerciseType(MemberDataExercise memberData, ExerciseType exerciseType){
         switch (exerciseType) {
-            case BOWLING -> memberData.setBowling(2.0);
-            case CLIMBING -> memberData.setClimbing(2.0);
-            case TABLE_TENNIS -> memberData.setTableTennis(2.0);
-            case FITNESS -> memberData.setFitness(2.0);
-            case RUNNING -> memberData.setRunning(2.0);
-            case SOCCER -> memberData.setSoccer(2.0);
-            case BASKETBALL -> memberData.setBasketball(2.0);
-            case TENNIS_BADMINTON -> memberData.setTennisBadminton(2.0);
+            case BOWLING -> memberData.setBowling(3.0);
+            case CLIMBING -> memberData.setClimbing(3.0);
+            case TABLE_TENNIS -> memberData.setTableTennis(4.0);
+            case FITNESS -> memberData.setFitness(2.5);
+            case RUNNING -> memberData.setRunning(2.5);
+            case SOCCER -> memberData.setSoccer(4.0);
+            case BASKETBALL -> memberData.setBasketball(4.0);
+            case TENNIS_BADMINTON -> memberData.setTennisBadminton(3.0);
         }
     }
 

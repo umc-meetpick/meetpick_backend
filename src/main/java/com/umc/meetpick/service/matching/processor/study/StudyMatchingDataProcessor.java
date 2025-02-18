@@ -62,19 +62,19 @@ public class StudyMatchingDataProcessor {
     // setMbti
     private void setMbti(MemberRequestDataStudy memberRequestData, String mbti){
         if(mbti.charAt(0) == 'I'){
-            memberRequestData.setIE(0.8);
+            memberRequestData.setIE(0.0);
         }
 
         if(mbti.charAt(1) == 'S'){
-            memberRequestData.setSN(0.8);
+            memberRequestData.setSN(0.0);
         }
 
         if(mbti.charAt(2) == 'T'){
-            memberRequestData.setTF(0.8);
+            memberRequestData.setTF(0.0);
         }
 
         if(mbti.charAt(3) == 'J'){
-            memberRequestData.setJP(0.8);
+            memberRequestData.setJP(0.0);
         }
     }
 
@@ -83,14 +83,14 @@ public class StudyMatchingDataProcessor {
         secondProfileSubMajors.forEach(
                 secondProfileSubMajor -> {
                     switch (secondProfileSubMajor.getSubMajor().getMajor().getName()){
-                        case "공학 계열" : memberRequestData.setEngineering(0.5);
-                        case "자연과학 계열" : memberRequestData.setScience(0.5);
-                        case "인문학 계열" : memberRequestData.setHumanities(0.5);
-                        case "사회과학 계열" : memberRequestData.setSocialScience(0.5);
-                        case "의학 계열" : memberRequestData.setMedicine(0.5);
-                        case "예술·체육 계열" : memberRequestData.setArtsAndPhysical(0.5);
-                        case "농·생명 계열" : memberRequestData.setAgricultureAndLife(0.5);
-                        case "융합/특성화 계열" : memberRequestData.setConvergenceAndSpecialization(0.5);
+                        case "공학 계열" : memberRequestData.setEngineering(1.0);
+                        case "자연과학 계열" : memberRequestData.setScience(1.0);
+                        case "인문학 계열" : memberRequestData.setHumanities(1.0);
+                        case "사회과학 계열" : memberRequestData.setSocialScience(1.0);
+                        case "의학 계열" : memberRequestData.setMedicine(1.0);
+                        case "예술·체육 계열" : memberRequestData.setArtsAndPhysical(1.0);
+                        case "농·생명 계열" : memberRequestData.setAgricultureAndLife(1.0);
+                        case "융합/특성화 계열" : memberRequestData.setConvergenceAndSpecialization(1.0);
                     }
                 }
         );
@@ -99,7 +99,7 @@ public class StudyMatchingDataProcessor {
     // 스터디 도메인 -setStudyType
     private void setStudyType(MemberRequestDataStudy memberRequestData, StudyType studyType){
         switch (studyType) {
-            case MAJOR -> memberRequestData.setMajor(2.0);
+            case MAJOR -> memberRequestData.setMajor(2.5);
             case NON_MAJOR -> memberRequestData.setNonMajor(2.0);
             case STUDY -> memberRequestData.setStudy(2.0);
         }
