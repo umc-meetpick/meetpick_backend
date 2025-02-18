@@ -16,16 +16,14 @@ import com.umc.meetpick.enums.*;
 
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
-import com.umc.meetpick.service.matching.processor.MatchingDataProcessor;
-import com.umc.meetpick.service.matching.processor.MemberDataProcessor;
+import com.umc.meetpick.service.matching.processor.food.MatchingDataProcessor;
+import com.umc.meetpick.service.matching.processor.food.MemberDataProcessor;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.umc.meetpick.enums.StudentNumber.*;
 
 @Service
 @RequiredArgsConstructor

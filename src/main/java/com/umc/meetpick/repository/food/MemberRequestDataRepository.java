@@ -1,4 +1,4 @@
-package com.umc.meetpick.repository;
+package com.umc.meetpick.repository.food;
 
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.matchingdata.food.MemberRequestData;

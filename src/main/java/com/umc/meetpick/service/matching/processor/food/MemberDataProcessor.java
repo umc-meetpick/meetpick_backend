@@ -1,4 +1,4 @@
-package com.umc.meetpick.service.matching.processor;
+package com.umc.meetpick.service.matching.processor.food;
 
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
@@ -6,7 +6,7 @@ import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.matchingdata.food.MemberData;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.Gender;
-import com.umc.meetpick.repository.MemberDataRepository;
+import com.umc.meetpick.repository.food.MemberDataRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.Set;

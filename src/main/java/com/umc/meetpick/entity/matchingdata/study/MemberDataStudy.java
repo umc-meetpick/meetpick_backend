@@ -16,7 +16,7 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class MemberDataStudy {
+public class MemberDataStudy extends BaseTimeEntity  {
 
     // 벡터 계산에 사용되는 데이터
     @Id
@@ -80,28 +80,36 @@ public class MemberDataStudy {
     private Double study = 0.0;         // 스터디
 
 
+
+    @Builder.Default
+    private Double isOnline = 0.0;      // 온라인,오프라인
+
+    @Builder.Default
+    private Double studyTimes = 0.0;    // 횟수
+
+
     // 자격증 유형 관련
-    @Builder.Default
-    private Double language = 0.0;           // 어학
+   // @Builder.Default
+   // private Double language = 0.0;           // 어학
 
-    @Builder.Default
-    private Double employment = 0.0;         // 취업
+   // @Builder.Default
+   // private Double employment = 0.0;         // 취업
 
-    @Builder.Default
-    private Double civilService = 0.0;       // 고시/공무원
+   // @Builder.Default
+   // private Double civilService = 0.0;       // 고시/공무원
 
-    @Builder.Default
-    private Double socialScience = 0.0;      // 사회과학계열
+    //@Builder.Default
+   // private Double socialScience = 0.0;      // 사회과학계열
 
-    @Builder.Default
-    private Double hobby = 0.0;              // 취미/교양
+    //@Builder.Default
+    //private Double hobby = 0.0;              // 취미/교양
 
-    @Builder.Default
-    private Double programming = 0.0;        // 프로그래밍
+    //@Builder.Default
+    //private Double programming = 0.0;        // 프로그래밍
 
     // 온라인/오프라인 선호도
-    @Builder.Default
-    private Double isOnline = 0.0;
+    //@Builder.Default
+    //private Double isOnline = 0.0;
 
 
     @Enumerated(EnumType.STRING)
