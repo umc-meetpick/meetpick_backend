@@ -22,8 +22,9 @@ public class FilterRequestDTO {
     private Set<String> availableTimes;
 
     // STUDY 필터
-    private SubjectType subjectType;
-    private CertificateType certificateType;
+    //private SubjectType subjectType;
+    private StudyType studyType;
+    //private CertificateType certificateType;
 
     // EXERCISE 필터
     private Set<ExerciseType> exerciseTypes;

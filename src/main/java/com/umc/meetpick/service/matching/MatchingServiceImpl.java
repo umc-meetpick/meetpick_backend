@@ -178,6 +178,15 @@ public class MatchingServiceImpl implements MatchingService {
         public ProfileDetailListResponseDto getAllProfiles(Long memberId, MateType mateType, FilterRequestDTO filterRequest, Pageable pageable) {
             Specification<MemberSecondProfile> spec = (root, query, builder) -> {
                 List<Predicate> predicates = new ArrayList<>();
+// 필터 적용 전 로그
+                log.info("=== 필터 조건 ===");
+                log.info("mateType: {}", mateType);
+                log.info("studyType: {}", filterRequest.getStudyType());
+                log.info("gender: {}", filterRequest.getGender());
+                log.info("studentNumber: {}", filterRequest.getStudentNumber());
+                log.info("minAge: {}", filterRequest.getMinAge());
+                log.info("maxAge: {}", filterRequest.getMaxAge());
+                log.info("=============");
 
                 // 기본 필터: mateType
                 predicates.add(builder.equal(root.get("mateType"), mateType));
@@ -211,13 +220,18 @@ public class MatchingServiceImpl implements MatchingService {
 
                 // MateType별 특수 필터
                 switch (mateType) {
-                    case STUDY:
-                        if (filterRequest.getSubjectType() != null) {
-                            predicates.add(builder.equal(root.get("subjectType"), filterRequest.getSubjectType()));
-                        }
-                        if (filterRequest.getSubjectType() == SubjectType.CERTIFICATE
-                                && filterRequest.getCertificateType() != null) {
-                            predicates.add(builder.equal(root.get("certificateType"), filterRequest.getCertificateType()));
+    //                case STUDY:
+    //                    if (filterRequest.getSubjectType() != null) {
+    //                        predicates.add(builder.equal(root.get("subjectType"), filterRequest.getSubjectType()));
+    //                    }
+    //                    if (filterRequest.getSubjectType() == SubjectType.CERTIFICATE
+    //                            && filterRequest.getCertificateType() != null) {
+    //                        predicates.add(builder.equal(root.get("certificateType"), filterRequest.getCertificateType()));
+    //                    }
+    //                    break;
+                    case STUDY: //Certificate 사용하지 않는 코드
+                        if (filterRequest.getStudyType() != null) {   // subjectType -> studyType
+                            predicates.add(builder.equal(root.get("studyType"), filterRequest.getStudyType()));
                         }
                         break;
 
@@ -243,17 +257,15 @@ public class MatchingServiceImpl implements MatchingService {
             // 필터링된 데이터 조회
             Page<MemberSecondProfile> profiles = memberSecondProfileRepository.findAll(spec, pageable);
 
-            // 디버깅을 위한 로그 추가
+
+            log.info("=== 조회된 프로필 데이터 ===");
             profiles.getContent().forEach(profile -> {
-                System.out.println("=== MemberSecondProfile 데이터 ===");
-                System.out.println("ID: " + profile.getId());
-                System.out.println("선호 성별: " + profile.getGender());
-                System.out.println("선호 나이: " + profile.getMinAge() + "~" + profile.getMaxAge());
-                System.out.println("선호 학번: " + profile.getStudentNumber());
-                System.out.println("교내/교외: " + profile.getIsSchool());
-                System.out.println("운동 타입: " + profile.getExerciseType());
-                System.out.println("음식 타입: " + profile.getFoodTypes());
-                System.out.println("========================");
+                log.info("Profile ID: {}", profile.getId());
+                log.info("MateType: {}", profile.getMateType());
+                log.info("StudyType: {}", profile.getStudyType());
+                log.info("Gender: {}", profile.getGender());
+                log.info("StudentNumber: {}", profile.getStudentNumber());
+                log.info("========================");
             });
 
 
@@ -267,12 +279,31 @@ public class MatchingServiceImpl implements MatchingService {
                     })
                     .collect(Collectors.toList());
 
+
+            // DTO 변환 후에 로그 추가
+            log.info("=== 응답 데이터 ===");
+            profileDtos.forEach(dto -> {
+                log.info("Nickname: {}", dto.getNickname());
+                log.info("MateType: {}", dto.getPreferenceInfo().getMateType());
+                // MateType별 조건부 로그
+                if (dto.getPreferenceInfo().getMateType() == MateType.MEAL) {
+                    log.info("FoodTypes: {}", dto.getPreferenceInfo().getFoodTypes());
+                } else if (dto.getPreferenceInfo().getMateType() == MateType.STUDY) {
+                    log.info("StudyType: {}", dto.getPreferenceInfo().getStudyType());
+                } else if (dto.getPreferenceInfo().getMateType() == MateType.EXERCISE) {
+                    log.info("ExerciseType: {}", dto.getPreferenceInfo().getExerciseType());
+                }
+                log.info("------------------------");
+            });
+
             return ProfileDetailListResponseDto.from(
                     profileDtos,
                     profiles.getTotalPages(),
                     profiles.getTotalElements(),
                     profiles.hasNext()
             );
+
+
         }
 
 }

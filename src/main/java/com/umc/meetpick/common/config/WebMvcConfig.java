@@ -47,7 +47,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addConverter(new StringToFoodTypeConverter());
         registry.addConverter(new StringToSubjectTypeConverter());
         registry.addConverter(new StringToGenderConverter());
+        registry.addConverter(new StringToStudentNumberConverter());
 
+        registry.addConverter(new StringToStudyTypeConverter()); //studyType(Subject 대신 필요할 경우 사용)
 
     }
 

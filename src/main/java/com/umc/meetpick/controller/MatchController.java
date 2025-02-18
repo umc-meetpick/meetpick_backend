@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 
 @Tag(name = "Match", description = "매칭 관련 API")  // [변경 1]
 @RestController
@@ -83,7 +85,10 @@ public class MatchController {
         return ApiResponse.onSuccess(requestService.getLikes(memberId, mateType));
     }
 
+
+    //getAllProfiles
     @Operation(summary = "프로필 목록 조회", description = "메이트 타입별 전체 프로필 목록을 필터링하여 조회합니다.")
+
     @GetMapping("/profiles")
     public ApiResponse<ProfileDetailListResponseDto> getAllProfiles(
             //필수
@@ -99,8 +104,8 @@ public class MatchController {
             @RequestParam(required = false) Set<String> availableTimes,
 
             // STUDY 필터
-            @RequestParam(required = false) SubjectType subjectType,
-            @RequestParam(required = false) CertificateType certificateType,
+            @RequestParam(required = false) StudyType studyType, //subject -> study
+            //@RequestParam(required = false) CertificateType certificateType,
 
             // EXERCISE 필터
             //@RequestParam(required = false) Set<ExerciseType> exerciseTypes,
@@ -111,6 +116,7 @@ public class MatchController {
             @RequestParam(required = false) Set<String> foodTypesStr,
 
             @PageableDefault(size = 10) Pageable pageable
+            //@ParameterObject @PageableDefault(size = 10) Pageable pageable //Swagger 파라미터 처리
     ) {
         MateType mateType = MateType.fromString(mateTypeStr); // String -> Enum 변환
 
@@ -137,8 +143,8 @@ public class MatchController {
                 .maxAge(maxAge)
                 .availableDays(availableDays)
                 .availableTimes(availableTimes)
-                .subjectType(subjectType)
-                .certificateType(certificateType)
+                .studyType(studyType)
+                //.certificateType(certificateType)
                 .exerciseTypes(exerciseTypes)
                 .foodTypes(foodTypes)
                 .build();
