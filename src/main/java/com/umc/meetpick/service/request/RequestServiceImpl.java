@@ -87,7 +87,14 @@ public class RequestServiceImpl implements RequestService {
 
 
         // studentNumber 변환 -> 프론트에서 받은 string을 enum으로
-        StudentNumber studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
+
+        StudentNumber studentNumberEnum;
+
+        if(newRequest.getStudentNumber() == null){
+            studentNumberEnum = StudentNumber.ALL;
+        } else {
+            studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
+        }
 
         ExerciseType exerciseTypes = null;
         Set<FoodType> foodTypes = Collections.emptySet();
@@ -97,6 +104,7 @@ public class RequestServiceImpl implements RequestService {
         Boolean isOnline = null;
 
         MateType requestMateType = newRequest.getType();
+
         if (requestMateType == EXERCISE){
             // 운동 타입 변환 (nullable 처리)
 //        Set<ExerciseType> exerciseTypes = Optional.ofNullable(newRequest.getExerciseTypes())
