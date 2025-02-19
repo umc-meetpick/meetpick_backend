@@ -4,6 +4,7 @@ package com.umc.meetpick.dto;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
 import com.umc.meetpick.enums.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -40,6 +41,8 @@ public class RequestDTO {
         private String isOnline;
         private int studyTimes;
         private String place;
+
+        @NotNull
         private MateType type;
     }
 

@@ -112,26 +112,6 @@ public class MatchingServiceImpl implements MatchingService {
         return memberSecondProfileToMatchPageDto(memberProfile);
     }
 
-    private MatchResponseDto requestToMatchResponseDto(Member member, MemberSecondProfile memberSecondProfile){
-
-        MemberProfile memberProfile = member.getMemberProfile();
-
-        // TODO MateType에 따라서 다른 로직 구성하기
-        return MatchResponseDto.builder()
-                .memberId(member.getId())
-                .foodType(memberSecondProfile.getFoodTypes().stream()
-                        .map(FoodType::getKoreanName)
-                        .collect(Collectors.toSet()))
-                .hobby(memberProfile.getHobbies().stream()
-                        .map(Hobby::getKoreanName)
-                        .collect(Collectors.toSet()))
-                .requestId(memberSecondProfile.getId())
-                .gender(memberSecondProfile.getGender().getKoreanName())
-                .build();
-    }
-
-
-
         @Override
         public ProfileDetailListResponseDto getAllProfiles(Long memberId, MateType mateType, FilterRequestDTO filterRequest, Pageable pageable) {
 

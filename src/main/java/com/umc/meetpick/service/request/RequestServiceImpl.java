@@ -170,7 +170,7 @@ public class RequestServiceImpl implements RequestService {
                 .mbti(newRequest.getMbti() == null ? "INFJ" : newRequest.getMbti())
                 .minAge(newRequest.getMinAge() == null ? 20 : newRequest.getMinAge())
                 .maxAge(newRequest.getMaxAge() == null ? 30 : newRequest.getMaxAge())
-                .maxPeople(newRequest.getMaxPeople() == 0 ? 0 : newRequest.getMaxPeople())
+                .maxPeople(newRequest.getMaxPeople() == 0 ? 1 : newRequest.getMaxPeople())
                 .currentPeople(0)
                 //.personality(savedPersonality)
                 .isHobbySame(newRequest.getIsHobbySame() != null && newRequest.getIsHobbySame())
