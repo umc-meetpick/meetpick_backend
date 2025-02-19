@@ -34,7 +34,11 @@ public class RequestController {
     @Operation(summary = "매칭에 참가 신청")
     @PostMapping("/joinRequest")
     public ApiResponse<RequestDTO.JoinRequestDTO> joinRequest(@AuthUser Long memberId,@RequestBody RequestDTO.JoinRequestDTO joinRequest) {
+
+        log.info("매칭에 참가 신청 {}", memberId);
+
         RequestDTO.JoinRequestDTO responseDTO = requestService.createJoinRequest(memberId ,joinRequest);
+
         return ApiResponse.onSuccess(responseDTO);
     }
 
