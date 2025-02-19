@@ -20,6 +20,7 @@ public class LikeResponseDto {
         private String gender;
         private String studentNumber;
         private String mbti;
+        private Boolean isLiked;
     }
 
     @Getter
