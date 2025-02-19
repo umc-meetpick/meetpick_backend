@@ -107,7 +107,7 @@ public class MatchingDtoFactory {
                     MemberProfile memberProfile = member.getMemberProfile();
 
                     return RecommendDto.FoodRecommendDto.builder()
-                            .memberSecondProfileId(memberSecondProfile.getId())
+                            .requestId(memberSecondProfile.getId())
                             .studentNumber(memberProfile.getStudentNumber() + "학번")
                             .foodTypes(memberSecondProfile.getFoodTypes().stream().map(FoodType::getKoreanName).collect(Collectors.toSet()))
                             .gender(member.getGender().getKoreanName())
@@ -136,7 +136,7 @@ public class MatchingDtoFactory {
                         MemberProfile memberProfile = member.getMemberProfile();
 
                         return RecommendDto.ExerciseRecommendDto.builder()
-                                .memberSecondProfileId(memberSecondProfile.getId())
+                                .requestId(memberSecondProfile.getId())
                                 .studentNumber(memberProfile.getStudentNumber() + "학번")
                                 .exerciseType(memberSecondProfile.getExerciseType().getDisplayName())
                                 .gender(member.getGender().getKoreanName())
@@ -167,7 +167,7 @@ public class MatchingDtoFactory {
                         MemberProfile memberProfile = member.getMemberProfile();
 
                         return RecommendDto.StudyRecommendDto.builder()
-                                .memberSecondProfileId(memberSecondProfile.getId())
+                                .requestId(memberSecondProfile.getId())
                                 .studentNumber(memberProfile.getStudentNumber() + "학번")
                                 .gender(member.getGender().getKoreanName())
                                 .mbti(memberProfile.getMBTI())
