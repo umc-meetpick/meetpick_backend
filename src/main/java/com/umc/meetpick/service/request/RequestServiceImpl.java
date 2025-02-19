@@ -311,11 +311,11 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void deleteRequest(Long requestId, Long userId){
+    public void deleteRequest(Long requestId, Long memberId){
         MemberSecondProfile request = memberSecondProfileRepository.findById(requestId)
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않는 매칭에 대한 요청"));
 
-        if (!request.getMember().getId().equals(userId)) {
+        if (!request.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("삭제 권한 없음");
         }
         memberSecondProfileRepository.delete(request);
