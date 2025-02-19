@@ -1,6 +1,7 @@
 package com.umc.meetpick.service.matching;
 
 
+import com.umc.meetpick.common.annotation.TrackExecutionTime;
 import com.umc.meetpick.dto.*;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
@@ -20,6 +21,7 @@ import com.umc.meetpick.service.matching.strategy.AlarmQueryStrategy;
 import com.umc.meetpick.service.matching.strategy.MatchQueryStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -176,6 +178,8 @@ public class MatchingServiceImpl implements MatchingService {
 
 
     @Override
+    @TrackExecutionTime
+    @Cacheable(cacheManager = "GeneralCacheManager", key = "#p0", value = "getMatchRequestCache")
     public MatchPageDto getMatchRequests(Long memberId, String mateType, Pageable pageable) {
 
         MateType type = MateType.fromString(mateType);
@@ -195,6 +199,8 @@ public class MatchingServiceImpl implements MatchingService {
 
     // TODO 디자인 패턴 적용 및 내용 수정
     @Override
+    @TrackExecutionTime
+    @Cacheable(cacheManager = "GeneralCacheManager", key = "#p0", value = "getAlarmCache")
     public AlarmDto.AlarmPageResponseDto getAlarms(String mateType, Pageable pageable, Long memberId) {
 
         MateType type = MateType.fromString(mateType);
@@ -208,6 +214,8 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     @Override
+    @TrackExecutionTime
+    @Cacheable(cacheManager = "GeneralCacheManager", key = "#p0", value = "getCompletedMatchesCache")
     public MatchPageDto getCompletedMatches(Long memberId, String mateType, Pageable pageable) {
 
         MateType type = MateType.fromString(mateType);
@@ -242,6 +250,8 @@ public class MatchingServiceImpl implements MatchingService {
 
 
         @Override
+        @TrackExecutionTime
+        @Cacheable(cacheManager = "GeneralCacheManager", key = "#p0", value = "getAllProfilesCache")
         public ProfileDetailListResponseDto getAllProfiles(Long memberId, MateType mateType, FilterRequestDTO filterRequest, Pageable pageable) {
             Specification<MemberSecondProfile> spec = (root, query, builder) -> {
                 List<Predicate> predicates = new ArrayList<>();

@@ -15,7 +15,6 @@ import lombok.*;
 @Entity
 @AllArgsConstructor
 public class MemberRequestData extends BaseTimeEntity {
-
     // 벡터 계산에 사용되는 데이터
 
     @Id

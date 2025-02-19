@@ -3,6 +3,8 @@ import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.enums.*;
 import jakarta.persistence.*;
+
+import java.time.ZoneId;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -75,7 +77,7 @@ public class Member {
     // 나이 계산 함수
     public int getAge() {
         // Date를 LocalDate로 변환
-        LocalDate birthDate = new java.sql.Date(birthday.getTime()).toLocalDate();
+        LocalDate birthDate = birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate currentDate = LocalDate.now();
 
         // 현재 날짜와 생일을 기준으로 나이 계산
