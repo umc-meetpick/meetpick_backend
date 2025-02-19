@@ -67,7 +67,7 @@ public class MatchingServiceImpl implements MatchingService {
                 List<RecommendDto.FoodRecommendDto> foodRecommendDtos = new ArrayList<>();
 
                 foodRecommendDtos.add(RecommendDto.FoodRecommendDto.builder()
-                        .memberSecondProfileId(1L)
+                        .requestId(1L)
                         .nickName("예시1")
                         .studentNumber("100학번")
                         .foodTypes(Set.of("양식", "중식", "어쩌구"))
@@ -77,7 +77,7 @@ public class MatchingServiceImpl implements MatchingService {
                         .build());
 
                 foodRecommendDtos.add(RecommendDto.FoodRecommendDto.builder()
-                        .memberSecondProfileId(2L)
+                        .requestId(2L)
                         .nickName("예시2")
                         .studentNumber("101학번")
                         .foodTypes(Set.of("한식", "일식"))
@@ -87,7 +87,7 @@ public class MatchingServiceImpl implements MatchingService {
                         .build());
 
                 foodRecommendDtos.add(RecommendDto.FoodRecommendDto.builder()
-                        .memberSecondProfileId(3L)
+                        .requestId(3L)
                         .nickName("예시3")
                         .studentNumber("102학번")
                         .foodTypes(Set.of("분식", "디저트"))
@@ -105,10 +105,8 @@ public class MatchingServiceImpl implements MatchingService {
             case EXERCISE -> {
                 List<RecommendDto.ExerciseRecommendDto> exerciseRecommendDtos = new ArrayList<>();
 
-                int conditionMatching = 0;
-
                 exerciseRecommendDtos.add(RecommendDto.ExerciseRecommendDto.builder()
-                        .memberSecondProfileId(5L)
+                        .requestId(5L)
                         .nickName("운동예시2")
                         .studentNumber("104학번")
                         .gender("여성")
@@ -118,7 +116,7 @@ public class MatchingServiceImpl implements MatchingService {
                         .build());
 
                 exerciseRecommendDtos.add(RecommendDto.ExerciseRecommendDto.builder()
-                        .memberSecondProfileId(6L)
+                        .requestId(6L)
                         .nickName("운동예시3")
                         .studentNumber("105학번")
                         .gender("남성")
@@ -137,7 +135,7 @@ public class MatchingServiceImpl implements MatchingService {
                 List<RecommendDto.StudyRecommendDto> studyRecommendDtos = new ArrayList<>();
 
                 studyRecommendDtos.add(RecommendDto.StudyRecommendDto.builder()
-                        .memberSecondProfileId(7L)
+                        .requestId(7L)
                         .nickName("공부예시1")
                         .studentNumber("106학번")
                         .gender("여성")
@@ -147,7 +145,7 @@ public class MatchingServiceImpl implements MatchingService {
                         .build());
 
                 studyRecommendDtos.add(RecommendDto.StudyRecommendDto.builder()
-                        .memberSecondProfileId(8L)
+                        .requestId(8L)
                         .nickName("공부예시2")
                         .studentNumber("107학번")
                         .gender("남성")
@@ -157,7 +155,7 @@ public class MatchingServiceImpl implements MatchingService {
                         .build());
 
                 studyRecommendDtos.add(RecommendDto.StudyRecommendDto.builder()
-                        .memberSecondProfileId(9L)
+                        .requestId(9L)
                         .nickName("공부예시3")
                         .studentNumber("108학번")
                         .gender("여성")
