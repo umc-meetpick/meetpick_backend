@@ -5,6 +5,7 @@ spring:
 #    username: root
 #    password: yoo54485788@
   datasource:
+
     url: jdbc:mysql://localhost:3306/meetpick?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
@@ -14,6 +15,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: update
+
     properties:
       hibernate:
         format_sql: true
@@ -24,6 +26,7 @@ spring:
 #      path: /h2-console
 #      settings:
 #        web-allow-others: true  # 원격 연결 허용 설정
+
   data:
     redis:
       host: localhost

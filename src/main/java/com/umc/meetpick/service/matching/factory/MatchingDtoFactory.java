@@ -5,10 +5,16 @@ import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.AlarmDto;
 import com.umc.meetpick.dto.MatchPageDto;
 import com.umc.meetpick.dto.MatchRequestDto;
+import com.umc.meetpick.dto.RecommendDto;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
+import com.umc.meetpick.enums.MateType;
+import com.umc.meetpick.entity.matchingdata.exercise.MemberDataExercise;
+import com.umc.meetpick.entity.matchingdata.food.MemberDataFood;
+import com.umc.meetpick.entity.matchingdata.study.MemberDataStudy;
+import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.MateType;
 import org.springframework.data.domain.Page;
 
@@ -86,4 +92,97 @@ public class MatchingDtoFactory {
                 .hasNextPage(mappingList.hasNext())
                 .build();
     }
-}
+
+    public static RecommendDto.FoodRecommendPageDto memberSecondProfileToFoodRecommendtDto(List<MemberDataFood> memberList) {
+
+        List<MemberSecondProfile> memberSecondProfiles = memberList.stream()
+                .map(memberData -> findByMateType(memberData.getMember().getMemberSecondProfiles(), MateType.MEAL).orElseThrow(()-> new GeneralHandler(ErrorCode.PROFILE2_NOT_FOUND)))
+                .toList();
+
+
+        List<RecommendDto.FoodRecommendDto> foodRecommendDtos = memberSecondProfiles.stream().map(
+                memberSecondProfile -> {
+
+                    Member member = memberSecondProfile.getMember();
+                    MemberProfile memberProfile = member.getMemberProfile();
+
+                    return RecommendDto.FoodRecommendDto.builder()
+                            .requestId(memberSecondProfile.getId())
+                            .studentNumber(memberProfile.getStudentNumber() + "학번")
+                            .foodTypes(memberSecondProfile.getFoodTypes().stream().map(FoodType::getKoreanName).collect(Collectors.toSet()))
+                            .gender(member.getGender().getKoreanName())
+                            .mbti(memberProfile.getMBTI())
+                            .nickName(memberProfile.getNickname())
+                            .build();
+                }
+        ).toList();
+
+        return RecommendDto.FoodRecommendPageDto.builder()
+                .foodRecommendDtos(foodRecommendDtos)
+                .hasNextPage(false)
+                .currentPage(0)
+                .build();
+    }
+
+        public static RecommendDto.ExerciseRecommendPageDto memberSecondProfileToExerciseRecommendDto(List<MemberDataExercise> memberList) {
+            List<MemberSecondProfile> memberSecondProfiles = memberList.stream()
+                    .map(memberData -> findByMateType(memberData.getMember().getMemberSecondProfiles(), MateType.EXERCISE)
+                            .orElseThrow(() -> new GeneralHandler(ErrorCode.PROFILE2_NOT_FOUND)))
+                    .toList();
+
+            List<RecommendDto.ExerciseRecommendDto> exerciseRecommendDtos = memberSecondProfiles.stream().map(
+                    memberSecondProfile -> {
+                        Member member = memberSecondProfile.getMember();
+                        MemberProfile memberProfile = member.getMemberProfile();
+
+                        return RecommendDto.ExerciseRecommendDto.builder()
+                                .requestId(memberSecondProfile.getId())
+                                .studentNumber(memberProfile.getStudentNumber() + "학번")
+                                .exerciseType(memberSecondProfile.getExerciseType().getDisplayName())
+                                .gender(member.getGender().getKoreanName())
+                                .mbti(memberProfile.getMBTI())
+                                .nickName(memberProfile.getNickname())
+                                .imageUrl(memberProfile.getProfileImage())
+                                .exerciseType(memberSecondProfile.getExerciseType().getDisplayName())
+                                .build();
+                    }
+            ).toList();
+
+            return RecommendDto.ExerciseRecommendPageDto.builder()
+                    .exerciseRecommendDtos(exerciseRecommendDtos)
+                    .hasNextPage(false)
+                    .currentPage(0)
+                    .build();
+        }
+
+        public static RecommendDto.StudyRecommendPageDto memberSecondProfileToStudyRecommendDto(List<MemberDataStudy> memberList) {
+            List<MemberSecondProfile> memberSecondProfiles = memberList.stream()
+                    .map(memberData -> findByMateType(memberData.getMember().getMemberSecondProfiles(), MateType.STUDY)
+                            .orElseThrow(() -> new GeneralHandler(ErrorCode.PROFILE2_NOT_FOUND)))
+                    .toList();
+
+            List<RecommendDto.StudyRecommendDto> studyRecommendDtos = memberSecondProfiles.stream().map(
+                    memberSecondProfile -> {
+                        Member member = memberSecondProfile.getMember();
+                        MemberProfile memberProfile = member.getMemberProfile();
+
+                        return RecommendDto.StudyRecommendDto.builder()
+                                .requestId(memberSecondProfile.getId())
+                                .studentNumber(memberProfile.getStudentNumber() + "학번")
+                                .gender(member.getGender().getKoreanName())
+                                .mbti(memberProfile.getMBTI())
+                                .nickName(memberProfile.getNickname())
+                                .studyType(memberSecondProfile.getStudyType().getKoreanName())
+                                .imageUrl(memberProfile.getProfileImage())
+                                .build();
+                    }
+            ).toList();
+
+            return RecommendDto.StudyRecommendPageDto.builder()
+                    .studyRecommendDtos(studyRecommendDtos)
+                    .hasNextPage(false)
+                    .currentPage(0)
+                    .build();
+        }
+    }
+

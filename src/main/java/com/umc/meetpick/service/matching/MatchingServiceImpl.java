@@ -1,16 +1,15 @@
 package com.umc.meetpick.service.matching;
 
 
-import com.umc.meetpick.common.annotation.TrackExecutionTime;
+
+import com.umc.meetpick.common.exception.handler.GeneralHandler;
+import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.*;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
-import com.umc.meetpick.enums.FoodType;
-import com.umc.meetpick.enums.Hobby;
-import com.umc.meetpick.enums.MateType;
-import com.umc.meetpick.enums.SubjectType;
+import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
@@ -18,10 +17,12 @@ import com.umc.meetpick.repository.member.MemberLikesRepository;
 import com.umc.meetpick.repository.member.MemberProfileRepository;
 import com.umc.meetpick.service.home.factory.MemberQueryStrategyFactory;
 import com.umc.meetpick.service.home.strategy.MemberQueryStrategy;
+import com.umc.meetpick.service.matching.algorithm.MatchingAlgorithm;
 import com.umc.meetpick.service.matching.factory.AlarmQueryStrategyFactory;
 import com.umc.meetpick.service.matching.factory.MatchQueryStrategyFactory;
 import com.umc.meetpick.service.matching.strategy.AlarmQueryStrategy;
 import com.umc.meetpick.service.matching.strategy.MatchQueryStrategy;
+import jakarta.persistence.criteria.JoinType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -40,6 +44,7 @@ import jakarta.persistence.criteria.Predicate;
 
 
 import static com.umc.meetpick.common.util.DateTimeUtil.getTime;
+import static com.umc.meetpick.common.util.TimeConverter.convertTimeOfDay;
 import static com.umc.meetpick.service.matching.factory.MatchingDtoFactory.memberSecondProfileToAlarmDtoList;
 import static com.umc.meetpick.service.matching.factory.MatchingDtoFactory.memberSecondProfileToMatchPageDto;
 
@@ -54,59 +59,16 @@ public class MatchingServiceImpl implements MatchingService {
     private final MemberRepository memberRepository;
     private final MemberMappingRepository memberMappingRepository;
     private final MemberLikesRepository memberLikesRepository;// 좋아요 여부 확인용
-    private final MemberProfileRepository memberProfileRepository;// 프로필 정보 조회용
-    private final int minCondition = 3;
-    private int page = 0;
-    private final int pageSize = 100;
-    private Pageable pageable = PageRequest.of(page, pageSize);
+    private final Map<String, MatchingAlgorithm<?>> algorithms;
 
     @Override
-    public List<MatchResponseDto> match(Long memberId, MateType mateType){
+    public Object match(Long memberId, String mateType){
 
-        Member member = memberRepository.findMemberById(memberId);
+        Member member = memberRepository.findById(memberId).orElseThrow(()-> new GeneralHandler(ErrorCode.MEMBER_NOT_FOUND));
 
-        List<MatchResponseDto> matchResponseDtoList = new ArrayList<>();
+        MatchingAlgorithm<?> algorithm = algorithms.get(mateType);
 
-        int recommendationNumber = 5;
-
-        while(page < 5) {
-
-            List<MemberSecondProfile> requestList = getMatchingType(mateType);
-
-            //TODO 추천 로직 변경하기
-            requestList.forEach(memberSecondProfile -> {
-
-                int conditionMatching = 0;
-
-                // 나이 조건 체크
-                if((memberSecondProfile.getMinAge() <= member.getAge() && memberSecondProfile.getMaxAge() >= member.getAge()) || memberSecondProfile.getMaxAge() == null){
-                    conditionMatching++;
-                }
-
-                // 성별 조건 체크
-                if(memberSecondProfile.getGender() == member.getGender() || memberSecondProfile.getGender() == null){
-                    conditionMatching++;
-                }
-
-                // MBTI 조건 체크
-                if(memberSecondProfile.getMbti() == null || memberSecondProfile.getMbti().contains(member.getMemberProfile().getMBTI().name())){
-                    conditionMatching++;
-                }
-
-                // 조건이 충족되면 matchResponseDtoList에 추가
-                if(conditionMatching >= minCondition){
-                    matchResponseDtoList.add(requestToMatchResponseDto(member, memberSecondProfile));
-                }
-            });
-
-            // 페이지를 넘어가면 다음 페이지로 이동
-            if (matchResponseDtoList.size() < recommendationNumber) {
-                page++;
-                pageable = PageRequest.of(page, pageSize);
-            }
-        }
-
-        return matchResponseDtoList;
+        return algorithm.recommend(member);
     }
 
     @Override
@@ -122,10 +84,6 @@ public class MatchingServiceImpl implements MatchingService {
 
         // 3. 최종 응답 DTO 생성
         return memberSecondProfileToMatchPageDto(memberProfile);
-    }
-
-    private List<MemberSecondProfile> getMatchingType(MateType mateType){
-        return memberSecondProfileRepository.findMemberSecondProfilesByMateType(mateType, pageable).getContent();
     }
 
     // TODO 디자인 패턴 적용 및 내용 수정
@@ -223,6 +181,29 @@ public class MatchingServiceImpl implements MatchingService {
                     predicates.add(root.join("memberSecondProfileTimes").get("times").in(filterRequest.getAvailableTimes()));
                 }
 
+                //4. 개선한 요일/시간 필터
+                // 요일 필터링
+        //        if (filterRequest.getAvailableDays() != null && !filterRequest.getAvailableDays().isEmpty()) {
+        //            predicates.add(root.join("memberSecondProfileTimes", JoinType.INNER)
+        //                    .get("week")
+        //                    .in(filterRequest.getAvailableDays()));
+        //        }
+
+                // 시간대 필터링
+        //        if (filterRequest.getAvailableTimes() != null && !filterRequest.getAvailableTimes().isEmpty()) {
+        //            Set<Integer> allHours = new HashSet<>();
+        //            filterRequest.getAvailableTimes().forEach(timeOfDay ->
+        //                    allHours.addAll(convertTimeOfDay(timeOfDay))
+        //            );
+
+        //            Predicate timePredicate = root.join("memberSecondProfileTimes", JoinType.INNER)
+        //                    .join("times")
+        //                    .in(allHours);
+        //            predicates.add(timePredicate);
+        //        }
+
+
+
                 // MateType별 특수 필터
                 switch (mateType) {
     //                case STUDY:
@@ -307,7 +288,6 @@ public class MatchingServiceImpl implements MatchingService {
                     profiles.getTotalElements(),
                     profiles.hasNext()
             );
-
 
         }
 

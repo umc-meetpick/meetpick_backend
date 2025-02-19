@@ -48,8 +48,8 @@ public class MatchController {
 
     @Operation(summary = "추천 매칭 목록 조회", description = "사용자에게 적절한 메이트를 추천해줍니다") // [변경 2]
     @GetMapping("/recommendation")
-    public ApiResponse<List<MatchResponseDto>> getRecommendation(
-            @PathParam("mateType") MateType mateType, @AuthUser Long memberId)
+    public ApiResponse<Object> getRecommendation(
+            @PathParam("mateType") String mateType, @AuthUser Long memberId)
     {
         return ApiResponse.onSuccess(matchingService.match(memberId, mateType));
     }
@@ -88,7 +88,6 @@ public class MatchController {
 
     //getAllProfiles
     @Operation(summary = "프로필 목록 조회", description = "메이트 타입별 전체 프로필 목록을 필터링하여 조회합니다.")
-
     @GetMapping("/profiles")
     public ApiResponse<ProfileDetailListResponseDto> getAllProfiles(
             //필수
