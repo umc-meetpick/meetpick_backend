@@ -15,6 +15,7 @@ public class LikeResponseDto {
     @AllArgsConstructor
     public static class MemberProfileDto {
         private Long profileId;
+        private String profileAge;
         private String nickName;
         private String gender;
         private String studentNumber;
