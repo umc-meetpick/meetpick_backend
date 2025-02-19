@@ -6,7 +6,7 @@ public enum ExerciseType {
     BOWLING("볼링"),
     CLIMBING("클라이밍"),
     TABLE_TENNIS("탁구"),
-    FITNESS("🏋헬스"),
+    FITNESS("헬스"),
     RUNNING("러닝/조깅"),
     SOCCER("축구/풋살"),
     BASKETBALL("농구"),
