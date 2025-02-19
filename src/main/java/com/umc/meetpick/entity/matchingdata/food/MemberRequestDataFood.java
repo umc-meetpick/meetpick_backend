@@ -6,14 +6,15 @@ import com.umc.meetpick.enums.University;
 import jakarta.persistence.*;
 import lombok.*;
 
-// 멤버의 정보를 저장함
+// 멤버가 원하는 유저의 정보임
+
 @Getter
-@Setter
 @Builder
+@Setter
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class MemberData extends BaseTimeEntity {
+public class MemberRequestDataFood extends BaseTimeEntity {
 
     // 벡터 계산에 사용되는 데이터
 
@@ -23,8 +24,6 @@ public class MemberData extends BaseTimeEntity {
 
     @Builder.Default
     private Double gender = 0.0;
-
-    //MBTI
 
     @Builder.Default
     private Double age = 0.0;
@@ -40,8 +39,6 @@ public class MemberData extends BaseTimeEntity {
 
     @Builder.Default
     private Double JP = 0.0;
-
-    //학과
 
     @Builder.Default
     private Double engineering = 0.0;
@@ -66,8 +63,6 @@ public class MemberData extends BaseTimeEntity {
 
     @Builder.Default
     private Double convergenceAndSpecialization = 0.0;
-
-    //음식
 
     @Builder.Default
     private Double KOREAN = 0.0;
