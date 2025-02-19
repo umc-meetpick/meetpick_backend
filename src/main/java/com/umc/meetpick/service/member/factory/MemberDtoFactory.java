@@ -66,6 +66,7 @@ public class MemberDtoFactory {
                 .mbti(memberProfile.getMBTI())
                 .major(memberProfile.getSubMajor().getMajor().getName())
                 .subMajor(memberProfile.getSubMajor().getName())
+                .nickName(memberProfile.getNickname())
                 .hobbies(memberProfile.getHobbies().stream()
                         .map(Hobby::getKoreanName)
                         .collect(Collectors.toSet()))
