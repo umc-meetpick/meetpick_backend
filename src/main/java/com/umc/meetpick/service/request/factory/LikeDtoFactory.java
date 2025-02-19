@@ -37,6 +37,8 @@ public class LikeDtoFactory {
                             .age(memberSecondProfile.getMinAge() + " ~ " + memberSecondProfile.getMaxAge())
                             .isPeer(memberSecondProfile.getStudentNumber().getKoreanName())
                             .gender(memberSecondProfile.getGender().getKoreanName())
+                            .currentPeople(memberSecondProfile.getCurrentPeople())
+                            .maxPeople(memberSecondProfile.getMaxPeople())
                             .build();
 
 
@@ -68,6 +70,8 @@ public class LikeDtoFactory {
                             .age(memberSecondProfile.getMinAge() + " ~ " + memberSecondProfile.getMaxAge())
                             .isPeer(memberSecondProfile.getStudentNumber().getKoreanName())
                             .gender(memberSecondProfile.getGender().getKoreanName())
+                            .currentPeople(memberSecondProfile.getCurrentPeople())
+                            .maxPeople(memberSecondProfile.getMaxPeople())
                             .build();
 
 
@@ -99,6 +103,8 @@ public class LikeDtoFactory {
                             .age(memberSecondProfile.getMinAge() + " ~ " + memberSecondProfile.getMaxAge())
                             .isPeer(memberSecondProfile.getStudentNumber().getKoreanName())
                             .gender(memberSecondProfile.getGender().getKoreanName())
+                            .currentPeople(memberSecondProfile.getCurrentPeople())
+                            .maxPeople(memberSecondProfile.getMaxPeople())
                             .build();
 
                 })
