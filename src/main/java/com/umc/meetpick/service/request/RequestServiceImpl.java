@@ -19,6 +19,8 @@ import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
 import com.umc.meetpick.service.matching.factory.MatchQueryStrategyFactory;
+import com.umc.meetpick.service.matching.processor.MatchingDataProcessorFactory;
+import com.umc.meetpick.service.matching.processor.MemberDataProcessorFactory;
 import com.umc.meetpick.service.matching.strategy.MatchQueryStrategy;
 import com.umc.meetpick.service.request.factory.LikeQueryStrategyFactory;
 import com.umc.meetpick.service.request.strategy.LikeQueryStrategy;
@@ -46,6 +48,8 @@ public class RequestServiceImpl implements RequestService {
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
     private final MemberSecondProfileSubMajorRepository memberSecondProfileSubMajorRepository;
+    private final MatchingDataProcessorFactory matchingDataProcessorFactory;
+    private final MemberDataProcessorFactory memberDataProcessorFactory;
 
     @Override
     public RequestDTO.NewRequestDTO createNewRequest(Long memberId, RequestDTO.NewRequestDTO newRequest) {
@@ -206,6 +210,9 @@ public class RequestServiceImpl implements RequestService {
         }
 
         memberSecondProfileSubMajorRepository.saveAll(subMajorList);
+
+        matchingDataProcessorFactory.getMatchingDataProcessor(newMemberSecondProfile, newMemberSecondProfile.getMateType());
+        memberDataProcessorFactory.getMemberDataProcessor(newMemberSecondProfile, newMemberSecondProfile.getMateType());
 
         return RequestDTO.NewRequestDTO.builder()
                 //.writerId(memberId)
