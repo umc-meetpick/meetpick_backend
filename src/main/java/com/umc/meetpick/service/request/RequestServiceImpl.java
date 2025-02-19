@@ -19,7 +19,9 @@ import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
 import com.umc.meetpick.service.matching.factory.MatchQueryStrategyFactory;
+import com.umc.meetpick.service.matching.processor.MatchingDataDeleteFactory;
 import com.umc.meetpick.service.matching.processor.MatchingDataProcessorFactory;
+import com.umc.meetpick.service.matching.processor.MemberDataDeleteFactory;
 import com.umc.meetpick.service.matching.processor.MemberDataProcessorFactory;
 import com.umc.meetpick.service.matching.strategy.MatchQueryStrategy;
 import com.umc.meetpick.service.request.factory.LikeQueryStrategyFactory;
@@ -50,6 +52,8 @@ public class RequestServiceImpl implements RequestService {
     private final MemberSecondProfileSubMajorRepository memberSecondProfileSubMajorRepository;
     private final MatchingDataProcessorFactory matchingDataProcessorFactory;
     private final MemberDataProcessorFactory memberDataProcessorFactory;
+    private final MatchingDataDeleteFactory matchingDataDeleteFactory;
+    private final MemberDataDeleteFactory memberDataDeleteFactory;
 
     @Override
     public RequestDTO.NewRequestDTO createNewRequest(Long memberId, RequestDTO.NewRequestDTO newRequest) {
@@ -168,8 +172,8 @@ public class RequestServiceImpl implements RequestService {
                 .gender(gender)
                 .studentNumber(studentNumberEnum)
                 .mbti(newRequest.getMbti() == null ? "INFJ" : newRequest.getMbti())
-                .minAge(newRequest.getMinAge() == null ? 20 : newRequest.getMinAge())
-                .maxAge(newRequest.getMaxAge() == null ? 30 : newRequest.getMaxAge())
+                .minAge(newRequest.getMinAge() == null ? 18 : newRequest.getMinAge())
+                .maxAge(newRequest.getMaxAge() == null ? 28 : newRequest.getMaxAge())
                 .maxPeople(newRequest.getMaxPeople() == 0 ? 1 : newRequest.getMaxPeople())
                 .currentPeople(0)
                 //.personality(savedPersonality)
@@ -364,6 +368,9 @@ public class RequestServiceImpl implements RequestService {
         memberSecondProfileRepository.delete(request);
 
         log.info("여기까진 됨 3");
+
+        matchingDataDeleteFactory.getMatchingDataProcessor(request, request.getMateType());
+        memberDataDeleteFactory.getMemberDataProcessor(request, request.getMateType());
     }
 
     // 매칭에 좋아요 등록
