@@ -238,7 +238,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile10 = MemberProfile.builder()
                         .nickname("지원")
-                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile10.png")
+                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                         .studentNumber(23)
                         .subMajor(subMajorRepository.findByNameOrderByName("인공지능학과"))
                         .MBTI(MBTI.INFP)
@@ -249,7 +249,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile11 = MemberProfile.builder()
                         .nickname("서연")
-                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile11.png")
+                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                         .studentNumber(24)
                         .subMajor(subMajorRepository.findByNameOrderByName("게임학과"))
                         .MBTI(MBTI.ENTJ)
@@ -260,7 +260,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile12 = MemberProfile.builder()
                         .nickname("지수")
-                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile12.png")
+                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                         .studentNumber(21)
                         .subMajor(subMajorRepository.findByNameOrderByName("게임학과"))
                         .MBTI(MBTI.INTP)
@@ -271,7 +271,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile13 = MemberProfile.builder()
                         .nickname("민수")
-                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile13.png")
+                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                         .studentNumber(22)
                         .subMajor(subMajorRepository.findByNameOrderByName("기계공학과"))
                         .MBTI(MBTI.ISTJ)
@@ -282,7 +282,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile14 = MemberProfile.builder()
                         .nickname("도현")
-                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile14.png")
+                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                         .studentNumber(25)
                         .subMajor(subMajorRepository.findByNameOrderByName("건축공학과"))
                         .MBTI(MBTI.ENFP)
@@ -293,7 +293,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile15 = MemberProfile.builder()
                         .nickname("윤아")
-                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile15.png")
+                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                         .studentNumber(23)
                         .subMajor(subMajorRepository.findByNameOrderByName("전기전자공학과"))
                         .MBTI(MBTI.ISTP)
@@ -304,7 +304,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile16 = MemberProfile.builder()
                         .nickname("지훈")
-                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile16.png")
+                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                         .studentNumber(24)
                         .subMajor(subMajorRepository.findByNameOrderByName("심리학과"))
                         .MBTI(MBTI.INFP)
@@ -315,7 +315,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile17 = MemberProfile.builder()
                         .nickname("수진")
-                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile17.png")
+                        .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                         .studentNumber(26)
                         .subMajor(subMajorRepository.findByNameOrderByName("의학과"))
                         .MBTI(MBTI.ENTP)
@@ -326,7 +326,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile18 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("도경")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile18.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("화학공학과"))
                                 .MBTI(MBTI.ESFJ)
@@ -339,7 +339,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile19 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("은지")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile19.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("간호학과"))
                                 .MBTI(MBTI.ISFJ)
@@ -352,7 +352,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile20 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("하영")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile20.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("환경공학과"))
                                 .MBTI(MBTI.INTJ)
@@ -365,7 +365,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile21 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("석민")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile21.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(25)
                                 .subMajor(subMajorRepository.findByNameOrderByName("건설방재공학과"))
                                 .MBTI(MBTI.ENTP)
@@ -378,7 +378,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile22 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("혜린")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile22.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(21)
                                 .subMajor(subMajorRepository.findByNameOrderByName("국어국문학과"))
                                 .MBTI(MBTI.ISFP)
@@ -391,7 +391,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile23 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("진우")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile23.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("수학과"))
                                 .MBTI(MBTI.ISTP)
@@ -404,7 +404,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile24 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("다혜")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile24.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("경제학과"))
                                 .MBTI(MBTI.ESFP)
@@ -417,7 +417,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile25 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("민혁")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile25.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(25)
                                 .subMajor(subMajorRepository.findByNameOrderByName("특수교육과"))
                                 .MBTI(MBTI.ESTP)
@@ -430,7 +430,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile26 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("서진")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile26.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("경영학과"))
                                 .MBTI(MBTI.ENFJ)
@@ -443,7 +443,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile27 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("지훈")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile27.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("농업경제학과"))
                                 .MBTI(MBTI.ENTJ)
@@ -456,7 +456,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile28 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("채영")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile28.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("약학과"))
                                 .MBTI(MBTI.INFJ)
@@ -468,7 +468,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile29 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("정민")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile29.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("경영학과"))
                                 .MBTI(MBTI.ENFP)
@@ -481,7 +481,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile30 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("예린")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile30.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("정보보안학과"))
                                 .MBTI(MBTI.INTP)
@@ -493,7 +493,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile31 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("준영")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile31.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("기계공학과"))
                                 .MBTI(MBTI.ESTP)
@@ -506,7 +506,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile32 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("지수")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile32.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("전기전자공학과"))
                                 .MBTI(MBTI.ENTJ)
@@ -519,7 +519,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile33 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("윤호")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile33.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(21)
                                 .subMajor(subMajorRepository.findByNameOrderByName("건축공학과"))
                                 .MBTI(MBTI.ISTP)
@@ -532,7 +532,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile34 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("채린")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile34.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("간호학과"))
                                 .MBTI(MBTI.INFP)
@@ -545,7 +545,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile35 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("형준")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile35.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("정보통신공학과"))
                                 .MBTI(MBTI.ENTP)
@@ -558,7 +558,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile36 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("다영")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile36.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("경영학과"))
                                 .MBTI(MBTI.ISFJ)
@@ -571,7 +571,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile37 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("지한")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile37.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("심리학과"))
                                 .MBTI(MBTI.ESTJ)
@@ -584,7 +584,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile38 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("유빈")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile38.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(21)
                                 .subMajor(subMajorRepository.findByNameOrderByName("국어국문학과"))
                                 .MBTI(MBTI.ENFP)
@@ -597,7 +597,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile39 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("민기")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile39.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("에너지공학과"))
                                 .MBTI(MBTI.INTP)
@@ -610,7 +610,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile40 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("세영")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile40.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("의학과"))
                                 .MBTI(MBTI.ISFP)
@@ -623,7 +623,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile41 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("도윤")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile41.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("기계공학과"))
                                 .MBTI(MBTI.ENFP)
@@ -636,7 +636,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile42 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("하늘")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile42.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("경영학과"))
                                 .MBTI(MBTI.ISTJ)
@@ -649,7 +649,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile43 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("태희")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile43.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(21)
                                 .subMajor(subMajorRepository.findByNameOrderByName("정보보안학과"))
                                 .MBTI(MBTI.INTP)
@@ -662,7 +662,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile44 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("주연")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile44.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("심리학과"))
                                 .MBTI(MBTI.INFP)
@@ -675,7 +675,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile45 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("재민")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile45.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("전기전자공학과"))
                                 .MBTI(MBTI.ESTP)
@@ -688,7 +688,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile46 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("유나")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile46.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("교육학과"))
                                 .MBTI(MBTI.ENFJ)
@@ -701,7 +701,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile47 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("수혁")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile47.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("경제학과"))
                                 .MBTI(MBTI.ENTJ)
@@ -714,7 +714,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile48 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("도진")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile48.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("환경공학과"))
                                 .MBTI(MBTI.INTJ)
@@ -727,7 +727,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile49 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("예진")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile49.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(21)
                                 .subMajor(subMajorRepository.findByNameOrderByName("한의학과"))
                                 .MBTI(MBTI.ISFP)
@@ -740,7 +740,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile50 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("승준")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile50.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("약학과"))
                                 .MBTI(MBTI.ESFP)
@@ -753,7 +753,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile51 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("성민")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile51.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(21)
                                 .subMajor(subMajorRepository.findByNameOrderByName("기계공학과"))
                                 .MBTI(MBTI.ISTP)
@@ -766,7 +766,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile52 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("수진")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile52.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("정보보안학과"))
                                 .MBTI(MBTI.ENFP)
@@ -779,7 +779,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile53 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("정훈")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile53.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("전기전자공학과"))
                                 .MBTI(MBTI.ENTJ)
@@ -792,7 +792,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile54 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("다연")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile54.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(20)
                                 .subMajor(subMajorRepository.findByNameOrderByName("문헌정보학과"))
                                 .MBTI(MBTI.INFJ)
@@ -805,7 +805,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile55 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("현우")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile55.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("사회학과"))
                                 .MBTI(MBTI.ESTP)
@@ -818,7 +818,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile56 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("소희")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile56.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("간호학과"))
                                 .MBTI(MBTI.ISFJ)
@@ -831,7 +831,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile57 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("태윤")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile57.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(21)
                                 .subMajor(subMajorRepository.findByNameOrderByName("화학공학과"))
                                 .MBTI(MBTI.INTP)
@@ -844,7 +844,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile58 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("지원")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile58.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("관광학과"))
                                 .MBTI(MBTI.ENFJ)
@@ -857,7 +857,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile59 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("은채")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile59.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(20)
                                 .subMajor(subMajorRepository.findByNameOrderByName("철학과"))
                                 .MBTI(MBTI.INFP)
@@ -870,7 +870,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile60 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("도현")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile60.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("행정학과"))
                                 .MBTI(MBTI.ESTJ)
@@ -883,7 +883,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile61 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("민호")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile71.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(21)
                                 .subMajor(subMajorRepository.findByNameOrderByName("경영학과"))
                                 .MBTI(MBTI.ISTJ)
@@ -896,7 +896,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile62 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("수진")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile72.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("심리학과"))
                                 .MBTI(MBTI.INFP)
@@ -909,7 +909,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile63 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("지훈")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile73.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("정보통신공학과"))
                                 .MBTI(MBTI.ENTP)
@@ -922,7 +922,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile64 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("유나")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile74.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("화학과"))
                                 .MBTI(MBTI.ESFJ)
@@ -935,7 +935,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile65 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("경수")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile75.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(20)
                                 .subMajor(subMajorRepository.findByNameOrderByName("기계공학과"))
                                 .MBTI(MBTI.ENTJ)
@@ -948,7 +948,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile66 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("소연")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile76.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(21)
                                 .subMajor(subMajorRepository.findByNameOrderByName("국어국문학과"))
                                 .MBTI(MBTI.ISFP)
@@ -961,7 +961,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile67 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("준혁")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile77.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("약학과"))
                                 .MBTI(MBTI.INTJ)
@@ -974,7 +974,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile68 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("나연")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile78.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("전기전자공학과"))
                                 .MBTI(MBTI.ENFP)
@@ -987,7 +987,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile69 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("영우")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile79.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("수학과"))
                                 .MBTI(MBTI.ESTP)
@@ -1000,7 +1000,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile70 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("지연")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile80.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(20)
                                 .subMajor(subMajorRepository.findByNameOrderByName("사회학과"))
                                 .MBTI(MBTI.ISFJ)
@@ -1013,7 +1013,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile71 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("태민")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile81.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(21)
                                 .subMajor(subMajorRepository.findByNameOrderByName("교육학과"))
                                 .MBTI(MBTI.ISTP)
@@ -1026,7 +1026,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile72 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("혜린")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile82.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("경제학과"))
                                 .MBTI(MBTI.ENTP)
@@ -1039,7 +1039,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile73 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("도윤")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile83.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("간호학과"))
                                 .MBTI(MBTI.INFJ)
@@ -1052,7 +1052,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile74 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("수아")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile84.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("행정학과"))
                                 .MBTI(MBTI.ESTJ)
@@ -1065,7 +1065,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile75 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("현우")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile85.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(20)
                                 .subMajor(subMajorRepository.findByNameOrderByName("건축학과"))
                                 .MBTI(MBTI.ESFP)
@@ -1078,7 +1078,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile76 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("윤서")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile76.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("건축학과"))
                                 .MBTI(MBTI.INFP)
@@ -1091,7 +1091,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile77 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("성진")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile77.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("정보통신공학과"))
                                 .MBTI(MBTI.ENTP)
@@ -1104,7 +1104,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile78 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("다은")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile78.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(21)
                                 .subMajor(subMajorRepository.findByNameOrderByName("수학과"))
                                 .MBTI(MBTI.ISTJ)
@@ -1117,7 +1117,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile79 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("지훈")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile79.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("전기전자공학과"))
                                 .MBTI(MBTI.ENFP)
@@ -1130,7 +1130,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile80 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("서현")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile80.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("심리학과"))
                                 .MBTI(MBTI.ESFP)
@@ -1143,7 +1143,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile81 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("동현")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile81.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("간호학과"))
                                 .MBTI(MBTI.ISTP)
@@ -1156,7 +1156,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile82 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("은지")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile82.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("경제학과"))
                                 .MBTI(MBTI.ENFJ)
@@ -1169,7 +1169,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile83 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("태민")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile83.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(25)
                                 .subMajor(subMajorRepository.findByNameOrderByName("경영학과"))
                                 .MBTI(MBTI.INTP)
@@ -1182,7 +1182,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile84 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("소윤")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile84.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("사회학과"))
                                 .MBTI(MBTI.ISFJ)
@@ -1195,7 +1195,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile85 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("현준")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile85.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("화학공학과"))
                                 .MBTI(MBTI.ESTJ)
@@ -1208,7 +1208,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile86 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("하연")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile86.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("조경학과"))
                                 .MBTI(MBTI.ENTP)
@@ -1221,7 +1221,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile87 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("예린")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile87.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(21)
                                 .subMajor(subMajorRepository.findByNameOrderByName("정치외교학과"))
                                 .MBTI(MBTI.INFJ)
@@ -1234,7 +1234,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile88 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("진우")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile88.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(25)
                                 .subMajor(subMajorRepository.findByNameOrderByName("특수교육과"))
                                 .MBTI(MBTI.ISFP)
@@ -1247,7 +1247,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile89 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("승호")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile89.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("한약학과"))
                                 .MBTI(MBTI.ESFJ)
@@ -1260,7 +1260,7 @@ public class DataInitializer implements CommandLineRunner {
                 MemberProfile profile90 = memberProfileRepository.save(
                         MemberProfile.builder()
                                 .nickname("나연")
-                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile90.png")
+                                .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("교육학과"))
                                 .MBTI(MBTI.ISTP)
