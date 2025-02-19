@@ -20,6 +20,7 @@ public class LikeResponseDto {
         private String gender;
         private String studentNumber;
         private String mbti;
+        private Boolean isLiked;
     }
 
     @Getter
@@ -33,6 +34,8 @@ public class LikeResponseDto {
         private String age;
         private String isPeer;
         private String gender;
+        private Integer currentPeople;
+        private Integer maxPeople;
     }
 
     @Getter
@@ -46,6 +49,8 @@ public class LikeResponseDto {
         private String age;
         private String isPeer;
         private String gender;
+        private Integer currentPeople;
+        private Integer maxPeople;
     }
 
     @Getter
@@ -59,6 +64,8 @@ public class LikeResponseDto {
         private String age;
         private String isPeer;
         private String gender;
+        private Integer currentPeople;
+        private Integer maxPeople;
     }
 
 }

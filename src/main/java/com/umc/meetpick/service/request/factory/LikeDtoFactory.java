@@ -29,6 +29,7 @@ public class LikeDtoFactory {
                             .profileAge(member.getAge() + "살")
                             .studentNumber(memberProfile.getStudentNumber() + "학번")
                             .mbti(memberProfile.getMBTI().toString())
+                            .isLiked(true)
                             .build();
 
                     return LikeResponseDto.FoodLikeResponseDto.builder()
@@ -37,6 +38,8 @@ public class LikeDtoFactory {
                             .age(memberSecondProfile.getMinAge() + " ~ " + memberSecondProfile.getMaxAge())
                             .isPeer(memberSecondProfile.getStudentNumber().getKoreanName())
                             .gender(memberSecondProfile.getGender().getKoreanName())
+                            .currentPeople(memberSecondProfile.getCurrentPeople())
+                            .maxPeople(memberSecondProfile.getMaxPeople())
                             .build();
 
 
@@ -60,6 +63,7 @@ public class LikeDtoFactory {
                             .gender(member.getGender().getKoreanName())
                             .studentNumber(memberProfile.getStudentNumber() + "학번")
                             .mbti(memberProfile.getMBTI().toString())
+                            .isLiked(true)
                             .build();
 
                     return LikeResponseDto.ExerciseLikeResponseDto.builder()
@@ -68,6 +72,8 @@ public class LikeDtoFactory {
                             .age(memberSecondProfile.getMinAge() + " ~ " + memberSecondProfile.getMaxAge())
                             .isPeer(memberSecondProfile.getStudentNumber().getKoreanName())
                             .gender(memberSecondProfile.getGender().getKoreanName())
+                            .currentPeople(memberSecondProfile.getCurrentPeople())
+                            .maxPeople(memberSecondProfile.getMaxPeople())
                             .build();
 
 
@@ -91,6 +97,7 @@ public class LikeDtoFactory {
                             .gender(member.getGender().getKoreanName())
                             .studentNumber(memberProfile.getStudentNumber() + "학번")
                             .mbti(memberProfile.getMBTI().toString())
+                            .isLiked(true)
                             .build();
 
                     return LikeResponseDto.StudyLikeResponseDto.builder()
@@ -99,6 +106,8 @@ public class LikeDtoFactory {
                             .age(memberSecondProfile.getMinAge() + " ~ " + memberSecondProfile.getMaxAge())
                             .isPeer(memberSecondProfile.getStudentNumber().getKoreanName())
                             .gender(memberSecondProfile.getGender().getKoreanName())
+                            .currentPeople(memberSecondProfile.getCurrentPeople())
+                            .maxPeople(memberSecondProfile.getMaxPeople())
                             .build();
 
                 })

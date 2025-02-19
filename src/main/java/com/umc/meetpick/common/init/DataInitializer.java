@@ -26,6 +26,7 @@ public class DataInitializer implements CommandLineRunner {
     private final MemberRepository memberRepository;
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberMappingRepository memberMappingRepository;
+    private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
 
     /*@PostConstruct
     public void init() {
@@ -5081,6 +5082,14 @@ public class DataInitializer implements CommandLineRunner {
                 memberSecondProfileRepository.save(secondProfile98);
                 memberSecondProfileRepository.save(secondProfile99);
                 memberSecondProfileRepository.save(secondProfile100);
+
+                MemberSecondProfileTimes memberSecondProfileTimes = MemberSecondProfileTimes.builder()
+                        .week(Week.MON)
+                        .times(Set.of(1,2,3))
+                        .memberSecondProfile(secondProfile11)
+                        .build();
+
+                memberSecondProfileTimesRepository.save(memberSecondProfileTimes);
 
                 memberMappingRepository.save(MemberSecondProfileMapping.builder()
                         .member(member2)
