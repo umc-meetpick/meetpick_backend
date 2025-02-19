@@ -33,8 +33,8 @@ public class RequestController {
 
     @Operation(summary = "매칭 삭제")
     @DeleteMapping("/{requestId}")
-    public ApiResponse<String> deleteRequest(@PathVariable Long requestId, @RequestParam Long userId) {
-        requestService.deleteRequest(requestId, userId);
+    public ApiResponse<String> deleteRequest(@PathVariable Long requestId, @AuthUser Long memberId) {
+        requestService.deleteRequest(requestId, memberId);
         return ApiResponse.onSuccess("삭제 성공");
     }
 

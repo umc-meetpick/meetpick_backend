@@ -26,6 +26,8 @@ public class ProfileDetailResponseDto {
     private int age;                  // From Member
     private int studentNumber;        // From MemberProfile
     private String mbti;              // From MemberProfile
+    private Long requestId; //추가 MemberSecondProfile id
+    private String profileImage; //profileImage 추가
 
     // 매칭 선호도 정보-내부 클래스
     private PreferenceInfo preferenceInfo;
@@ -50,6 +52,12 @@ public class ProfileDetailResponseDto {
         // MateType
         private String exerciseType;  // From MemberSecondProfile.exerciseTypes (EXERCISE 타입일 때만)
         private Set<FoodType> foodTypes;          // From MemberSecondProfile.foodTypes (MEAL 타입일 때만)
+
+        // STUDY 타입 필드
+        private StudyType studyType;  // subjectType -> studyType
+
+        //certificateType 주석처리
+        //private CertificateType certificateType;
 
         // STUDY 타입 필터링용
         private Set<String> availableDays;     // 가능한 요일
@@ -89,6 +97,14 @@ public class ProfileDetailResponseDto {
                 .minAge(secondProfile.getMinAge())                      // 선호 나이 범위
                 .maxAge(secondProfile.getMaxAge())
                 .studentNumber(secondProfile.getStudentNumber())        // 선호 학번
+
+                // STUDY 타입 필드 설정
+                .studyType(secondProfile.getMateType() == MateType.STUDY ?
+                        secondProfile.getStudyType() : null)
+                //certificateType 주석처리
+       //         .certificateType(secondProfile.getMateType() == MateType.STUDY ?
+       //            secondProfile.getCertificateType() : null)
+
                 .exerciseType(secondProfile.getMateType() == MateType.EXERCISE ?
                         secondProfile.getExerciseType().getDisplayName() : null)
                 .foodTypes(secondProfile.getMateType() == MateType.MEAL ?
@@ -98,11 +114,13 @@ public class ProfileDetailResponseDto {
 
         // 최종 DTO 생성
         return ProfileDetailResponseDto.builder()
+                .requestId(secondProfile.getId())  // 추가 requestId
                 .nickname(memberProfile.getNickname())
                 .gender(member.getGender().getKoreanName())
                 .age(member.getAge())
                 .studentNumber(memberProfile.getStudentNumber())
                 .mbti(memberProfile.getMBTI().name())
+                .profileImage(memberProfile.getProfileImage()) //추가 profileimage
                 .preferenceInfo(preferenceInfo)
                 .isLiked(isLiked)
                 .slotInfo(slotInfo)

@@ -66,6 +66,7 @@ public class MemberDtoFactory {
                 .mbti(memberProfile.getMBTI())
                 .major(memberProfile.getSubMajor().getMajor().getName())
                 .subMajor(memberProfile.getSubMajor().getName())
+                .nickName(memberProfile.getNickname())
                 .hobbies(memberProfile.getHobbies().stream()
                         .map(Hobby::getKoreanName)
                         .collect(Collectors.toSet()))
@@ -198,7 +199,7 @@ public class MemberDtoFactory {
 
     public static MemberDetailResponseDto.MemberStudyDetailDto memberStudyDetailDto (MemberSecondProfile memberSecondProfile){
 
-        String study = memberSecondProfile.getMateType().getKoreanName();
+        String study = memberSecondProfile.getStudyType().getKoreanName();
 
         Set<String> subMajorNames = staticmemberSecondProfileSubMajorRepository
                 .findAllByMemberSecondProfile(memberSecondProfile)

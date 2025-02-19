@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class MemberSecondProfileLikes extends BaseTimeEntity {
+public class  MemberSecondProfileLikes extends BaseTimeEntity {
     //id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

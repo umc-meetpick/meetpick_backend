@@ -1,5 +1,7 @@
 package com.umc.meetpick.service.request;
 
+import com.umc.meetpick.common.exception.handler.GeneralHandler;
+import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.MatchResponseDto;
 import com.umc.meetpick.dto.RequestDTO;
 import com.umc.meetpick.entity.*;
@@ -15,31 +17,29 @@ import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
 import com.umc.meetpick.enums.*;
 
 import com.umc.meetpick.repository.*;
-import com.umc.meetpick.repository.exercise.ExerciseMemberDataRepository;
-import com.umc.meetpick.repository.exercise.ExerciseMemberRequestDataRepository;
-import com.umc.meetpick.repository.food.MemberDataRepository;
-import com.umc.meetpick.repository.food.MemberRequestDataRepository;
 import com.umc.meetpick.repository.member.*;
-import com.umc.meetpick.repository.study.StudyMemberDataRepository;
-import com.umc.meetpick.repository.study.StudyMemberRequestDataRepository;
-import com.umc.meetpick.service.matching.processor.exercise.ExerciseMatchingDataProcessor;
-import com.umc.meetpick.service.matching.processor.exercise.ExerciseMemberDataProcessor;
-import com.umc.meetpick.service.matching.processor.food.MatchingDataProcessor;
-import com.umc.meetpick.service.matching.processor.food.MemberDataProcessor;
-import com.umc.meetpick.service.matching.processor.study.StudyMatchingDataProcessor;
-import com.umc.meetpick.service.matching.processor.study.StudyMemberDataProcessor;
+import com.umc.meetpick.service.matching.factory.MatchQueryStrategyFactory;
+import com.umc.meetpick.service.matching.strategy.MatchQueryStrategy;
+import com.umc.meetpick.service.request.factory.LikeQueryStrategyFactory;
+import com.umc.meetpick.service.request.strategy.LikeQueryStrategy;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.umc.meetpick.enums.MateType.*;
+import static com.umc.meetpick.enums.StudentNumber.*;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RequestServiceImpl implements RequestService {
-
-
+    private final NewRequestRepository newRequestRepository;
     private final MemberRepository memberRepository;
     private final SubMajorRepository subMajorRepository;
     private final MemberMappingRepository memberMappingRepository;
@@ -47,29 +47,6 @@ public class RequestServiceImpl implements RequestService {
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
     private final MemberSecondProfileSubMajorRepository memberSecondProfileSubMajorRepository;
-
-    // MEAL 관련
-    private final MemberDataRepository memberDataRepository;
-    private final MemberRequestDataRepository memberRequestDataRepository;
-    // Exercise 관련
-    private final ExerciseMemberDataRepository exerciseMemberDataRepository;
-    private final ExerciseMemberRequestDataRepository exerciseMemberRequestDataRepository;
-    // Study 관련
-    private final StudyMemberDataRepository studyMemberDataRepository;
-    private final StudyMemberRequestDataRepository studyMemberRequestDataRepository;
-
-
-    //Processor 주입
-    //MEAL 관련
-    private final MemberDataProcessor memberDataProcessor;
-    private final MatchingDataProcessor matchingDataProcessor;
-    //Exercise 관련
-    private final ExerciseMemberDataProcessor exerciseMemberDataProcessor;
-    private final ExerciseMatchingDataProcessor exerciseMatchingDataProcessor;
-    //Study 관련
-    private final StudyMemberDataProcessor studyMemberDataProcessor;
-    private final StudyMatchingDataProcessor studyMatchingDataProcessor;
-
 
     @Override
     public RequestDTO.NewRequestDTO createNewRequest(Long memberId, RequestDTO.NewRequestDTO newRequest) {
@@ -81,7 +58,7 @@ public class RequestServiceImpl implements RequestService {
 //                .orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getMajorName()));
 
         // 나이 범위 검증
-        if (newRequest.getMinAge() >= newRequest.getMaxAge()) {
+        if (newRequest.getMinAge() != null && newRequest.getMaxAge() != null && newRequest.getMinAge() >= newRequest.getMaxAge()) {
             throw new IllegalArgumentException("나이 범위 에러");
         }
 
@@ -113,47 +90,53 @@ public class RequestServiceImpl implements RequestService {
         // studentNumber 변환 -> 프론트에서 받은 string을 enum으로
         StudentNumber studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
 
-        // 운동 타입 변환 (nullable 처리)
+        ExerciseType exerciseTypes = null;
+        Set<FoodType> foodTypes = Collections.emptySet();
+        StudyType studyType = null;
+        String majorName = null;
+        String professorName = null;
+        Boolean isOnline = null;
+
+        MateType requestMateType = newRequest.getType();
+        if (requestMateType == EXERCISE){
+            // 운동 타입 변환 (nullable 처리)
 //        Set<ExerciseType> exerciseTypes = Optional.ofNullable(newRequest.getExerciseTypes())
 //                .map(types -> Arrays.stream(types.split(","))
 //                        .map(String::trim)
 //                        .map(ExerciseType::fromString)
 //                        .collect(Collectors.toSet()))
 //                .orElse(Collections.emptySet());
-        ExerciseType exerciseTypes = null;
-        if (newRequest.getExerciseTypes() != null) {
-            exerciseTypes = ExerciseType.fromString(newRequest.getExerciseTypes());
-        }
+            //ExerciseType exerciseTypes = null;
+            if (newRequest.getExerciseTypes() != null) {
+                exerciseTypes = ExerciseType.fromString(newRequest.getExerciseTypes());
+            }
+        }else if(requestMateType == MEAL){
+            // 음식 타입 변환 (nullable 처리)
+            foodTypes = Optional.ofNullable(newRequest.getFood())
+                    .orElse(Collections.emptyList())  // food가 null이면 빈 리스트 처리
+                    .stream()
+                    .map(FoodType::fromString)
+                    .collect(Collectors.toSet());
+        }else if(requestMateType == STUDY){
+            // 스터디 타입 변환
+            if (newRequest.getStudyType() != null) {
+                studyType = StudyType.fromString(newRequest.getStudyType());
+            }
 
-        // 음식 타입 변환 (nullable 처리)
-        Set<FoodType> foodTypes = Optional.ofNullable(newRequest.getFood())
-                .orElse(Collections.emptyList())  // food가 null이면 빈 리스트 처리
-                .stream()
-                .map(FoodType::fromString)
-                .collect(Collectors.toSet());
+            // 과목/교수 파싱 후 각각 넣기
+            if(newRequest.getMajorNameAndProfessorName() != null) {
+                String[] parts = newRequest.getMajorNameAndProfessorName().split("-");
+                majorName = parts[0];
+                professorName = parts[1];
+            }
 
-        // 스터디 타입 변환
-        StudyType studyType = null;
-        if (newRequest.getStudyType() != null) {
-            studyType = StudyType.fromString(newRequest.getStudyType());
-        }
-
-        // 과목/교수 파싱 후 각각 넣기
-        String majorName = null;
-        String professorName = null;
-        if(newRequest.getMajorNameAndProfessorName() != null) {
-            String[] parts = newRequest.getMajorNameAndProfessorName().split("-");
-            majorName = parts[0];
-            professorName = parts[1];
-        }
-
-        // 공부 관련 온라인 여부
-        Boolean isOnline = null;
-        if(newRequest.getIsOnline() != null) {
-            if(newRequest.getIsOnline() == "오프라인"){
-                isOnline = false;
-            } else {
-                isOnline = true;
+            // 공부 관련 온라인 여부
+            if(newRequest.getIsOnline() != null) {
+                if(newRequest.getIsOnline().equals("오프라인")){
+                    isOnline = false;
+                } else {
+                    isOnline = true;
+                }
             }
         }
 
@@ -198,46 +181,28 @@ public class RequestServiceImpl implements RequestService {
         memberSecondProfileTimesRepository.saveAll(timesList);
 
         // List<String>으로 받은 세부전공을 엔티티도 변환
-        List<MemberSecondProfileSubMajor> subMajorList = newRequest.getSubMajorName().stream()
-                .map(name -> {
-                    // 프론트에서 받은 subMajorName으로 SubMajor entity 찾기
-                    SubMajor subMajor = subMajorRepository.findByName(name)
-                            .orElseThrow(()-> new EntityNotFoundException("등록 전공 아님"));
+        List<MemberSecondProfileSubMajor> subMajorList = new ArrayList<>();
+        if(newRequest.getSubMajorName() != null) {
+            subMajorList = newRequest.getSubMajorName().stream()
+                    .map(name -> {
+                        // 프론트에서 받은 subMajorName으로 SubMajor entity 찾기
+                        SubMajor subMajor = subMajorRepository.findByName(name)
+                                .orElseThrow(()-> new EntityNotFoundException("등록 전공 아님"));
 
-                    // MemberSecondProfileSubMajor 생성
-                    return MemberSecondProfileSubMajor.builder()
-                            .memberSecondProfile(savedProfile)
-                            .subMajor(subMajor)
-                            .build();
-                })
-                        .toList();
+                        // MemberSecondProfileSubMajor 생성
+                        return MemberSecondProfileSubMajor.builder()
+                                .memberSecondProfile(savedProfile)
+                                .subMajor(subMajor)
+                                .build();
+                    })
+                    .toList();
+        }
 
         memberSecondProfileSubMajorRepository.saveAll(subMajorList);
 
-        //추천 시스템 관련
-
-        //memberDataProcessor.process(newMemberSecondProfile);   //memberDataProcessor
-        //matchingDataProcessor.process(newMemberSecondProfile); //matchingDataProcessor
-
-        switch (newRequest.getType()) {
-            case MEAL -> {
-                memberDataProcessor.process(newMemberSecondProfile);
-                matchingDataProcessor.process(newMemberSecondProfile);
-            }
-            case EXERCISE -> {
-                exerciseMemberDataProcessor.process(newMemberSecondProfile);
-                exerciseMatchingDataProcessor.process(newMemberSecondProfile);
-            }
-            case STUDY -> {
-                studyMemberDataProcessor.process(newMemberSecondProfile);
-                studyMatchingDataProcessor.process(newMemberSecondProfile);
-            }
-        }
-
-
-
         return RequestDTO.NewRequestDTO.builder()
                 //.writerId(memberId)
+                //.requestId(savedProfile.getId())  // 추가
                 .studentNumber(savedProfile.getStudentNumber().name())
                 .mbti(savedProfile.getMbti())
                 .minAge(savedProfile.getMinAge())
@@ -269,42 +234,44 @@ public class RequestServiceImpl implements RequestService {
 
         MemberProfile requestOwnerMemberProfile = requestOwnerMember.getMemberProfile();
 
+        if (joinMember == requestOwnerMember) {
+            throw new IllegalArgumentException("본인 매칭에 신청 불가");
+        }
+
 //        // 조건에 맞는지 판단 - 성별
 //        if(!(request.getGender() == null) && joinMember.getGender() != request.getGender()){
-//            throw new IllegalArgumentException("성별 조건 안 맞음");
+//            throw new GeneralHandler(ErrorCode.GENDER_NOT_SATISFIED);
 //        }
 //
 //        // 조건에 맞는지 판단 - 나이 범위
 //        if(!(request.getMinAge() == null)){
 //            if (request.getMinAge() > joinMember.getAge() || request.getMaxAge() < joinMember.getAge()) {
-//                throw new IllegalArgumentException("나이 조건 안 맞음");
+//                throw new GeneralHandler(ErrorCode.GENDER_NOT_SATISFIED);
 //            }
 //        }
-
+//
 //        // 조건에 맞는지 판단 - 학번
 //        if(request.getStudentNumber() == PEER){
 //            if (!(joinMemberProfile.getStudentNumber() == requestOwnerMemberProfile.getStudentNumber())){
-//                throw new IllegalArgumentException("학번 조건 안 맞음");
+//                throw new GeneralHandler(ErrorCode.STUDENT_NUMBER_NOT_SATISFIED);
 //            }
 //        } else if(request.getStudentNumber() == SENIOR ){
 //            if (!(joinMemberProfile.getStudentNumber() < requestOwnerMemberProfile.getStudentNumber())){
-//                throw new IllegalArgumentException("학번 조건 안 맞음");
+//                throw new GeneralHandler(ErrorCode.STUDENT_NUMBER_NOT_SATISFIED);
 //            }
 //        } else if(request.getStudentNumber() == JUNIOR){
 //            if (!(joinMemberProfile.getStudentNumber() > requestOwnerMemberProfile.getStudentNumber())){
-//                throw new IllegalArgumentException("학번 조건 안 맞음");
+//                throw new GeneralHandler(ErrorCode.STUDENT_NUMBER_NOT_SATISFIED);
 //            }
 //        }
-
-        // 조건에 맞는지 판단 - submajor - 나중에
-
+//
 //        // 취미 동일 여부 - 하나라도 같으면 통과
 //        if(request.getIsHobbySame()){
 //            if(!(Collections.disjoint(joinMemberProfile.getHobbies(),requestOwnerMemberProfile.getHobbies()))){
 //                throw new IllegalArgumentException("취미 조건 안 맞음");
 //            }
 //        }
-//
+
 //        // 성격 판단 - 입력받은 mbti 가져와서 판단
 //        String joinMemberMBTI = joinMemberProfile.getMBTI().name();
 //        String requestMBTI = request.getMbti();
@@ -350,30 +317,28 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void deleteRequest(Long requestId, Long userId){
+    @Transactional
+    public void deleteRequest(Long requestId, Long memberId){
         MemberSecondProfile request = memberSecondProfileRepository.findById(requestId)
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않는 매칭에 대한 요청"));
 
-        if (!request.getMember().getId().equals(userId)) {
+        if (!request.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("삭제 권한 없음");
+        }
+        // 자식 엔티티 먼저 삭제
+        log.info("여기까진 됨 0");
 
-        }
-        Member member = request.getMember();
-        switch (request.getMateType()) {
-            case MEAL -> {
-                memberDataRepository.deleteByMember(member);
-                memberRequestDataRepository.deleteByMember(member);
-            }
-            case EXERCISE -> {
-                exerciseMemberDataRepository.deleteByMember(member);
-                exerciseMemberRequestDataRepository.deleteByMember(member);
-            }
-            case STUDY -> {
-                studyMemberDataRepository.deleteByMember(member);
-                studyMemberRequestDataRepository.deleteByMember(member);
-            }
-        }
+        memberSecondProfileTimesRepository.deleteAllByMemberSecondProfile(request);
+
+        log.info("여기까진 됨 1");
+
+        memberMappingRepository.deleteAllByMemberSecondProfile(request);
+
+        log.info("여기까진 됨 2");
+
         memberSecondProfileRepository.delete(request);
+
+        log.info("여기까진 됨 3");
     }
 
     // 매칭에 좋아요 등록
@@ -388,6 +353,10 @@ public class RequestServiceImpl implements RequestService {
 
         if(memberLikesRepository.existsByMemberAndMemberSecondProfile(member, request)){
             throw new IllegalArgumentException("이미 좋아요 누르셨습니다.");
+        }
+
+        if(memberId.equals(request.getMember().getId())){
+            throw new IllegalArgumentException("본인 매칭에 좋아요 불가");
         }
 
         MemberSecondProfileLikes memberLikes = MemberSecondProfileLikes.builder()
@@ -438,6 +407,11 @@ public class RequestServiceImpl implements RequestService {
 
         MemberSecondProfileMapping updatedMapping = memberMappingRepository.save(memberSecondProfileMapping);
 
+        MemberSecondProfile request = memberSecondProfileRepository.findById(memberSecondProfileMapping.getMemberSecondProfile().getId())
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 매칭"));
+
+        request.addPerson();
+
         return RequestDTO.isAcceptedDTO.builder()
                 .matchingRequestId(updatedMapping.getId())
                 .isAccepted(updatedMapping.getIsAccepted())
@@ -447,32 +421,15 @@ public class RequestServiceImpl implements RequestService {
 
     //TODO 다시 코딩
     @Override
-    public List<MatchResponseDto> getLikes(Long memberId, MateType mateType) {
+    public List<Object> getLikes(Long memberId, String mateType) {
 
-        List<MemberSecondProfileLikes> memberSecondProfileLikes =
-                memberLikesRepository.findAllByMember(memberRepository.findMemberById(memberId));
+        Member member = memberRepository.findMemberById(memberId);
+        MateType type = MateType.fromString(mateType);
 
-        return memberSecondProfileLikes.stream()
-                .map(like -> {
-                    MemberSecondProfile memberSecondProfile = like.getMemberSecondProfile();
-                    Member member = memberSecondProfile.getMember();
-                    MemberProfile memberProfile = member.getMemberProfile();
+        LikeQueryStrategyFactory factory = new LikeQueryStrategyFactory(memberLikesRepository);
+        LikeQueryStrategy strategy = factory.getStrategy(type);
 
-                    return MatchResponseDto.builder()
-                            .memberId(member.getId())
-                            .requestId(memberSecondProfile.getId())
-                            .memberNumber(memberProfile.getStudentNumber())
-                            .gender(member.getGender().getKoreanName())
-                            .foodType(memberSecondProfile.getFoodTypes().stream()
-                                    .map(FoodType::getKoreanName)
-                                    .collect(Collectors.toSet()))
-                            .hobby(memberProfile.getHobbies().stream()
-                                    .map(Hobby::getKoreanName)
-                                    .collect(Collectors.toSet()))
-                            .mateType(memberSecondProfile.getMateType())
-                            .build();
-                })
-                .collect(Collectors.toList());
+        return strategy.process(member);
     }
 
 

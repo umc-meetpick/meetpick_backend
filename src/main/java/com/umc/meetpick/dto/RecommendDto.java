@@ -13,9 +13,9 @@ import java.util.Set;
 
 public class RecommendDto {
 
-   // public interface RecommendPageDto {
-     //   boolean isHasNextPage();
-       // int getCurrentPage();
+    // public interface RecommendPageDto {
+    //   boolean isHasNextPage();
+    // int getCurrentPage();
     //}
 
     @Builder
@@ -38,6 +38,7 @@ public class RecommendDto {
         private String studentNumber;
         private Set<String> foodTypes;
         private String gender;
+        private String imageUrl;
         private MBTI mbti;
     }
 
@@ -59,9 +60,8 @@ public class RecommendDto {
         private String gender;
         private MBTI mbti;
         private String nickName;
-        private ExerciseType exerciseType;
-        private Boolean isSchool;
-        private String place;
+        private String imageUrl;
+        private String exerciseType;
     }
 
     @Getter
@@ -80,12 +80,7 @@ public class RecommendDto {
         private String gender;
         private MBTI mbti;
         private String nickName;
-        private StudyType studyType;
-        private String majorName;
-        private String professorName;
-        private Boolean isOnline;
-        private Integer studyTimes;
-        private String place;
+        private String studyType;
+        private String imageUrl;
     }
 }
-

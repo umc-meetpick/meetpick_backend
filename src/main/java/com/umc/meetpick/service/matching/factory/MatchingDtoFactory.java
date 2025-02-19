@@ -10,6 +10,7 @@ import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
+import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.entity.matchingdata.exercise.MemberDataExercise;
 import com.umc.meetpick.entity.matchingdata.food.MemberDataFood;
 import com.umc.meetpick.entity.matchingdata.study.MemberDataStudy;
@@ -29,7 +30,7 @@ public class MatchingDtoFactory {
     // MemberSecondProfile 객체를 AlarmResponseDto로 변환하는 메서드
     public static AlarmDto.AlarmResponseDto memberSecondProfileToAlarmDto(MemberSecondProfileMapping mapping) {
 
-        MemberSecondProfile memberSecondProfile = mapping.getMemberSecondProfile();
+        MemberSecondProfile memberSecondProfile = findByMateType(mapping.getMember().getMemberSecondProfiles(), mapping.getMemberSecondProfile().getMateType()).orElseThrow(()-> new GeneralHandler(ErrorCode.PROFILE2_NOT_FOUND));
 
         return AlarmDto.AlarmResponseDto.builder()
                 .mateType(memberSecondProfile.getMateType().getKoreanName())
@@ -61,7 +62,7 @@ public class MatchingDtoFactory {
         //TODO 고치기
         Member member = mapping.getMember();
         MemberProfile memberProfile = member.getMemberProfile();
-        MemberSecondProfile memberSecondProfile = mapping.getMemberSecondProfile();
+        MemberSecondProfile memberSecondProfile = findByMateType(member.getMemberSecondProfiles(), mapping.getMemberSecondProfile().getMateType()).orElseThrow(()-> new GeneralHandler(ErrorCode.PROFILE2_NOT_FOUND));
 
         // 날짜 변환
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");

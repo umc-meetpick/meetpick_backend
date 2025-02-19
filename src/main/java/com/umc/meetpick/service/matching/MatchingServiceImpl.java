@@ -6,10 +6,7 @@ import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
-import com.umc.meetpick.enums.FoodType;
-import com.umc.meetpick.enums.Hobby;
-import com.umc.meetpick.enums.MateType;
-import com.umc.meetpick.enums.SubjectType;
+import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
@@ -23,6 +20,7 @@ import com.umc.meetpick.service.matching.factory.MatchQueryStrategyFactory;
 import com.umc.meetpick.service.matching.strategy.AlarmQueryStrategy;
 import com.umc.meetpick.service.matching.strategy.MatchQueryStrategy;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +29,7 @@ import org.springframework.stereotype.Service;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -45,6 +43,7 @@ import static com.umc.meetpick.service.matching.factory.MatchingDtoFactory.membe
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MatchingServiceImpl implements MatchingService {
 
     //TODO Request SERVICE랑 합치기
@@ -53,26 +52,22 @@ public class MatchingServiceImpl implements MatchingService {
     private final MemberRepository memberRepository;
     private final MemberMappingRepository memberMappingRepository;
     private final MemberLikesRepository memberLikesRepository;// 좋아요 여부 확인용
-    //private final MatchingAlgorithm<?> matchingAlgorithm;
-
     private final MemberProfileRepository memberProfileRepository;// 프로필 정보 조회용
     private final int minCondition = 3;
     private int page = 0;
     private final int pageSize = 100;
     private Pageable pageable = PageRequest.of(page, pageSize);
 
-    private final Map<MateType, MatchingAlgorithm<?>> matchingAlgorithms;
-
     @Override
     public Object match(Long memberId, MateType mateType){
 
         Member member = memberRepository.findMemberById(memberId);
 
-        MatchingAlgorithm<?> matchingAlgorithm;
+        MatchingAlgorithm<?> matchingAlgorithms;
 
         switch (mateType) {
             case MEAL:
-                matchingAlgorithm = matchingAlgorithms.get(MateType.MEAL);
+                matchingAlgorithms = matchingAlgorithm.get(MateType.MEAL);
                 break;
             case EXERCISE:
                 matchingAlgorithm = matchingAlgorithms.get(MateType.EXERCISE);
@@ -118,7 +113,7 @@ public class MatchingServiceImpl implements MatchingService {
 
         AlarmQueryStrategyFactory factory = new AlarmQueryStrategyFactory(memberMappingRepository);
         AlarmQueryStrategy strategy = factory.getStrategy(type);
-        Page<MemberSecondProfileMapping> memberProfile = strategy.getSecondProfilesByMateType(member, type, pageable);
+        Page<MemberSecondProfileMapping> memberProfile = strategy.getSecondProfilesByMateType(member, type, pageable, false);
 
         return memberSecondProfileToAlarmDtoList(memberProfile);
     }
@@ -161,6 +156,15 @@ public class MatchingServiceImpl implements MatchingService {
         public ProfileDetailListResponseDto getAllProfiles(Long memberId, MateType mateType, FilterRequestDTO filterRequest, Pageable pageable) {
             Specification<MemberSecondProfile> spec = (root, query, builder) -> {
                 List<Predicate> predicates = new ArrayList<>();
+// 필터 적용 전 로그
+                log.info("=== 필터 조건 ===");
+                log.info("mateType: {}", mateType);
+                log.info("studyType: {}", filterRequest.getStudyType());
+                log.info("gender: {}", filterRequest.getGender());
+                log.info("studentNumber: {}", filterRequest.getStudentNumber());
+                log.info("minAge: {}", filterRequest.getMinAge());
+                log.info("maxAge: {}", filterRequest.getMaxAge());
+                log.info("=============");
 
                 // 기본 필터: mateType
                 predicates.add(builder.equal(root.get("mateType"), mateType));
@@ -194,13 +198,18 @@ public class MatchingServiceImpl implements MatchingService {
 
                 // MateType별 특수 필터
                 switch (mateType) {
-                    case STUDY:
-                        if (filterRequest.getSubjectType() != null) {
-                            predicates.add(builder.equal(root.get("subjectType"), filterRequest.getSubjectType()));
-                        }
-                        if (filterRequest.getSubjectType() == SubjectType.CERTIFICATE
-                                && filterRequest.getCertificateType() != null) {
-                            predicates.add(builder.equal(root.get("certificateType"), filterRequest.getCertificateType()));
+    //                case STUDY:
+    //                    if (filterRequest.getSubjectType() != null) {
+    //                        predicates.add(builder.equal(root.get("subjectType"), filterRequest.getSubjectType()));
+    //                    }
+    //                    if (filterRequest.getSubjectType() == SubjectType.CERTIFICATE
+    //                            && filterRequest.getCertificateType() != null) {
+    //                        predicates.add(builder.equal(root.get("certificateType"), filterRequest.getCertificateType()));
+    //                    }
+    //                    break;
+                    case STUDY: //Certificate 사용하지 않는 코드
+                        if (filterRequest.getStudyType() != null) {   // subjectType -> studyType
+                            predicates.add(builder.equal(root.get("studyType"), filterRequest.getStudyType()));
                         }
                         break;
 
@@ -226,17 +235,15 @@ public class MatchingServiceImpl implements MatchingService {
             // 필터링된 데이터 조회
             Page<MemberSecondProfile> profiles = memberSecondProfileRepository.findAll(spec, pageable);
 
-            // 디버깅을 위한 로그 추가
+
+            log.info("=== 조회된 프로필 데이터 ===");
             profiles.getContent().forEach(profile -> {
-                System.out.println("=== MemberSecondProfile 데이터 ===");
-                System.out.println("ID: " + profile.getId());
-                System.out.println("선호 성별: " + profile.getGender());
-                System.out.println("선호 나이: " + profile.getMinAge() + "~" + profile.getMaxAge());
-                System.out.println("선호 학번: " + profile.getStudentNumber());
-                System.out.println("교내/교외: " + profile.getIsSchool());
-                System.out.println("운동 타입: " + profile.getExerciseType());
-                System.out.println("음식 타입: " + profile.getFoodTypes());
-                System.out.println("========================");
+                log.info("Profile ID: {}", profile.getId());
+                log.info("MateType: {}", profile.getMateType());
+                log.info("StudyType: {}", profile.getStudyType());
+                log.info("Gender: {}", profile.getGender());
+                log.info("StudentNumber: {}", profile.getStudentNumber());
+                log.info("========================");
             });
 
 
@@ -250,12 +257,31 @@ public class MatchingServiceImpl implements MatchingService {
                     })
                     .collect(Collectors.toList());
 
+
+            // DTO 변환 후에 로그 추가
+            log.info("=== 응답 데이터 ===");
+            profileDtos.forEach(dto -> {
+                log.info("Nickname: {}", dto.getNickname());
+                log.info("MateType: {}", dto.getPreferenceInfo().getMateType());
+                // MateType별 조건부 로그
+                if (dto.getPreferenceInfo().getMateType() == MateType.MEAL) {
+                    log.info("FoodTypes: {}", dto.getPreferenceInfo().getFoodTypes());
+                } else if (dto.getPreferenceInfo().getMateType() == MateType.STUDY) {
+                    log.info("StudyType: {}", dto.getPreferenceInfo().getStudyType());
+                } else if (dto.getPreferenceInfo().getMateType() == MateType.EXERCISE) {
+                    log.info("ExerciseType: {}", dto.getPreferenceInfo().getExerciseType());
+                }
+                log.info("------------------------");
+            });
+
             return ProfileDetailListResponseDto.from(
                     profileDtos,
                     profiles.getTotalPages(),
                     profiles.getTotalElements(),
                     profiles.hasNext()
             );
+
+
         }
 
 }

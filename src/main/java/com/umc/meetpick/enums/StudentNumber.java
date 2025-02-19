@@ -1,5 +1,6 @@
 package com.umc.meetpick.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.umc.meetpick.common.exception.handler.GeneralHandler;
 import com.umc.meetpick.common.response.status.ErrorCode;
 import lombok.Getter;
@@ -16,6 +17,13 @@ public enum StudentNumber {
     }
 
     private final String koreanName;
+
+    // json직렬화/역직렬화를 위해 추가
+    @JsonValue
+    public String getKoreanName() {
+        return koreanName;
+    }
+
 
     public static StudentNumber fromString(String studentNumber) {
         return switch (studentNumber) {

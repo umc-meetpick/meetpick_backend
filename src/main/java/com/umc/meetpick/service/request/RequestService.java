@@ -13,6 +13,6 @@ public interface RequestService {
     RequestDTO.LikeRequestDTO likeRequest(Long memberId ,Long requestId);
     void deleteLikeRequest(Long memberId,Long requestId);
     RequestDTO.isAcceptedDTO acceptRequest(Long memberId, Long requestId, Boolean isAccepted);
-    List<MatchResponseDto> getLikes(Long memberId, MateType mateType);
+    List<Object> getLikes(Long memberId, String mateType);
 
 }

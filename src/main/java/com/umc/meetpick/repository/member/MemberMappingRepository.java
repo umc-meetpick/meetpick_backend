@@ -20,12 +20,9 @@ public interface MemberMappingRepository extends JpaRepository<MemberSecondProfi
 
     boolean existsByMemberSecondProfileAndMember(MemberSecondProfile memberSecondProfile, Member member);
 
-    Page<MemberSecondProfileMapping> findAllByMemberSecondProfile_Member(@Param("member") Member member, Pageable pageable);
+    void deleteAllByMemberSecondProfile(MemberSecondProfile memberSecondProfile);
 
-    //TODO 쿼리가 좀 복잡한 것 같은데... 일단 스킵
-    Page<MemberSecondProfileMapping> findAllByMemberSecondProfile_MemberAndMemberSecondProfile_MateType(@Param("member") Member member, MateType mateType, Pageable pageable);
-
-    Page<MemberSecondProfileMapping> findAllByMemberSecondProfile_MemberAndMemberSecondProfile_MateTypeAndIsAccepted(@Param("member")Member member, MateType mateType, Pageable pageable, @Param("isAccepted") boolean isAccepted);
+    Page<MemberSecondProfileMapping> findAllByMemberSecondProfile_MemberAndMemberSecondProfile_MateTypeAndIsAccepted(@Param("member")Member member, MateType mateType, Pageable pageable, @Param("isAccepted") Boolean isAccepted);
 
     Page<MemberSecondProfileMapping> findAllByMemberSecondProfile_MemberAndIsAccepted(@Param("member") Member member, Pageable pageable, @Param("isAccepted") boolean isAccepted);
 

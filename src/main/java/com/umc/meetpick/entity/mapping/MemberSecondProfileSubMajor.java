@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Builder
@@ -20,7 +22,8 @@ public class MemberSecondProfileSubMajor {
     private Long id;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "member_second_profile_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private MemberSecondProfile memberSecondProfile;
 
     @ManyToOne
