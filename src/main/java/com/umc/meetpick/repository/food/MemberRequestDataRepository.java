@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface MemberRequestDataRepository extends JpaRepository<MemberRequestData,Long> {
     Optional<MemberRequestData> findByMember(@Param("member") Member member);
+    void deleteByMember(Member member);
 }

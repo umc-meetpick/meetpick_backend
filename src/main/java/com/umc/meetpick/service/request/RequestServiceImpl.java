@@ -15,9 +15,19 @@ import com.umc.meetpick.entity.mapping.MemberSecondProfileTimes;
 import com.umc.meetpick.enums.*;
 
 import com.umc.meetpick.repository.*;
+import com.umc.meetpick.repository.exercise.ExerciseMemberDataRepository;
+import com.umc.meetpick.repository.exercise.ExerciseMemberRequestDataRepository;
+import com.umc.meetpick.repository.food.MemberDataRepository;
+import com.umc.meetpick.repository.food.MemberRequestDataRepository;
 import com.umc.meetpick.repository.member.*;
+import com.umc.meetpick.repository.study.StudyMemberDataRepository;
+import com.umc.meetpick.repository.study.StudyMemberRequestDataRepository;
+import com.umc.meetpick.service.matching.processor.exercise.ExerciseMatchingDataProcessor;
+import com.umc.meetpick.service.matching.processor.exercise.ExerciseMemberDataProcessor;
 import com.umc.meetpick.service.matching.processor.food.MatchingDataProcessor;
 import com.umc.meetpick.service.matching.processor.food.MemberDataProcessor;
+import com.umc.meetpick.service.matching.processor.study.StudyMatchingDataProcessor;
+import com.umc.meetpick.service.matching.processor.study.StudyMemberDataProcessor;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,8 +39,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RequestServiceImpl implements RequestService {
 
-    private final MemberDataProcessor memberDataProcessor;
-    private final MatchingDataProcessor matchingDataProcessor;
+
     private final MemberRepository memberRepository;
     private final SubMajorRepository subMajorRepository;
     private final MemberMappingRepository memberMappingRepository;
@@ -38,6 +47,29 @@ public class RequestServiceImpl implements RequestService {
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
     private final MemberSecondProfileSubMajorRepository memberSecondProfileSubMajorRepository;
+
+    // MEAL 관련
+    private final MemberDataRepository memberDataRepository;
+    private final MemberRequestDataRepository memberRequestDataRepository;
+    // Exercise 관련
+    private final ExerciseMemberDataRepository exerciseMemberDataRepository;
+    private final ExerciseMemberRequestDataRepository exerciseMemberRequestDataRepository;
+    // Study 관련
+    private final StudyMemberDataRepository studyMemberDataRepository;
+    private final StudyMemberRequestDataRepository studyMemberRequestDataRepository;
+
+
+    //Processor 주입
+    //MEAL 관련
+    private final MemberDataProcessor memberDataProcessor;
+    private final MatchingDataProcessor matchingDataProcessor;
+    //Exercise 관련
+    private final ExerciseMemberDataProcessor exerciseMemberDataProcessor;
+    private final ExerciseMatchingDataProcessor exerciseMatchingDataProcessor;
+    //Study 관련
+    private final StudyMemberDataProcessor studyMemberDataProcessor;
+    private final StudyMatchingDataProcessor studyMatchingDataProcessor;
+
 
     @Override
     public RequestDTO.NewRequestDTO createNewRequest(Long memberId, RequestDTO.NewRequestDTO newRequest) {
@@ -182,8 +214,27 @@ public class RequestServiceImpl implements RequestService {
 
         memberSecondProfileSubMajorRepository.saveAll(subMajorList);
 
-        memberDataProcessor.process(newMemberSecondProfile);
-        matchingDataProcessor.process(newMemberSecondProfile);
+        //추천 시스템 관련
+
+        //memberDataProcessor.process(newMemberSecondProfile);   //memberDataProcessor
+        //matchingDataProcessor.process(newMemberSecondProfile); //matchingDataProcessor
+
+        switch (newRequest.getType()) {
+            case MEAL -> {
+                memberDataProcessor.process(newMemberSecondProfile);
+                matchingDataProcessor.process(newMemberSecondProfile);
+            }
+            case EXERCISE -> {
+                exerciseMemberDataProcessor.process(newMemberSecondProfile);
+                exerciseMatchingDataProcessor.process(newMemberSecondProfile);
+            }
+            case STUDY -> {
+                studyMemberDataProcessor.process(newMemberSecondProfile);
+                studyMatchingDataProcessor.process(newMemberSecondProfile);
+            }
+        }
+
+
 
         return RequestDTO.NewRequestDTO.builder()
                 //.writerId(memberId)
@@ -305,6 +356,22 @@ public class RequestServiceImpl implements RequestService {
 
         if (!request.getMember().getId().equals(userId)) {
             throw new IllegalArgumentException("삭제 권한 없음");
+
+        }
+        Member member = request.getMember();
+        switch (request.getMateType()) {
+            case MEAL -> {
+                memberDataRepository.deleteByMember(member);
+                memberRequestDataRepository.deleteByMember(member);
+            }
+            case EXERCISE -> {
+                exerciseMemberDataRepository.deleteByMember(member);
+                exerciseMemberRequestDataRepository.deleteByMember(member);
+            }
+            case STUDY -> {
+                studyMemberDataRepository.deleteByMember(member);
+                studyMemberRequestDataRepository.deleteByMember(member);
+            }
         }
         memberSecondProfileRepository.delete(request);
     }

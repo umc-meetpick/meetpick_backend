@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface StudyMemberRequestDataRepository extends JpaRepository<MemberRequestDataStudy, Long> {
     Optional<MemberRequestDataStudy> findByMember(@Param("member") Member member);
+    void deleteByMember(Member member);
 }
