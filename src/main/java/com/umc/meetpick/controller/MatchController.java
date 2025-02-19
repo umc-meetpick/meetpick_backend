@@ -122,6 +122,9 @@ public class MatchController {
             @PageableDefault(size = 10) Pageable pageable
             //@ParameterObject @PageableDefault(size = 10) Pageable pageable //Swagger 파라미터 처리
     ) {
+
+        log.info("전체 프로필 목록 조회 : {}", memberId);
+
         MateType mateType = MateType.fromString(mateTypeStr); // String -> Enum 변환
 
         // Set<String> -> Set<ExerciseType> 변환
