@@ -23,6 +23,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -60,6 +61,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @TrackExecutionTime
+    @Cacheable(cacheManager = "GeneralCacheManager", key = "#p0", value = "getMemberDetailCache")
     public Map<String, Object> getMemberDetail(Long memberSecondProfileId) {
 
         MemberSecondProfile memberSecondProfile = memberSecondProfileRepository.findById(memberSecondProfileId).orElseThrow(()-> new GeneralHandler(ErrorCode.PROFILE2_NOT_FOUND));
@@ -215,6 +217,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @TrackExecutionTime
+    @Cacheable(cacheManager = "GeneralCacheManager", key = "#p0", value = "getMyProfileCache")
     public MyProfileDto getMyProfile(Long memberId) {
 
         log.info("Service : getMyProfile 호출 {}", memberId);

@@ -23,7 +23,6 @@ public class HomeServiceImpl implements HomeService {
 
     private final MemberSecondProfileRepository memberSecondProfileRepository;
 
-    // TODO 레디스 사용하기, 무작위 멤버 추출 방식 바꾸기
     @TrackExecutionTime
     @Cacheable(cacheManager = "GeneralCacheManager", key = "#p0", value = "RandomCache")
     public MemberResponseDTO getRandomMember(String mateType){
@@ -38,8 +37,8 @@ public class HomeServiceImpl implements HomeService {
 
     }
 
-    // TODO 레디스 사용하기
     @TrackExecutionTime
+    @Cacheable(cacheManager = "GeneralCacheManager", key = "#p0", value = "UniversityCache")
     public List<Map<String, String>> getUniversityList(String keyword) {
         return University.search(keyword);
     }

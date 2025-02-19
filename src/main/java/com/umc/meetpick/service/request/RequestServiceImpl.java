@@ -24,6 +24,7 @@ import com.umc.meetpick.service.request.strategy.LikeQueryStrategy;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -423,6 +424,7 @@ public class RequestServiceImpl implements RequestService {
     //TODO 다시 코딩
     @Override
     @TrackExecutionTime
+    @Cacheable(cacheManager = "GeneralCacheManager", key = "#p0", value = "LikeCache")
     public List<Object> getLikes(Long memberId, String mateType) {
 
         Member member = memberRepository.findMemberById(memberId);
