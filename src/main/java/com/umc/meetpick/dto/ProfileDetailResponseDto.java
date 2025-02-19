@@ -27,6 +27,7 @@ public class ProfileDetailResponseDto {
     private int studentNumber;        // From MemberProfile
     private String mbti;              // From MemberProfile
     private Long requestId; //추가 MemberSecondProfile id
+    private String profileImage; //profileImage 추가
 
     // 매칭 선호도 정보-내부 클래스
     private PreferenceInfo preferenceInfo;
@@ -119,6 +120,7 @@ public class ProfileDetailResponseDto {
                 .age(member.getAge())
                 .studentNumber(memberProfile.getStudentNumber())
                 .mbti(memberProfile.getMBTI().name())
+                .profileImage(memberProfile.getProfileImage()) //추가 profileimage
                 .preferenceInfo(preferenceInfo)
                 .isLiked(isLiked)
                 .slotInfo(slotInfo)
