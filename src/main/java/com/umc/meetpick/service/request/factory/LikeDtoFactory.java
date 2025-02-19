@@ -29,6 +29,7 @@ public class LikeDtoFactory {
                             .profileAge(member.getAge() + "살")
                             .studentNumber(memberProfile.getStudentNumber() + "학번")
                             .mbti(memberProfile.getMBTI().toString())
+                            .imageUrl(memberProfile.getProfileImage())
                             .isLiked(true)
                             .build();
 
@@ -64,6 +65,7 @@ public class LikeDtoFactory {
                             .studentNumber(memberProfile.getStudentNumber() + "학번")
                             .mbti(memberProfile.getMBTI().toString())
                             .isLiked(true)
+                            .imageUrl(memberProfile.getProfileImage())
                             .build();
 
                     return LikeResponseDto.ExerciseLikeResponseDto.builder()
@@ -98,6 +100,7 @@ public class LikeDtoFactory {
                             .studentNumber(memberProfile.getStudentNumber() + "학번")
                             .mbti(memberProfile.getMBTI().toString())
                             .isLiked(true)
+                            .imageUrl(memberProfile.getProfileImage())
                             .build();
 
                     return LikeResponseDto.StudyLikeResponseDto.builder()
