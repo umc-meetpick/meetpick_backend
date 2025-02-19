@@ -33,7 +33,7 @@ public class RecommendDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class FoodRecommendDto  {
-        private Long memberSecondProfileId;
+        private Long requestId;
         private String nickName;
         private String studentNumber;
         private Set<String> foodTypes;
@@ -55,7 +55,7 @@ public class RecommendDto {
     @Getter
     @Builder
     public static class ExerciseRecommendDto {
-        private Long memberSecondProfileId;
+        private Long requestId;
         private String studentNumber;
         private String gender;
         private MBTI mbti;
@@ -75,7 +75,7 @@ public class RecommendDto {
     @Getter
     @Builder
     public static class StudyRecommendDto {
-        private Long memberSecondProfileId;
+        private Long requestId;
         private String studentNumber;
         private String gender;
         private MBTI mbti;

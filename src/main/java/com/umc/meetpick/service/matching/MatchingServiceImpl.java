@@ -55,7 +55,6 @@ public class MatchingServiceImpl implements MatchingService {
     private final MemberRepository memberRepository;
     private final MemberMappingRepository memberMappingRepository;
     private final MemberLikesRepository memberLikesRepository;// 좋아요 여부 확인용
-    private final MemberProfileRepository memberProfileRepository;// 프로필 정보 조회용
     private final Map<String, MatchingAlgorithm<?>> algorithms;
 
     @Override
@@ -66,7 +65,6 @@ public class MatchingServiceImpl implements MatchingService {
         MatchingAlgorithm<?> algorithm = algorithms.get(mateType);
 
         return algorithm.recommend(member);
-
     }
 
     @Override
