@@ -19,6 +19,7 @@ public class StudyLikeQueryStrategy implements LikeQueryStrategy{
 
     @Override
     public List<Object> process(Member member) {
+
         List<MemberSecondProfileLikes> memberSecondProfileLikes = memberLikesRepository.findAllByMemberAndMemberSecondProfile_MateType(member, MateType.STUDY);
 
         return Collections.singletonList(getStudyLikeResponseDto(memberSecondProfileLikes));

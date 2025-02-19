@@ -74,6 +74,8 @@ public class MatchController {
             @ModelAttribute PageRequestDto pageRequestDto, @AuthUser Long memberId)
     {
 
+        log.info("매칭이 완료된 리스트 받아오기 : {}", memberId);
+
         Pageable pageable = pageRequestDto.toPageable();
 
         return ApiResponse.onSuccess(matchingService.getCompletedMatches(memberId, pageRequestDto.getMateType(), pageable));
@@ -82,6 +84,9 @@ public class MatchController {
     @Operation(summary = "찜한 목록 가져오기")
     @GetMapping("/like")
     public ApiResponse<List<Object>> getLikeRequest(@AuthUser Long memberId, @PathParam("mateType") String mateType) {
+
+        log.info("찜한 목록 가져오기 실행 : {}", mateType);
+
         return ApiResponse.onSuccess(requestService.getLikes(memberId, mateType));
     }
 
@@ -117,6 +122,9 @@ public class MatchController {
             @PageableDefault(size = 10) Pageable pageable
             //@ParameterObject @PageableDefault(size = 10) Pageable pageable //Swagger 파라미터 처리
     ) {
+
+        log.info("전체 프로필 목록 조회 : {}", memberId);
+
         MateType mateType = MateType.fromString(mateTypeStr); // String -> Enum 변환
 
         // Set<String> -> Set<ExerciseType> 변환

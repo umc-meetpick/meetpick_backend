@@ -39,7 +39,6 @@ import static com.umc.meetpick.enums.StudentNumber.*;
 @RequiredArgsConstructor
 @Slf4j
 public class RequestServiceImpl implements RequestService {
-    private final NewRequestRepository newRequestRepository;
     private final MemberRepository memberRepository;
     private final SubMajorRepository subMajorRepository;
     private final MemberMappingRepository memberMappingRepository;
@@ -88,7 +87,14 @@ public class RequestServiceImpl implements RequestService {
 
 
         // studentNumber 변환 -> 프론트에서 받은 string을 enum으로
-        StudentNumber studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
+
+        StudentNumber studentNumberEnum;
+
+        if(newRequest.getStudentNumber() == null){
+            studentNumberEnum = StudentNumber.ALL;
+        } else {
+            studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
+        }
 
         ExerciseType exerciseTypes = null;
         Set<FoodType> foodTypes = Collections.emptySet();
@@ -98,6 +104,7 @@ public class RequestServiceImpl implements RequestService {
         Boolean isOnline = null;
 
         MateType requestMateType = newRequest.getType();
+
         if (requestMateType == EXERCISE){
             // 운동 타입 변환 (nullable 처리)
 //        Set<ExerciseType> exerciseTypes = Optional.ofNullable(newRequest.getExerciseTypes())
@@ -392,14 +399,14 @@ public class RequestServiceImpl implements RequestService {
 //                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭"));
 
         MemberSecondProfileMapping memberSecondProfileMapping = memberMappingRepository.findById(matchingRequestId)
-                .orElseThrow(()-> new EntityNotFoundException("신청을 찾을 수 없음"));
+                .orElseThrow(()-> new GeneralHandler(ErrorCode.REQUEST_NOT_FOUND));
 
         if(!memberSecondProfileMapping.getMemberSecondProfile().getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("권한 없음");
+            throw new GeneralHandler(ErrorCode._UNAUTHORIZED);
         }
 
         if(memberSecondProfileMapping.getStatus()){
-            throw new IllegalArgumentException("이미 수락 or 거절됨");
+            throw new GeneralHandler(ErrorCode.REQUEST_ALREADY_ACCEPTED);
         }
 
         memberSecondProfileMapping.setStatus(true);

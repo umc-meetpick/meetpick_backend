@@ -55,7 +55,7 @@ public class TempController {
     @GetMapping("/token")
     public ApiResponse<String> generateToken()
     {
-        Member member = memberRepository.findFirstBy();
+        Member member = memberRepository.findFirstByName("윤빈").orElse(null);
 
         return ApiResponse.onSuccess(jwtUtil.generateToken(member.getId()));
     }

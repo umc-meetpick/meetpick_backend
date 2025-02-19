@@ -73,11 +73,14 @@ public class MemberController {
         return ApiResponse.onSuccess(memberService.getMyProfile(memberId));  // ProfileService로 호출
     }
 
-    // 이게 맞나 생각해보니
+    // TODO 원래는 검증 로직이 필요하나 일단은 그냥 합니다.
     @Operation(summary = "멤버 연락처 정보 반환")
-    @GetMapping("/contact-info/{mappingId}")
-    public ApiResponse<ContactResponseDto> getContactInfo(@AuthUser Long memberId, @PathVariable Long mappingId) {
-        return ApiResponse.onSuccess(memberService.getContactInfo(memberId, mappingId));  // ProfileService로 호출
+    @GetMapping("/contact-info/{requestId}")
+    public ApiResponse<ContactResponseDto> getContactInfo(@AuthUser Long memberId, @PathVariable Long requestId) {
+
+        log.info("멤버 연락처 정보 반환 : {}", memberId);
+
+        return ApiResponse.onSuccess(memberService.getContactInfo(memberId, requestId));  // ProfileService로 호출
     }
 
     @Operation(summary = "전공 정보 반환하기")

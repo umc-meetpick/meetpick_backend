@@ -26,6 +26,7 @@ public enum ErrorCode implements BaseErrorCode {
     SUBMAJOR_NOT_EXSIT(HttpStatus.BAD_REQUEST, "MEMBER4004", "존재하지 않는 전공입니다"),
     PROFILE_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4005", "1차 프로필이 없습니다"),
     PROFILE2_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4005", "2차 프로필이 없습니다"),
+    PROFILE2_MEMBER_MISMATCH(HttpStatus.BAD_REQUEST, "MEMBER4006", "해당 2차 프로필에 연결된 멤버 정보가 없습니다"),
 
     MEMBER_SIGNUP_ERROR(HttpStatus.BAD_REQUEST, "SIGNUP4001", "회원가입 유효성 검사 실패"),
     EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "SIGNUP4002", "이미 존재하는 이메일입니다."),
@@ -50,8 +51,8 @@ public enum ErrorCode implements BaseErrorCode {
     AGE_NOT_SATISFIED(HttpStatus.BAD_REQUEST, "REQUEST4000", "나이 조건이 맞지 않습니다"),
     GENDER_NOT_SATISFIED(HttpStatus.BAD_REQUEST, "REQUEST4000", "성별 조건이 맞지 않습니다"),
     STUDENT_NUMBER_NOT_SATISFIED(HttpStatus.BAD_REQUEST, "REQUEST4000", "학번 조건이 맞지 않습니다"),
-
-
+    REQUEST_NOT_FOUND(HttpStatus.BAD_REQUEST, "REQUEST4001", "신청 정보가 없습니다."),
+    REQUEST_ALREADY_ACCEPTED(HttpStatus.BAD_REQUEST, "REQUEST4002", "이미 수락 or 거절됨"),
 
     // 학번 관련 에러
     INVALID_STUDENT_NUMBER(HttpStatus.BAD_REQUEST, "STUDENT_NUMBER4001", "숫자만 입력하세요."),
@@ -68,6 +69,7 @@ public enum ErrorCode implements BaseErrorCode {
     // 연락 수잔 관련 에러 코드
     CONTACT_TYPE_INVALID(HttpStatus.BAD_REQUEST, "CONTACT4001", "잘못된 연락 수단 입니다."),
     CONTACT_INFO_INVALID(HttpStatus.BAD_REQUEST,"CONTACT4002","잘못된 값 입니다."),
+    CONTACT_NOT_EXIST(HttpStatus.BAD_REQUEST, "CONTACT4003", "사용자의 연락처 정보가 없습니다"),
 
     // PROFILE_NOT_FOUND(HttpStatus.BAD_REQUEST, "PROFILE4001", "사용자의 프로필을 찾을 수 없습니다.");
     //데이터 관련

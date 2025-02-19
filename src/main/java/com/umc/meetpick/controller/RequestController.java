@@ -7,12 +7,14 @@ import com.umc.meetpick.service.request.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 // 매칭 관련 controller
 @Tag(name = "매칭 관련 API", description = "매칭 관련 API입니다")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/api/request")
 public class RequestController {
     private final RequestService requestService;
@@ -20,7 +22,11 @@ public class RequestController {
     @Operation(summary = "매칭 추가")
     @PostMapping("/add")
     public ApiResponse<String> createRequest(@AuthUser Long memberId, @RequestBody RequestDTO.NewRequestDTO newRequest) {
-        RequestDTO.NewRequestDTO responseDTO = requestService.createNewRequest(memberId, newRequest);
+
+        log.info("매칭 추가 : {}", memberId);
+
+        requestService.createNewRequest(memberId, newRequest);
+
         return ApiResponse.onSuccess("등록 성공");
     }
 
@@ -53,9 +59,13 @@ public class RequestController {
     }
 
     @Operation(summary = "매칭 신청 승낙하기" )
-    @PatchMapping("/accept/{matchingRequestId}")
-    public ApiResponse<RequestDTO.isAcceptedDTO> acceptRequest(@AuthUser Long memberId, @PathVariable Long matchingRequestId, @RequestParam Boolean isAccepted) {
-        RequestDTO.isAcceptedDTO responseDTO = requestService.acceptRequest(memberId, matchingRequestId, isAccepted);
+    @PatchMapping("/accept/{requestId}")
+    public ApiResponse<RequestDTO.isAcceptedDTO> acceptRequest(@AuthUser Long memberId, @PathVariable Long requestId, @RequestParam Boolean isAccepted) {
+
+        log.info("매칭 신청 승낙하기 {}", requestId);
+
+        RequestDTO.isAcceptedDTO responseDTO = requestService.acceptRequest(memberId, requestId, isAccepted);
+
         return ApiResponse.onSuccess(responseDTO);
     }
 }

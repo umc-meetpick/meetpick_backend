@@ -134,7 +134,8 @@ public class MatchingServiceImpl implements MatchingService {
 
         @Override
         public ProfileDetailListResponseDto getAllProfiles(Long memberId, MateType mateType, FilterRequestDTO filterRequest, Pageable pageable) {
-            Specification<MemberSecondProfile> spec = (root, query, builder) -> {
+
+        Specification<MemberSecondProfile> spec = (root, query, builder) -> {
                 List<Predicate> predicates = new ArrayList<>();
 // 필터 적용 전 로그
                 log.info("=== 필터 조건 ===");
