@@ -26,6 +26,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -311,6 +312,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    @Transactional
     public void deleteRequest(Long requestId, Long memberId){
         MemberSecondProfile request = memberSecondProfileRepository.findById(requestId)
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않는 매칭에 대한 요청"));
@@ -318,6 +320,7 @@ public class RequestServiceImpl implements RequestService {
         if (!request.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("삭제 권한 없음");
         }
+        memberMappingRepository.deleteByMemberSecondProfile(request);
         memberSecondProfileRepository.delete(request);
     }
 
