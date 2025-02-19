@@ -189,6 +189,7 @@ public class RequestServiceImpl implements RequestService {
 
         MemberSecondProfile savedProfile = memberSecondProfileRepository.save(newMemberSecondProfile);
 
+
         // memberSecondProfileTimes 변환 및 저장
         List<MemberSecondProfileTimes> timesList = newRequest.getMemberSecondProfileTimes().stream()
                 .map(dto -> MemberSecondProfileTimes.builder()
