@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -65,6 +67,12 @@ public class ProfileDetailResponseDto {
         private Set<SubMajor> preferredMajors; // 선호 전공
         private Boolean isSchool;              // 교내/교외 여부
 
+        public static PreferenceInfo.PreferenceInfoBuilder defaultValues() {
+            return PreferenceInfo.builder()
+                    .availableDays(new HashSet<>(Arrays.asList("월", "수", "금")))
+                    .availableTimes(new HashSet<>(Arrays.asList("12", "13")));
+        }
+
     }
 
     // 슬롯 정보 내부 클래스 SlotInfo
@@ -90,7 +98,9 @@ public class ProfileDetailResponseDto {
                 .build();
 
         // PreferenceInfo 생성
-        PreferenceInfo preferenceInfo = PreferenceInfo.builder()
+       // PreferenceInfo preferenceInfo = PreferenceInfo.builder()
+
+        PreferenceInfo preferenceInfo = PreferenceInfo.defaultValues()
                 .mateType(secondProfile.getMateType())
                 .preferredGender(secondProfile.getGender() != null ?    // 선호 성별
                         secondProfile.getGender().getKoreanName() : null)

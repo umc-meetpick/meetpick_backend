@@ -18,6 +18,7 @@ import com.umc.meetpick.service.matching.factory.AlarmQueryStrategyFactory;
 import com.umc.meetpick.service.matching.factory.MatchQueryStrategyFactory;
 import com.umc.meetpick.service.matching.strategy.AlarmQueryStrategy;
 import com.umc.meetpick.service.matching.strategy.MatchQueryStrategy;
+import jakarta.persistence.criteria.JoinType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,6 +39,7 @@ import jakarta.persistence.criteria.Predicate;
 
 
 import static com.umc.meetpick.common.util.DateTimeUtil.getTime;
+import static com.umc.meetpick.common.util.TimeConverter.convertTimeOfDay;
 import static com.umc.meetpick.service.matching.factory.MatchingDtoFactory.memberSecondProfileToAlarmDtoList;
 import static com.umc.meetpick.service.matching.factory.MatchingDtoFactory.memberSecondProfileToMatchPageDto;
 
@@ -287,6 +290,29 @@ public class MatchingServiceImpl implements MatchingService {
                     predicates.add(root.join("memberSecondProfileTimes").get("times").in(filterRequest.getAvailableTimes()));
                 }
 
+                //4. 개선한 요일/시간 필터
+                // 요일 필터링
+        //        if (filterRequest.getAvailableDays() != null && !filterRequest.getAvailableDays().isEmpty()) {
+        //            predicates.add(root.join("memberSecondProfileTimes", JoinType.INNER)
+        //                    .get("week")
+        //                    .in(filterRequest.getAvailableDays()));
+        //        }
+
+                // 시간대 필터링
+        //        if (filterRequest.getAvailableTimes() != null && !filterRequest.getAvailableTimes().isEmpty()) {
+        //            Set<Integer> allHours = new HashSet<>();
+        //            filterRequest.getAvailableTimes().forEach(timeOfDay ->
+        //                    allHours.addAll(convertTimeOfDay(timeOfDay))
+        //            );
+
+        //            Predicate timePredicate = root.join("memberSecondProfileTimes", JoinType.INNER)
+        //                    .join("times")
+        //                    .in(allHours);
+        //            predicates.add(timePredicate);
+        //        }
+
+
+
                 // MateType별 특수 필터
                 switch (mateType) {
     //                case STUDY:
@@ -371,7 +397,6 @@ public class MatchingServiceImpl implements MatchingService {
                     profiles.getTotalElements(),
                     profiles.hasNext()
             );
-
 
         }
 
