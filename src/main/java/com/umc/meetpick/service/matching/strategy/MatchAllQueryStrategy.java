@@ -18,6 +18,8 @@ public class MatchAllQueryStrategy implements MatchQueryStrategy{
     @Override
     public Page<MemberSecondProfileMapping> getMemberProfiles(Member member, MateType mateType, Pageable pageable, Boolean isAccepted) {
 
+        log.info("getMemberProfiles: {}, {}, {}, {}", member, mateType, pageable, isAccepted);
+
         return memberMappingRepository.findAllByMemberSecondProfile_MemberAndIsAccepted(member, pageable, isAccepted);
     }
 

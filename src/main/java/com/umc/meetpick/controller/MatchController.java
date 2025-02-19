@@ -74,6 +74,8 @@ public class MatchController {
             @ModelAttribute PageRequestDto pageRequestDto, @AuthUser Long memberId)
     {
 
+        log.info("매칭이 완료된 리스트 받아오기 : {}", memberId);
+
         Pageable pageable = pageRequestDto.toPageable();
 
         return ApiResponse.onSuccess(matchingService.getCompletedMatches(memberId, pageRequestDto.getMateType(), pageable));
