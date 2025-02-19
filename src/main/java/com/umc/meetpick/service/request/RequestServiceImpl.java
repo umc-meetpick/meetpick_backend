@@ -1,5 +1,6 @@
 package com.umc.meetpick.service.request;
 
+import com.umc.meetpick.common.annotation.TrackExecutionTime;
 import com.umc.meetpick.dto.MatchResponseDto;
 import com.umc.meetpick.dto.RequestDTO;
 import com.umc.meetpick.entity.*;
@@ -191,6 +192,8 @@ public class RequestServiceImpl implements RequestService {
                         .toList();
 
         memberSecondProfileSubMajorRepository.saveAll(subMajorList);
+
+
 
         return RequestDTO.NewRequestDTO.builder()
                 //.writerId(memberId)
@@ -392,6 +395,7 @@ public class RequestServiceImpl implements RequestService {
 
     //TODO 다시 코딩
     @Override
+    @TrackExecutionTime
     public List<Object> getLikes(Long memberId, String mateType) {
 
         Member member = memberRepository.findMemberById(memberId);

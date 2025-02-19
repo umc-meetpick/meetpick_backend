@@ -1,5 +1,6 @@
 package com.umc.meetpick.service.home;
 
+import com.umc.meetpick.common.annotation.TrackExecutionTime;
 import com.umc.meetpick.dto.MemberResponseDTO;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.enums.MateType;
@@ -22,6 +23,7 @@ public class HomeServiceImpl implements HomeService {
     private final MemberSecondProfileRepository memberSecondProfileRepository;
 
     // TODO 레디스 사용하기, 무작위 멤버 추출 방식 바꾸기
+    @TrackExecutionTime
     public MemberResponseDTO getRandomMember(String mateType){
 
         MateType type = MateType.fromString(mateType);
@@ -35,6 +37,7 @@ public class HomeServiceImpl implements HomeService {
     }
 
     // TODO 레디스 사용하기
+    @TrackExecutionTime
     public List<Map<String, String>> getUniversityList(String keyword) {
         return University.search(keyword);
     }
