@@ -39,9 +39,11 @@ public enum ErrorCode implements BaseErrorCode {
     NICKNAME_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "NICKNAME4002", "닉네임을 입력해야 합니다."),
 
     //프로필 관련 에러
+    INVALID_UNIVERSITY_NAME(HttpStatus.BAD_REQUEST,"UNIV4002", "지원하지 않는 대학교입니다."),
     PROFILE_IMAGE_INVALID(HttpStatus.BAD_REQUEST, "PROFILE4002", "잘못된 프로필 이미지입니다."),
     INVALID_UNIVERSITY(HttpStatus.BAD_REQUEST, "UNIV4001" ,"대학교명 형식 오류: 예) xx대학교와 같이 입력하세요."),
-
+    MEMBER_PROFILE_ALREADY_EXISTS(HttpStatus.BAD_REQUEST,"PROFILE4004", "프로필이 이미 존재합니다."),
+    MEMBER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST,"PROFILE4003", "회원 기본 정보가 이미 존재합니다."),
     // ENUM 관련
     INVALID_MATE_TYPE(HttpStatus.BAD_REQUEST, "TYPE4000", "유효하지 않은 메이트 타입입니다"),
     INVALID_ENUM(HttpStatus.BAD_REQUEST, "TYPE4001", "유효하지 않은 enum입니다"),

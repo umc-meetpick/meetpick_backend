@@ -237,7 +237,7 @@ public class DataInitializer implements CommandLineRunner {
                         .build();
 
                 MemberProfile profile10 = MemberProfile.builder()
-                        .nickname("지원")
+                        .nickname("지원1")
                         .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile10.png")
                         .studentNumber(23)
                         .subMajor(subMajorRepository.findByNameOrderByName("인공지능학과"))
@@ -259,7 +259,7 @@ public class DataInitializer implements CommandLineRunner {
                         .build();
 
                 MemberProfile profile12 = MemberProfile.builder()
-                        .nickname("지수")
+                        .nickname("지수1")
                         .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile12.png")
                         .studentNumber(21)
                         .subMajor(subMajorRepository.findByNameOrderByName("게임학과"))
@@ -281,7 +281,7 @@ public class DataInitializer implements CommandLineRunner {
                         .build();
 
                 MemberProfile profile14 = MemberProfile.builder()
-                        .nickname("도현")
+                        .nickname("도현1")
                         .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile14.png")
                         .studentNumber(25)
                         .subMajor(subMajorRepository.findByNameOrderByName("건축공학과"))
@@ -303,7 +303,7 @@ public class DataInitializer implements CommandLineRunner {
                         .build();
 
                 MemberProfile profile16 = MemberProfile.builder()
-                        .nickname("지훈")
+                        .nickname("지훈1")
                         .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile16.png")
                         .studentNumber(24)
                         .subMajor(subMajorRepository.findByNameOrderByName("심리학과"))
@@ -314,7 +314,7 @@ public class DataInitializer implements CommandLineRunner {
                         .build();
 
                 MemberProfile profile17 = MemberProfile.builder()
-                        .nickname("수진")
+                        .nickname("수진1")
                         .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile17.png")
                         .studentNumber(26)
                         .subMajor(subMajorRepository.findByNameOrderByName("의학과"))
@@ -338,7 +338,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile19 = memberProfileRepository.save(
                         MemberProfile.builder()
-                                .nickname("은지")
+                                .nickname("은지1")
                                 .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile19.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("간호학과"))
@@ -390,7 +390,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile23 = memberProfileRepository.save(
                         MemberProfile.builder()
-                                .nickname("진우")
+                                .nickname("진우2")
                                 .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile23.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("수학과"))
@@ -442,7 +442,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile27 = memberProfileRepository.save(
                         MemberProfile.builder()
-                                .nickname("지훈")
+                                .nickname("지훈12")
                                 .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile27.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("농업경제학과"))
@@ -480,7 +480,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile30 = memberProfileRepository.save(
                         MemberProfile.builder()
-                                .nickname("예린")
+                                .nickname("예린1")
                                 .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile30.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("정보보안학과"))
@@ -622,7 +622,7 @@ public class DataInitializer implements CommandLineRunner {
                 // MemberProfile 41~50 추가
                 MemberProfile profile41 = memberProfileRepository.save(
                         MemberProfile.builder()
-                                .nickname("도윤")
+                                .nickname("도윤1")
                                 .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile41.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("기계공학과"))
@@ -687,7 +687,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile46 = memberProfileRepository.save(
                         MemberProfile.builder()
-                                .nickname("유나")
+                                .nickname("유나1")
                                 .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile46.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("교육학과"))
@@ -765,7 +765,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile52 = memberProfileRepository.save(
                         MemberProfile.builder()
-                                .nickname("수진")
+                                .nickname("수진12")
                                 .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile52.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("정보보안학과"))
@@ -804,7 +804,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile55 = memberProfileRepository.save(
                         MemberProfile.builder()
-                                .nickname("현우")
+                                .nickname("현우2")
                                 .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile55.png")
                                 .studentNumber(24)
                                 .subMajor(subMajorRepository.findByNameOrderByName("사회학과"))
@@ -908,7 +908,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile63 = memberProfileRepository.save(
                         MemberProfile.builder()
-                                .nickname("지훈")
+                                .nickname("3지훈12")
                                 .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile73.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("정보통신공학과"))
@@ -973,7 +973,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile68 = memberProfileRepository.save(
                         MemberProfile.builder()
-                                .nickname("나연")
+                                .nickname("나연2")
                                 .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile78.png")
                                 .studentNumber(23)
                                 .subMajor(subMajorRepository.findByNameOrderByName("전기전자공학과"))
@@ -1012,7 +1012,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile71 = memberProfileRepository.save(
                         MemberProfile.builder()
-                                .nickname("태민")
+                                .nickname("태민1")
                                 .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile81.png")
                                 .studentNumber(21)
                                 .subMajor(subMajorRepository.findByNameOrderByName("교육학과"))
@@ -1025,7 +1025,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 MemberProfile profile72 = memberProfileRepository.save(
                         MemberProfile.builder()
-                                .nickname("혜린")
+                                .nickname("혜린11")
                                 .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/profile82.png")
                                 .studentNumber(22)
                                 .subMajor(subMajorRepository.findByNameOrderByName("경제학과"))
@@ -1270,7 +1270,97 @@ public class DataInitializer implements CommandLineRunner {
                                 .build()
                 );
 
-
+                memberProfileRepository.save(profile1);
+                memberProfileRepository.save(profile2);
+                memberProfileRepository.save(profile3);
+                memberProfileRepository.save(profile4);
+                memberProfileRepository.save(profile5);
+                memberProfileRepository.save(profile6);
+                memberProfileRepository.save(profile7);
+                memberProfileRepository.save(profile8);
+                memberProfileRepository.save(profile9);
+                memberProfileRepository.save(profile10);
+                memberProfileRepository.save(profile11);
+                memberProfileRepository.save(profile12);
+                memberProfileRepository.save(profile13);
+                memberProfileRepository.save(profile14);
+                memberProfileRepository.save(profile15);
+                memberProfileRepository.save(profile16);
+                memberProfileRepository.save(profile17);
+                memberProfileRepository.save(profile18);
+                memberProfileRepository.save(profile19);
+                memberProfileRepository.save(profile20);
+                memberProfileRepository.save(profile21);
+                memberProfileRepository.save(profile22);
+                memberProfileRepository.save(profile23);
+                memberProfileRepository.save(profile24);
+                memberProfileRepository.save(profile25);
+                memberProfileRepository.save(profile26);
+                memberProfileRepository.save(profile27);
+                memberProfileRepository.save(profile28);
+                memberProfileRepository.save(profile29);
+                memberProfileRepository.save(profile30);
+                memberProfileRepository.save(profile31);
+                memberProfileRepository.save(profile32);
+                memberProfileRepository.save(profile33);
+                memberProfileRepository.save(profile34);
+                memberProfileRepository.save(profile35);
+                memberProfileRepository.save(profile36);
+                memberProfileRepository.save(profile37);
+                memberProfileRepository.save(profile38);
+                memberProfileRepository.save(profile39);
+                memberProfileRepository.save(profile40);
+                 memberProfileRepository.save(profile41);
+                memberProfileRepository.save(profile42);
+                memberProfileRepository.save(profile43);
+                memberProfileRepository.save(profile44);
+                memberProfileRepository.save(profile45);
+                memberProfileRepository.save(profile46);
+                memberProfileRepository.save(profile47);
+                memberProfileRepository.save(profile48);
+                memberProfileRepository.save(profile49);
+                memberProfileRepository.save(profile50);
+                memberProfileRepository.save(profile51);
+                memberProfileRepository.save(profile52);
+                memberProfileRepository.save(profile53);
+                memberProfileRepository.save(profile54);
+                memberProfileRepository.save(profile55);
+                memberProfileRepository.save(profile56);
+                memberProfileRepository.save(profile57);
+                memberProfileRepository.save(profile58);
+                memberProfileRepository.save(profile59);
+                memberProfileRepository.save(profile60);
+                memberProfileRepository.save(profile61);
+                memberProfileRepository.save(profile62);
+                memberProfileRepository.save(profile63);
+                memberProfileRepository.save(profile64);
+                memberProfileRepository.save(profile65);
+                memberProfileRepository.save(profile66);
+                memberProfileRepository.save(profile67);
+                memberProfileRepository.save(profile68);
+                memberProfileRepository.save(profile69);
+                memberProfileRepository.save(profile70);
+                memberProfileRepository.save(profile71);
+                memberProfileRepository.save(profile72);
+                memberProfileRepository.save(profile73);
+                memberProfileRepository.save(profile74);
+                memberProfileRepository.save(profile75);
+                memberProfileRepository.save(profile76);
+                memberProfileRepository.save(profile77);
+                memberProfileRepository.save(profile78);
+                memberProfileRepository.save(profile79);
+                memberProfileRepository.save(profile80);
+                memberProfileRepository.save(profile81);
+                memberProfileRepository.save(profile82);
+                memberProfileRepository.save(profile83);
+                memberProfileRepository.save(profile84);
+                memberProfileRepository.save(profile85);
+                memberProfileRepository.save(profile86);
+                memberProfileRepository.save(profile87);
+                memberProfileRepository.save(profile88);
+                memberProfileRepository.save(profile89);
+                 memberProfileRepository.save(profile90);
+                memberRepository.flush();
                 // 2. Member 생성 (MemberProfile 포함)
                 Member member1 = Member.builder()
                         .name("윤빈")
@@ -2100,7 +2190,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .socialId(98L)
                                 .status(MemberStatus.ACTIVE)
                                 .role(MemberRole.MEMBER)
-                                .memberProfile(profile58)
+                                //.memberProfile(profile58)
                                 .isVerified(true)
                                 .build()
                 );
@@ -2578,103 +2668,11 @@ public class DataInitializer implements CommandLineRunner {
                                 .socialId(125L)
                                 .status(MemberStatus.ACTIVE)
                                 .role(MemberRole.MEMBER)
-                                .memberProfile(profile90)
+                                //.memberProfile(profile90)
                                 .isVerified(true)
                                 .build()
                 );
 
-
-
-                memberProfileRepository.save(profile1);
-                memberProfileRepository.save(profile2);
-                memberProfileRepository.save(profile3);
-                memberProfileRepository.save(profile4);
-                memberProfileRepository.save(profile5);
-                memberProfileRepository.save(profile6);
-                memberProfileRepository.save(profile7);
-                memberProfileRepository.save(profile8);
-                memberProfileRepository.save(profile9);
-                memberProfileRepository.save(profile10);
-                memberProfileRepository.save(profile11);
-                memberProfileRepository.save(profile12);
-                memberProfileRepository.save(profile13);
-                memberProfileRepository.save(profile14);
-                memberProfileRepository.save(profile15);
-                memberProfileRepository.save(profile16);
-                memberProfileRepository.save(profile17);
-                memberProfileRepository.save(profile18);
-                memberProfileRepository.save(profile19);
-                memberProfileRepository.save(profile20);
-                memberProfileRepository.save(profile21);
-                memberProfileRepository.save(profile22);
-                memberProfileRepository.save(profile23);
-                memberProfileRepository.save(profile24);
-                memberProfileRepository.save(profile25);
-                memberProfileRepository.save(profile26);
-                memberProfileRepository.save(profile27);
-                memberProfileRepository.save(profile28);
-                memberProfileRepository.save(profile29);
-                memberProfileRepository.save(profile30);
-                memberProfileRepository.save(profile31);
-                memberProfileRepository.save(profile32);
-                memberProfileRepository.save(profile33);
-                memberProfileRepository.save(profile34);
-                memberProfileRepository.save(profile35);
-                memberProfileRepository.save(profile36);
-                memberProfileRepository.save(profile37);
-                memberProfileRepository.save(profile38);
-                memberProfileRepository.save(profile39);
-                memberProfileRepository.save(profile40);
-                memberProfileRepository.save(profile41);
-                memberProfileRepository.save(profile42);
-                memberProfileRepository.save(profile43);
-                memberProfileRepository.save(profile44);
-                memberProfileRepository.save(profile45);
-                memberProfileRepository.save(profile46);
-                memberProfileRepository.save(profile47);
-                memberProfileRepository.save(profile48);
-                memberProfileRepository.save(profile49);
-                memberProfileRepository.save(profile50);
-                memberProfileRepository.save(profile51);
-                memberProfileRepository.save(profile52);
-                memberProfileRepository.save(profile53);
-                memberProfileRepository.save(profile54);
-                memberProfileRepository.save(profile55);
-                memberProfileRepository.save(profile56);
-                memberProfileRepository.save(profile57);
-                memberProfileRepository.save(profile58);
-                memberProfileRepository.save(profile59);
-                memberProfileRepository.save(profile60);
-                memberProfileRepository.save(profile61);
-                memberProfileRepository.save(profile62);
-                memberProfileRepository.save(profile63);
-                memberProfileRepository.save(profile64);
-                memberProfileRepository.save(profile65);
-                memberProfileRepository.save(profile66);
-                memberProfileRepository.save(profile67);
-                memberProfileRepository.save(profile68);
-                memberProfileRepository.save(profile69);
-                memberProfileRepository.save(profile70);
-                memberProfileRepository.save(profile71);
-                memberProfileRepository.save(profile72);
-                memberProfileRepository.save(profile73);
-                memberProfileRepository.save(profile74);
-                memberProfileRepository.save(profile75);
-                memberProfileRepository.save(profile76);
-                memberProfileRepository.save(profile77);
-                memberProfileRepository.save(profile78);
-                memberProfileRepository.save(profile79);
-                memberProfileRepository.save(profile80);
-                memberProfileRepository.save(profile81);
-                memberProfileRepository.save(profile82);
-                memberProfileRepository.save(profile83);
-                memberProfileRepository.save(profile84);
-                memberProfileRepository.save(profile85);
-                memberProfileRepository.save(profile86);
-                memberProfileRepository.save(profile87);
-                memberProfileRepository.save(profile88);
-                memberProfileRepository.save(profile89);
-                memberProfileRepository.save(profile90);
                 memberRepository.save(member1);
                 memberRepository.save(member2);
                 memberRepository.save(member3);
@@ -2765,6 +2763,10 @@ public class DataInitializer implements CommandLineRunner {
                 memberRepository.save(member88);
                 memberRepository.save(member89);
                 memberRepository.save(member90);
+
+                memberRepository.flush();
+
+
                 // Profile 1
                 MemberSecondProfile secondProfile11 = memberSecondProfileRepository.save(
                         MemberSecondProfile.builder()
