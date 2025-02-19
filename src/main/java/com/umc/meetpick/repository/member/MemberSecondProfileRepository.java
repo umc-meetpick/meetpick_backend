@@ -29,11 +29,9 @@ public interface MemberSecondProfileRepository extends JpaRepository<MemberSecon
             "ORDER BY m.createdAt DESC")
     Page<MemberSecondProfile> findMemberSecondProfileByMemberId(@Param("memberId") Long memberId, Pageable pageable);
 
-
     Optional<MemberSecondProfile> findFirstBy();
 
     Optional<MemberSecondProfile> findByMemberIdAndMateType(Long memberId, MateType mateType);
-
 
     Page<MemberSecondProfile> findAllByMateType(MateType mateType, Pageable pageable); //페이징
     }

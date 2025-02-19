@@ -10,6 +10,8 @@ import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
 import com.umc.meetpick.repository.member.MemberProfileRepository;
+import com.umc.meetpick.service.matching.processor.MatchingDataProcessorFactory;
+import com.umc.meetpick.service.matching.processor.MemberDataProcessorFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -27,6 +29,8 @@ public class DataInitializer implements CommandLineRunner {
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberMappingRepository memberMappingRepository;
     private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
+    private final MatchingDataProcessorFactory matchingDataProcessorFactory;
+    private final MemberDataProcessorFactory memberDataProcessorFactory;
 
     /*@PostConstruct
     public void init() {
@@ -1393,7 +1397,7 @@ public class DataInitializer implements CommandLineRunner {
                         .name("김지원")
                         .gender(Gender.FEMALE)
                         .birthday(sdf.parse("2002-9-21"))
-                        .university(University.SUNGKYUNKWAN_UNIVERSITY)
+                        .university(University.SOONGSHIL_UNIVERSITY)
                         .socialType(SocialType.KAKAO)
                         .socialId(15L)
                         .status(MemberStatus.ACTIVE)
@@ -1406,7 +1410,7 @@ public class DataInitializer implements CommandLineRunner {
                         .name("한서연")
                         .gender(Gender.FEMALE)
                         .birthday(sdf.parse("2001-7-14"))
-                        .university(University.YONSEI_UNIVERSITY)
+                        .university(University.SOONGSHIL_UNIVERSITY)
                         .socialType(SocialType.KAKAO)
                         .socialId(20L)
                         .status(MemberStatus.ACTIVE)
@@ -1419,7 +1423,7 @@ public class DataInitializer implements CommandLineRunner {
                         .name("박지수")
                         .gender(Gender.FEMALE)
                         .birthday(sdf.parse("2002-10-11"))
-                        .university(University.HONGIK_UNIVERSITY)
+                        .university(University.SOONGSHIL_UNIVERSITY)
                         .socialType(SocialType.KAKAO)
                         .socialId(21L)
                         .status(MemberStatus.ACTIVE)
@@ -1432,7 +1436,7 @@ public class DataInitializer implements CommandLineRunner {
                         .name("이민수")
                         .gender(Gender.MALE)
                         .birthday(sdf.parse("2001-6-25"))
-                        .university(University.SOGANG_UNIVERSITY)
+                        .university(University.SOONGSHIL_UNIVERSITY)
                         .socialType(SocialType.KAKAO)
                         .socialId(22L)
                         .status(MemberStatus.ACTIVE)
@@ -1445,7 +1449,7 @@ public class DataInitializer implements CommandLineRunner {
                         .name("최도현")
                         .gender(Gender.MALE)
                         .birthday(sdf.parse("1999-4-10"))
-                        .university(University.KOREA_UNIVERSITY)
+                        .university(University.SOONGSHIL_UNIVERSITY)
                         .socialType(SocialType.KAKAO)
                         .socialId(36L)
                         .status(MemberStatus.ACTIVE)
@@ -1458,7 +1462,7 @@ public class DataInitializer implements CommandLineRunner {
                         .name("김윤아")
                         .gender(Gender.FEMALE)
                         .birthday(sdf.parse("2001-9-10"))
-                        .university(University.YONSEI_UNIVERSITY)
+                        .university(University.SOONGSHIL_UNIVERSITY)
                         .socialType(SocialType.KAKAO)
                         .socialId(40L)
                         .status(MemberStatus.ACTIVE)
@@ -1471,7 +1475,7 @@ public class DataInitializer implements CommandLineRunner {
                         .name("박지훈")
                         .gender(Gender.MALE)
                         .birthday(sdf.parse("2001-2-20"))
-                        .university(University.YONSEI_UNIVERSITY)
+                        .university(University.SOONGSHIL_UNIVERSITY)
                         .socialType(SocialType.KAKAO)
                         .socialId(37L)
                         .status(MemberStatus.ACTIVE)
@@ -1484,7 +1488,7 @@ public class DataInitializer implements CommandLineRunner {
                         .name("김수진")
                         .gender(Gender.FEMALE)
                         .birthday(sdf.parse("2000-12-5"))
-                        .university(University.SEOUL_NATIONAL_UNIVERSITY)
+                        .university(University.SOONGSHIL_UNIVERSITY)
                         .socialType(SocialType.KAKAO)
                         .socialId(38L)
                         .status(MemberStatus.ACTIVE)
@@ -1497,7 +1501,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("김도경")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2001-5-10"))
-                                .university(University.HANYANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(50L)
                                 .status(MemberStatus.ACTIVE)
@@ -1512,7 +1516,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("박은지")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2002-3-20"))
-                                .university(University.EWHA_WOMANS_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(51L)
                                 .status(MemberStatus.ACTIVE)
@@ -1527,7 +1531,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("이하영")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2000-7-15"))
-                                .university(University.KOREA_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(52L)
                                 .status(MemberStatus.ACTIVE)
@@ -1542,7 +1546,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("최석민")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("1999-11-22"))
-                                .university(University.SEOUL_NATIONAL_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(53L)
                                 .status(MemberStatus.ACTIVE)
@@ -1557,7 +1561,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("김혜린")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2003-2-28"))
-                                .university(University.SUNGKYUNKWAN_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(54L)
                                 .status(MemberStatus.ACTIVE)
@@ -1572,7 +1576,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("최진우")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-6-30"))
-                                .university(University.SOGANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(55L)
                                 .status(MemberStatus.ACTIVE)
@@ -1587,7 +1591,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("장다혜")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2002-9-12"))
-                                .university(University.YONSEI_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(56L)
                                 .status(MemberStatus.ACTIVE)
@@ -1602,7 +1606,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("이민혁")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2000-2-18"))
-                                .university(University.HANKUK_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(57L)
                                 .status(MemberStatus.ACTIVE)
@@ -1617,7 +1621,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("강서진")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2001-10-5"))
-                                .university(University.CHUNGANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(58L)
                                 .status(MemberStatus.ACTIVE)
@@ -1632,7 +1636,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("이지훈")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("1999-4-22"))
-                                .university(University.DONGGUK_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(59L)
                                 .status(MemberStatus.ACTIVE)
@@ -1647,7 +1651,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("손채영")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2001-8-17"))
-                                .university(University.SEOUL_NATIONAL_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(60L)
                                 .status(MemberStatus.ACTIVE)
@@ -1661,7 +1665,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("김정민")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-3-15"))
-                                .university(University.KOREA_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(61L)
                                 .status(MemberStatus.ACTIVE)
@@ -1676,7 +1680,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("박예린")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2002-11-9"))
-                                .university(University.SOGANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(62L)
                                 .status(MemberStatus.ACTIVE)
@@ -1690,7 +1694,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("강준영")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-5-14"))
-                                .university(University.YONSEI_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(61L)
                                 .status(MemberStatus.ACTIVE)
@@ -1705,7 +1709,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("김지수")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2002-8-20"))
-                                .university(University.SEOUL_NATIONAL_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(62L)
                                 .status(MemberStatus.ACTIVE)
@@ -1720,7 +1724,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("박윤호")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2000-11-10"))
-                                .university(University.KOREA_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(63L)
                                 .status(MemberStatus.ACTIVE)
@@ -1735,7 +1739,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("이채린")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2001-9-25"))
-                                .university(University.HANYANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(64L)
                                 .status(MemberStatus.ACTIVE)
@@ -1750,7 +1754,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("정형준")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-6-30"))
-                                .university(University.SUNGKYUNKWAN_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(65L)
                                 .status(MemberStatus.ACTIVE)
@@ -1765,7 +1769,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("문다영")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2002-4-11"))
-                                .university(University.CHUNGANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(66L)
                                 .status(MemberStatus.ACTIVE)
@@ -1780,7 +1784,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("서지한")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2000-7-18"))
-                                .university(University.DONGGUK_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(67L)
                                 .status(MemberStatus.ACTIVE)
@@ -1795,7 +1799,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("안유빈")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2003-1-22"))
-                                .university(University.EWHA_WOMANS_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(68L)
                                 .status(MemberStatus.ACTIVE)
@@ -1810,7 +1814,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("조민기")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-3-29"))
-                                .university(University.KYUNGHEE_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(69L)
                                 .status(MemberStatus.ACTIVE)
@@ -1825,7 +1829,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("한세영")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2002-12-7"))
-                                .university(University.SEOUL_NATIONAL_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(70L)
                                 .status(MemberStatus.ACTIVE)
@@ -1840,7 +1844,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("이도윤")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2002-5-10"))
-                                .university(University.KOREA_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(71L)
                                 .status(MemberStatus.ACTIVE)
@@ -1855,7 +1859,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("김하늘")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2001-9-15"))
-                                .university(University.YONSEI_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(72L)
                                 .status(MemberStatus.ACTIVE)
@@ -1870,7 +1874,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("박태희")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2000-3-8"))
-                                .university(University.SEOUL_NATIONAL_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(73L)
                                 .status(MemberStatus.ACTIVE)
@@ -1885,7 +1889,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("조주연")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2002-11-3"))
-                                .university(University.EWHA_WOMANS_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(74L)
                                 .status(MemberStatus.ACTIVE)
@@ -1900,7 +1904,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("한재민")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-7-22"))
-                                .university(University.HANKUK_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(75L)
                                 .status(MemberStatus.ACTIVE)
@@ -1915,7 +1919,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("오유나")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2003-2-14"))
-                                .university(University.CHUNGANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(76L)
                                 .status(MemberStatus.ACTIVE)
@@ -1930,7 +1934,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("정수혁")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2000-6-25"))
-                                .university(University.DONGGUK_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(77L)
                                 .status(MemberStatus.ACTIVE)
@@ -1945,7 +1949,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("신도진")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-4-12"))
-                                .university(University.KOREA_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(78L)
                                 .status(MemberStatus.ACTIVE)
@@ -1960,7 +1964,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("배예진")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2002-8-19"))
-                                .university(University.SUNGKYUNKWAN_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(79L)
                                 .status(MemberStatus.ACTIVE)
@@ -1975,7 +1979,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("강승준")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-12-30"))
-                                .university(University.HANKUK_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(80L)
                                 .status(MemberStatus.ACTIVE)
@@ -1990,7 +1994,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("김성민")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2002-5-13"))
-                                .university(University.KOREA_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(91L)
                                 .status(MemberStatus.ACTIVE)
@@ -2005,7 +2009,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("박수진")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2001-8-24"))
-                                .university(University.YONSEI_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(92L)
                                 .status(MemberStatus.ACTIVE)
@@ -2020,7 +2024,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("최정훈")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2000-10-30"))
-                                .university(University.SEOUL_NATIONAL_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(93L)
                                 .status(MemberStatus.ACTIVE)
@@ -2035,7 +2039,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("이다연")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2003-2-18"))
-                                .university(University.CHUNGANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(94L)
                                 .status(MemberStatus.ACTIVE)
@@ -2050,7 +2054,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("정현우")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("1999-11-5"))
-                                .university(University.CITY_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(95L)
                                 .status(MemberStatus.ACTIVE)
@@ -2065,7 +2069,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("배소희")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2001-6-20"))
-                                .university(University.EWHA_WOMANS_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(96L)
                                 .status(MemberStatus.ACTIVE)
@@ -2080,7 +2084,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("윤태윤")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2002-4-12"))
-                                .university(University.KOREA_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(97L)
                                 .status(MemberStatus.ACTIVE)
@@ -2095,7 +2099,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("장지원")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2003-9-3"))
-                                .university(University.HANKUK_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(98L)
                                 .status(MemberStatus.ACTIVE)
@@ -2110,7 +2114,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("김은채")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2000-7-8"))
-                                .university(University.DONGGUK_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(99L)
                                 .status(MemberStatus.ACTIVE)
@@ -2125,7 +2129,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("한도현")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("1999-12-27"))
-                                .university(University.SEOUL_NATIONAL_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(100L)
                                 .status(MemberStatus.ACTIVE)
@@ -2139,7 +2143,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("이민재")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-7-10"))
-                                .university(University.SEOUL_NATIONAL_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(101L)
                                 .status(MemberStatus.ACTIVE)
@@ -2154,7 +2158,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("박지윤")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2002-3-25"))
-                                .university(University.KOREA_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(102L)
                                 .status(MemberStatus.ACTIVE)
@@ -2169,7 +2173,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("김태우")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2002-12-18"))
-                                .university(University.YONSEI_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(103L)
                                 .status(MemberStatus.ACTIVE)
@@ -2184,7 +2188,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("정수빈")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2000-8-8"))
-                                .university(University.SUNGKYUNKWAN_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(104L)
                                 .status(MemberStatus.ACTIVE)
@@ -2199,7 +2203,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("최재원")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-11-21"))
-                                .university(University.HANYANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(105L)
                                 .status(MemberStatus.ACTIVE)
@@ -2229,7 +2233,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("류시훈")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2000-5-30"))
-                                .university(University.YONSEI_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(107L)
                                 .status(MemberStatus.ACTIVE)
@@ -2244,7 +2248,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("강다은")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2001-2-13"))
-                                .university(University.CHUNGGYE_WOMANS_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(108L)
                                 .status(MemberStatus.ACTIVE)
@@ -2259,7 +2263,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("송민준")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2002-6-22"))
-                                .university(University.KYUNGHEE_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(109L)
                                 .status(MemberStatus.ACTIVE)
@@ -2274,7 +2278,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("김나영")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("1999-1-10"))
-                                .university(University.CHUNGANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(110L)
                                 .status(MemberStatus.ACTIVE)
@@ -2289,7 +2293,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("이준석")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2000-5-15"))
-                                .university(University.DONGGUK_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(111L)
                                 .status(MemberStatus.ACTIVE)
@@ -2304,7 +2308,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("배수진")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("1998-9-7"))
-                                .university(University.HONGIK_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(112L)
                                 .status(MemberStatus.ACTIVE)
@@ -2319,7 +2323,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("한서준")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-2-28"))
-                                .university(University.KUNKUK_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(113L)
                                 .status(MemberStatus.ACTIVE)
@@ -2334,7 +2338,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("조유리")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2002-11-3"))
-                                .university(University.SOGANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(114L)
                                 .status(MemberStatus.ACTIVE)
@@ -2349,7 +2353,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("서지훈")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2003-4-20"))
-                                .university(University.KYUNGIN_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(115L)
                                 .status(MemberStatus.ACTIVE)
@@ -2363,7 +2367,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("이윤서")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2002-3-15"))
-                                .university(University.KOREA_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(111L)
                                 .status(MemberStatus.ACTIVE)
@@ -2378,7 +2382,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("함성진")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-9-28"))
-                                .university(University.YONSEI_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(112L)
                                 .status(MemberStatus.ACTIVE)
@@ -2393,7 +2397,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("성다은")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2003-6-7"))
-                                .university(University.SUNGKYUNKWAN_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.GOOGLE)
                                 .socialId(113L)
                                 .status(MemberStatus.ACTIVE)
@@ -2408,7 +2412,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("김지훈")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2000-11-3"))
-                                .university(University.HANYANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.FACEBOOK)
                                 .socialId(114L)
                                 .status(MemberStatus.ACTIVE)
@@ -2423,7 +2427,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("최서현")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2002-8-21"))
-                                .university(University.SEOUL_NATIONAL_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(115L)
                                 .status(MemberStatus.ACTIVE)
@@ -2438,7 +2442,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("원동현")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-5-12"))
-                                .university(University.HANYANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(116L)
                                 .status(MemberStatus.ACTIVE)
@@ -2453,7 +2457,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("이은지")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2003-4-9"))
-                                .university(University.SAMYOOK_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.GOOGLE)
                                 .socialId(117L)
                                 .status(MemberStatus.ACTIVE)
@@ -2468,7 +2472,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("김태민")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2002-7-14"))
-                                .university(University.SOGANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.FACEBOOK)
                                 .socialId(118L)
                                 .status(MemberStatus.ACTIVE)
@@ -2483,7 +2487,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("이소윤")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2001-1-5"))
-                                .university(University.CHUNGANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(119L)
                                 .status(MemberStatus.ACTIVE)
@@ -2513,7 +2517,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("김하연")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2000-11-18"))
-                                .university(University.KOREA_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.GOOGLE)
                                 .socialId(121L)
                                 .status(MemberStatus.ACTIVE)
@@ -2528,7 +2532,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("박예린")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2002-2-26"))
-                                .university(University.YONSEI_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.FACEBOOK)
                                 .socialId(122L)
                                 .status(MemberStatus.ACTIVE)
@@ -2543,7 +2547,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("김진우")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2001-6-1"))
-                                .university(University.SUNGKYUNKWAN_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.KAKAO)
                                 .socialId(123L)
                                 .status(MemberStatus.ACTIVE)
@@ -2558,7 +2562,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("신승호")
                                 .gender(Gender.MALE)
                                 .birthday(sdf.parse("2003-9-24"))
-                                .university(University.HANYANG_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.GOOGLE)
                                 .socialId(124L)
                                 .status(MemberStatus.ACTIVE)
@@ -2573,7 +2577,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .name("이나연")
                                 .gender(Gender.FEMALE)
                                 .birthday(sdf.parse("2000-7-8"))
-                                .university(University.SEOUL_NATIONAL_UNIVERSITY)
+                                .university(University.SOONGSHIL_UNIVERSITY)
                                 .socialType(SocialType.GOOGLE)
                                 .socialId(125L)
                                 .status(MemberStatus.ACTIVE)
@@ -5118,6 +5122,171 @@ public class DataInitializer implements CommandLineRunner {
                         .status(true)
                         .isAccepted(true)
                         .build());
+
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile11, secondProfile11.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile11, secondProfile11.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile12, secondProfile12.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile12, secondProfile12.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile13, secondProfile13.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile13, secondProfile13.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile2, secondProfile2.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile2, secondProfile2.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile3, secondProfile3.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile3, secondProfile3.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile4, secondProfile4.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile4, secondProfile4.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile5, secondProfile5.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile5, secondProfile5.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile6, secondProfile6.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile6, secondProfile6.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile7, secondProfile7.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile7, secondProfile7.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile8, secondProfile8.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile8, secondProfile8.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile9, secondProfile9.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile9, secondProfile9.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile10, secondProfile10.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile10, secondProfile10.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile21, secondProfile21.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile21, secondProfile21.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile22, secondProfile22.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile22, secondProfile22.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile23, secondProfile23.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile23, secondProfile23.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile24, secondProfile24.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile24, secondProfile24.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile25, secondProfile25.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile25, secondProfile25.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile26, secondProfile26.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile26, secondProfile26.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile27, secondProfile27.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile27, secondProfile27.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile28, secondProfile28.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile28, secondProfile28.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile29, secondProfile29.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile29, secondProfile29.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile30, secondProfile30.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile30, secondProfile30.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile31, secondProfile31.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile31, secondProfile31.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile32, secondProfile32.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile32, secondProfile32.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile33, secondProfile33.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile33, secondProfile33.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile34, secondProfile34.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile34, secondProfile34.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile35, secondProfile35.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile35, secondProfile35.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile36, secondProfile36.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile36, secondProfile36.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile37, secondProfile37.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile37, secondProfile37.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile38, secondProfile38.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile38, secondProfile38.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile39, secondProfile39.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile39, secondProfile39.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile40, secondProfile40.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile40, secondProfile40.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile41, secondProfile41.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile41, secondProfile41.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile42, secondProfile42.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile42, secondProfile42.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile43, secondProfile43.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile43, secondProfile43.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile44, secondProfile44.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile44, secondProfile44.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile45, secondProfile45.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile45, secondProfile45.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile46, secondProfile46.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile46, secondProfile46.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile47, secondProfile47.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile47, secondProfile47.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile48, secondProfile48.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile48, secondProfile48.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile49, secondProfile49.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile49, secondProfile49.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile50, secondProfile50.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile50, secondProfile50.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile51, secondProfile51.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile51, secondProfile51.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile52, secondProfile52.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile52, secondProfile52.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile53, secondProfile53.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile53, secondProfile53.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile54, secondProfile54.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile54, secondProfile54.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile55, secondProfile55.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile55, secondProfile55.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile56, secondProfile56.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile56, secondProfile56.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile57, secondProfile57.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile57, secondProfile57.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile58, secondProfile58.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile58, secondProfile58.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile59, secondProfile59.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile59, secondProfile59.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile60, secondProfile60.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile60, secondProfile60.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile61, secondProfile61.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile61, secondProfile61.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile62, secondProfile62.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile62, secondProfile62.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile63, secondProfile63.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile63, secondProfile63.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile64, secondProfile64.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile64, secondProfile64.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile65, secondProfile65.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile65, secondProfile65.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile66, secondProfile66.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile66, secondProfile66.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile67, secondProfile67.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile67, secondProfile67.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile68, secondProfile68.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile68, secondProfile68.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile69, secondProfile69.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile69, secondProfile69.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile70, secondProfile70.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile70, secondProfile70.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile71, secondProfile71.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile71, secondProfile71.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile72, secondProfile72.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile72, secondProfile72.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile73, secondProfile73.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile73, secondProfile73.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile74, secondProfile74.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile74, secondProfile74.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile75, secondProfile75.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile75, secondProfile75.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile76, secondProfile76.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile76, secondProfile76.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile77, secondProfile77.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile77, secondProfile77.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile78, secondProfile78.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile78, secondProfile78.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile79, secondProfile79.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile79, secondProfile79.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile80, secondProfile80.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile80, secondProfile80.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile81, secondProfile81.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile81, secondProfile81.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile82, secondProfile82.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile82, secondProfile82.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile83, secondProfile83.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile83, secondProfile83.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile84, secondProfile84.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile84, secondProfile84.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile85, secondProfile85.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile85, secondProfile85.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile86, secondProfile86.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile86, secondProfile86.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile87, secondProfile87.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile87, secondProfile87.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile88, secondProfile88.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile88, secondProfile88.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile89, secondProfile89.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile89, secondProfile89.getMateType());
+                matchingDataProcessorFactory.getMatchingDataProcessor(secondProfile90, secondProfile90.getMateType());
+                memberDataProcessorFactory.getMemberDataProcessor(secondProfile90, secondProfile90.getMateType());
 
 
 
