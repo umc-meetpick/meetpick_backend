@@ -24,6 +24,7 @@ import com.umc.meetpick.service.request.factory.LikeQueryStrategyFactory;
 import com.umc.meetpick.service.request.strategy.LikeQueryStrategy;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,7 @@ import static com.umc.meetpick.enums.StudentNumber.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RequestServiceImpl implements RequestService {
     private final NewRequestRepository newRequestRepository;
     private final MemberRepository memberRepository;
@@ -179,19 +181,22 @@ public class RequestServiceImpl implements RequestService {
         memberSecondProfileTimesRepository.saveAll(timesList);
 
         // List<String>으로 받은 세부전공을 엔티티도 변환
-        List<MemberSecondProfileSubMajor> subMajorList = newRequest.getSubMajorName().stream()
-                .map(name -> {
-                    // 프론트에서 받은 subMajorName으로 SubMajor entity 찾기
-                    SubMajor subMajor = subMajorRepository.findByName(name)
-                            .orElseThrow(()-> new EntityNotFoundException("등록 전공 아님"));
+        List<MemberSecondProfileSubMajor> subMajorList = new ArrayList<>();
+        if(newRequest.getSubMajorName() != null) {
+            subMajorList = newRequest.getSubMajorName().stream()
+                    .map(name -> {
+                        // 프론트에서 받은 subMajorName으로 SubMajor entity 찾기
+                        SubMajor subMajor = subMajorRepository.findByName(name)
+                                .orElseThrow(()-> new EntityNotFoundException("등록 전공 아님"));
 
-                    // MemberSecondProfileSubMajor 생성
-                    return MemberSecondProfileSubMajor.builder()
-                            .memberSecondProfile(savedProfile)
-                            .subMajor(subMajor)
-                            .build();
-                })
-                        .toList();
+                        // MemberSecondProfileSubMajor 생성
+                        return MemberSecondProfileSubMajor.builder()
+                                .memberSecondProfile(savedProfile)
+                                .subMajor(subMajor)
+                                .build();
+                    })
+                    .toList();
+        }
 
         memberSecondProfileSubMajorRepository.saveAll(subMajorList);
 
@@ -233,39 +238,39 @@ public class RequestServiceImpl implements RequestService {
             throw new IllegalArgumentException("본인 매칭에 신청 불가");
         }
 
-        // 조건에 맞는지 판단 - 성별
-        if(!(request.getGender() == null) && joinMember.getGender() != request.getGender()){
-            throw new GeneralHandler(ErrorCode.GENDER_NOT_SATISFIED);
-        }
-
-        // 조건에 맞는지 판단 - 나이 범위
-        if(!(request.getMinAge() == null)){
-            if (request.getMinAge() > joinMember.getAge() || request.getMaxAge() < joinMember.getAge()) {
-                throw new GeneralHandler(ErrorCode.GENDER_NOT_SATISFIED);
-            }
-        }
-
-        // 조건에 맞는지 판단 - 학번
-        if(request.getStudentNumber() == PEER){
-            if (!(joinMemberProfile.getStudentNumber() == requestOwnerMemberProfile.getStudentNumber())){
-                throw new GeneralHandler(ErrorCode.STUDENT_NUMBER_NOT_SATISFIED);
-            }
-        } else if(request.getStudentNumber() == SENIOR ){
-            if (!(joinMemberProfile.getStudentNumber() < requestOwnerMemberProfile.getStudentNumber())){
-                throw new GeneralHandler(ErrorCode.STUDENT_NUMBER_NOT_SATISFIED);
-            }
-        } else if(request.getStudentNumber() == JUNIOR){
-            if (!(joinMemberProfile.getStudentNumber() > requestOwnerMemberProfile.getStudentNumber())){
-                throw new GeneralHandler(ErrorCode.STUDENT_NUMBER_NOT_SATISFIED);
-            }
-        }
-
-        // 취미 동일 여부 - 하나라도 같으면 통과
-        if(request.getIsHobbySame()){
-            if(!(Collections.disjoint(joinMemberProfile.getHobbies(),requestOwnerMemberProfile.getHobbies()))){
-                throw new IllegalArgumentException("취미 조건 안 맞음");
-            }
-        }
+//        // 조건에 맞는지 판단 - 성별
+//        if(!(request.getGender() == null) && joinMember.getGender() != request.getGender()){
+//            throw new GeneralHandler(ErrorCode.GENDER_NOT_SATISFIED);
+//        }
+//
+//        // 조건에 맞는지 판단 - 나이 범위
+//        if(!(request.getMinAge() == null)){
+//            if (request.getMinAge() > joinMember.getAge() || request.getMaxAge() < joinMember.getAge()) {
+//                throw new GeneralHandler(ErrorCode.GENDER_NOT_SATISFIED);
+//            }
+//        }
+//
+//        // 조건에 맞는지 판단 - 학번
+//        if(request.getStudentNumber() == PEER){
+//            if (!(joinMemberProfile.getStudentNumber() == requestOwnerMemberProfile.getStudentNumber())){
+//                throw new GeneralHandler(ErrorCode.STUDENT_NUMBER_NOT_SATISFIED);
+//            }
+//        } else if(request.getStudentNumber() == SENIOR ){
+//            if (!(joinMemberProfile.getStudentNumber() < requestOwnerMemberProfile.getStudentNumber())){
+//                throw new GeneralHandler(ErrorCode.STUDENT_NUMBER_NOT_SATISFIED);
+//            }
+//        } else if(request.getStudentNumber() == JUNIOR){
+//            if (!(joinMemberProfile.getStudentNumber() > requestOwnerMemberProfile.getStudentNumber())){
+//                throw new GeneralHandler(ErrorCode.STUDENT_NUMBER_NOT_SATISFIED);
+//            }
+//        }
+//
+//        // 취미 동일 여부 - 하나라도 같으면 통과
+//        if(request.getIsHobbySame()){
+//            if(!(Collections.disjoint(joinMemberProfile.getHobbies(),requestOwnerMemberProfile.getHobbies()))){
+//                throw new IllegalArgumentException("취미 조건 안 맞음");
+//            }
+//        }
 
 //        // 성격 판단 - 입력받은 mbti 가져와서 판단
 //        String joinMemberMBTI = joinMemberProfile.getMBTI().name();
@@ -320,8 +325,20 @@ public class RequestServiceImpl implements RequestService {
         if (!request.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("삭제 권한 없음");
         }
-        memberMappingRepository.deleteByMemberSecondProfile(request);
+        // 자식 엔티티 먼저 삭제
+        log.info("여기까진 됨 0");
+
+        memberSecondProfileTimesRepository.deleteAllByMemberSecondProfile(request);
+
+        log.info("여기까진 됨 1");
+
+        memberMappingRepository.deleteAllByMemberSecondProfile(request);
+
+        log.info("여기까진 됨 2");
+
         memberSecondProfileRepository.delete(request);
+
+        log.info("여기까진 됨 3");
     }
 
     // 매칭에 좋아요 등록
