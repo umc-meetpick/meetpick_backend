@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +28,12 @@ public class MemberSecondProfileTimes {
     @Column(nullable = false)
     private Week week;
 
-    @ElementCollection
+    @OnDelete(action = OnDeleteAction.CASCADE) // Hibernate 전용 애너테이션
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "member_second_profile_times_values",
+            joinColumns = @JoinColumn(name = "member_second_profile_times_id", nullable = false)
+    )
     @Builder.Default
     private Set<Integer> times = new HashSet<>();
 

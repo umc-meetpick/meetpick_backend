@@ -13,4 +13,5 @@ public interface MemberSecondProfileTimesRepository extends JpaRepository<Member
 
     List<MemberSecondProfileTimes> findByMemberSecondProfile(@Param("memberSecondProfile") MemberSecondProfile memberSecondProfile);
 
+    void deleteAllByMemberSecondProfile(MemberSecondProfile memberSecondProfile);
 }

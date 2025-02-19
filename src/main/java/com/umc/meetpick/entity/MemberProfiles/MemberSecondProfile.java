@@ -12,6 +12,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Null;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -67,7 +69,7 @@ public class MemberSecondProfile extends BaseTimeEntity {
     private Boolean isHobbySame;
 
     @Builder.Default
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberSecondProfileTimes> memberSecondProfileTimes = new ArrayList<>();
 
     private int maxPeople;
@@ -87,6 +89,7 @@ public class MemberSecondProfile extends BaseTimeEntity {
 
     // 음식 관련
 
+    @OnDelete(action = OnDeleteAction.CASCADE) // Hibernate 전용 애너테이션
     @ElementCollection
     @Column(nullable = true)
     @Builder.Default
