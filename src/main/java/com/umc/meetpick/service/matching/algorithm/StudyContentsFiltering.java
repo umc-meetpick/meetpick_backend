@@ -1,15 +1,16 @@
 package com.umc.meetpick.service.matching.algorithm;
 
+
 import com.umc.meetpick.common.exception.handler.GeneralHandler;
 import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.RecommendDto;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.matchingdata.MemberDistance;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
-import com.umc.meetpick.entity.matchingdata.food.MemberData;
-import com.umc.meetpick.entity.matchingdata.food.MemberRequestData;
-import com.umc.meetpick.repository.food.MemberDataRepository;
-import com.umc.meetpick.repository.food.MemberRequestDataRepository;
+import com.umc.meetpick.entity.matchingdata.study.MemberDataStudy;
+import com.umc.meetpick.entity.matchingdata.study.MemberRequestDataStudy;
+import com.umc.meetpick.repository.study.StudyMemberDataRepository;
+import com.umc.meetpick.repository.study.StudyMemberRequestDataRepository;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.service.matching.factory.MatchingDtoFactory;
 import lombok.RequiredArgsConstructor;
@@ -22,48 +23,45 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class ContentsFiltering implements MatchingAlgorithm {
+public class StudyContentsFiltering implements MatchingAlgorithm<RecommendDto.StudyRecommendPageDto> {
 
-    private final MemberDataRepository memberDataRepository;
-    private final MemberRequestDataRepository memberRequestDataRepository;
+    private final StudyMemberDataRepository studyMemberDataRepository;
+    private final StudyMemberRequestDataRepository studyMemberRequestDataRepository;
     private final MemberMappingRepository memberMappingRepository;
 
     @Override
-    public RecommendDto.FoodRecommendPageDto recommend(Member member) {
-
-        MemberRequestData memberRequestData = memberRequestDataRepository.findByMember(member)
+    public RecommendDto.StudyRecommendPageDto recommend(Member member) {
+        MemberRequestDataStudy memberRequestData = studyMemberRequestDataRepository.findByMember(member)
                 .orElseThrow(() -> new GeneralHandler(ErrorCode.MEMBER_DATA_NOT_PRESENT));
 
         // 같은 대학만 추출
-        List<MemberData> memberDataList = memberDataRepository.findAllByUniversity(member.getUniversity());
+        List<MemberDataStudy> memberDataList = studyMemberDataRepository.findAllByUniversity(member.getUniversity());
 
         // 본인과 매칭 완료된 MemberData 제거
         memberDataList = memberDataList.stream()
-                .filter(data -> !data.getMember().equals(member))  // 본인 제거
-                .filter(data -> !isMatchingCompleted(member, data.getMember()))  // 매칭 완료된 경우 제거
+                .filter(data -> !data.getMember().equals(member))
+                .filter(data -> !isMatchingCompleted(member, data.getMember()))
                 .toList();
 
-        // 결과를 저장할 리스트
-        List<MemberDistance> memberDistances = new ArrayList<>();
+        List<MemberDistance<MemberDataStudy>> memberDistances = new ArrayList<>();
 
-        for (MemberData data : memberDataList) {
+        for (MemberDataStudy data : memberDataList) {
             double distance = calculateDistance(memberRequestData, data);
-            memberDistances.add(new MemberDistance(data, distance));
+            memberDistances.add(new MemberDistance<>(data, distance));
         }
 
-        // 거리 순으로 정렬
         memberDistances.sort(Comparator.comparingDouble(MemberDistance::getDistance));
 
-        // 상위 5개 선택
-        List<MemberData> top5MemberData = memberDistances.stream()
+        List<MemberDataStudy> top5MemberData = memberDistances.stream()
                 .limit(5)
-                .map(MemberDistance::getMemberData)  // MemberDistance에서 MemberData 추출
+                .map(MemberDistance::getMemberData) //타입 추론
+                //.map(memberDistance -> (MemberDataStudy) memberDistance.getMemberData())
                 .collect(Collectors.toList());
 
-        return MatchingDtoFactory.memberSecondProfileToFoodRecommendtDto(top5MemberData);
+        return MatchingDtoFactory.memberSecondProfileToStudyRecommendDto(top5MemberData);
     }
 
-    private double calculateDistance(MemberRequestData requestData, MemberData data) {
+    private double calculateDistance(MemberRequestDataStudy requestData, MemberDataStudy data) {
         double sum = 0.0;
         sum += Math.pow(requestData.getGender() - data.getGender(), 2);
         sum += Math.pow(requestData.getAge() - data.getAge(), 2);
@@ -79,17 +77,16 @@ public class ContentsFiltering implements MatchingAlgorithm {
         sum += Math.pow(requestData.getArtsAndPhysical() - data.getArtsAndPhysical(), 2);
         sum += Math.pow(requestData.getAgricultureAndLife() - data.getAgricultureAndLife(), 2);
         sum += Math.pow(requestData.getConvergenceAndSpecialization() - data.getConvergenceAndSpecialization(), 2);
-        sum += Math.pow(requestData.getKOREAN() - data.getKOREAN(), 2);
-        sum += Math.pow(requestData.getWESTERN() - data.getWESTERN(), 2);
-        sum += Math.pow(requestData.getJAPANESE() - data.getJAPANESE(), 2);
-        sum += Math.pow(requestData.getCHINESE() - data.getCHINESE(), 2);
-        sum += Math.pow(requestData.getVIETNAMESE() - data.getVIETNAMESE(), 2);
+        sum += Math.pow(requestData.getMajor() - data.getMajor(), 2);
+        sum += Math.pow(requestData.getNonMajor() - data.getNonMajor(), 2);
+        sum += Math.pow(requestData.getStudy() - data.getStudy(), 2);
+        sum += Math.pow(requestData.getIsOnline() - data.getIsOnline(), 2);
+        sum += Math.pow(requestData.getStudyTimes() - data.getStudyTimes(), 2);
 
         return Math.sqrt(sum);
     }
 
     private boolean isMatchingCompleted(Member member1, Member member2) {
-
         List<MemberSecondProfileMapping> mappings = memberMappingRepository.findAllByMemberSecondProfile_Member(member1);
 
         for (MemberSecondProfileMapping mapping : mappings) {
@@ -100,5 +97,3 @@ public class ContentsFiltering implements MatchingAlgorithm {
         return false;
     }
 }
-
-

@@ -1,12 +1,10 @@
 package com.umc.meetpick.entity.matchingdata.food;
 
 import com.umc.meetpick.entity.BaseTimeEntity;
-import com.umc.meetpick.entity.Major;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.University;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 // 멤버의 정보를 저장함
 @Getter
@@ -15,7 +13,7 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class MemberData extends BaseTimeEntity {
+public class MemberDataFood extends BaseTimeEntity {
 
     // 벡터 계산에 사용되는 데이터
 

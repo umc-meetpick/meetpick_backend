@@ -5,7 +5,6 @@ import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.University;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 // 멤버가 원하는 유저의 정보임
 
@@ -15,7 +14,7 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class MemberRequestData extends BaseTimeEntity {
+public class MemberRequestDataFood extends BaseTimeEntity {
 
     // 벡터 계산에 사용되는 데이터
 

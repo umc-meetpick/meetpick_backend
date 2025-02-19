@@ -3,7 +3,7 @@ package com.umc.meetpick.service.matching.processor.food;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileSubMajor;
-import com.umc.meetpick.entity.matchingdata.food.MemberRequestData;
+import com.umc.meetpick.entity.matchingdata.food.MemberRequestDataFood;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.Gender;
 import com.umc.meetpick.repository.food.MemberRequestDataRepository;
@@ -23,7 +23,7 @@ public class MatchingDataProcessor {
 
         Member member = memberSecondProfile.getMember();
 
-        MemberRequestData memberRequestData = MemberRequestData.builder().build();
+        MemberRequestDataFood memberRequestData = MemberRequestDataFood.builder().build();
         setGender(memberRequestData, memberSecondProfile.getGender());
         setAge(memberRequestData, memberSecondProfile.getMinAge(), memberSecondProfile.getMaxAge());
         setMbti(memberRequestData, memberSecondProfile.getMbti());
@@ -38,7 +38,7 @@ public class MatchingDataProcessor {
 
     }
 
-    private void setGender(MemberRequestData memberRequestData, Gender gender){
+    private void setGender(MemberRequestDataFood memberRequestData, Gender gender){
         switch (gender) {
             case MALE -> memberRequestData.setGender(0.0);
             case FEMALE -> memberRequestData.setGender(3.0);
@@ -46,11 +46,11 @@ public class MatchingDataProcessor {
         };
     }
 
-    private void setAge(MemberRequestData memberRequestData, Integer minAge, Integer maxAge){
+    private void setAge(MemberRequestDataFood memberRequestData, Integer minAge, Integer maxAge){
         memberRequestData.setAge((double) ((maxAge + minAge) / 2));
     }
 
-    private void setMbti(MemberRequestData memberRequestData, String mbti){
+    private void setMbti(MemberRequestDataFood memberRequestData, String mbti){
 
         if(mbti.charAt(0) == 'I'){
             memberRequestData.setIE(0.8);
@@ -69,7 +69,7 @@ public class MatchingDataProcessor {
         }
     }
 
-    private void setMajor(MemberRequestData memberRequestData, List<MemberSecondProfileSubMajor> secondProfileSubMajors){
+    private void setMajor(MemberRequestDataFood memberRequestData, List<MemberSecondProfileSubMajor> secondProfileSubMajors){
         secondProfileSubMajors.forEach(
                 secondProfileSubMajor -> {
                     switch (secondProfileSubMajor.getSubMajor().getMajor().getName()){
@@ -86,7 +86,7 @@ public class MatchingDataProcessor {
         );
     }
 
-    private void setFoodType(MemberRequestData memberRequestData, Set<FoodType> foodType){
+    private void setFoodType(MemberRequestDataFood memberRequestData, Set<FoodType> foodType){
         foodType.forEach(
                 type -> {
                     switch (type) {

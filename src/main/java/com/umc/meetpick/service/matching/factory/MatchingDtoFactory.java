@@ -10,11 +10,12 @@ import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
-import com.umc.meetpick.entity.matchingdata.food.MemberData;
+import com.umc.meetpick.entity.matchingdata.exercise.MemberDataExercise;
+import com.umc.meetpick.entity.matchingdata.food.MemberDataFood;
+import com.umc.meetpick.entity.matchingdata.study.MemberDataStudy;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.MateType;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -91,7 +92,7 @@ public class MatchingDtoFactory {
                 .build();
     }
 
-    public static RecommendDto.FoodRecommendPageDto memberSecondProfileToFoodRecommendtDto(List<MemberData> memberList) {
+    public static RecommendDto.FoodRecommendPageDto memberSecondProfileToFoodRecommendtDto(List<MemberDataFood> memberList) {
 
         List<MemberSecondProfile> memberSecondProfiles = memberList.stream()
                 .map(memberData -> findByMateType(memberData.getMember().getMemberSecondProfiles(), MateType.MEAL).orElseThrow(()-> new GeneralHandler(ErrorCode.PROFILE2_NOT_FOUND)))
@@ -122,4 +123,69 @@ public class MatchingDtoFactory {
                 .build();
     }
 
-}
+        public static RecommendDto.ExerciseRecommendPageDto memberSecondProfileToExerciseRecommendDto(List<MemberDataExercise> memberList) {
+            List<MemberSecondProfile> memberSecondProfiles = memberList.stream()
+                    .map(memberData -> findByMateType(memberData.getMember().getMemberSecondProfiles(), MateType.EXERCISE)
+                            .orElseThrow(() -> new GeneralHandler(ErrorCode.PROFILE2_NOT_FOUND)))
+                    .toList();
+
+            List<RecommendDto.ExerciseRecommendDto> exerciseRecommendDtos = memberSecondProfiles.stream().map(
+                    memberSecondProfile -> {
+                        Member member = memberSecondProfile.getMember();
+                        MemberProfile memberProfile = member.getMemberProfile();
+
+                        return RecommendDto.ExerciseRecommendDto.builder()
+                                .memberSecondProfileId(memberSecondProfile.getId())
+                                .studentNumber(memberProfile.getStudentNumber() + "학번")
+                                .exerciseType(memberSecondProfile.getExerciseType())
+                                .isSchool(memberSecondProfile.getIsSchool())
+                                .gender(member.getGender().getKoreanName())
+                                .mbti(memberProfile.getMBTI())
+                                .nickName(memberProfile.getNickname())
+                                .place(memberSecondProfile.getPlace())
+                                .build();
+                    }
+            ).toList();
+
+            return RecommendDto.ExerciseRecommendPageDto.builder()
+                    .exerciseRecommendDtos(exerciseRecommendDtos)
+                    .hasNextPage(false)
+                    .currentPage(0)
+                    .build();
+        }
+
+        public static RecommendDto.StudyRecommendPageDto memberSecondProfileToStudyRecommendDto(List<MemberDataStudy> memberList) {
+            List<MemberSecondProfile> memberSecondProfiles = memberList.stream()
+                    .map(memberData -> findByMateType(memberData.getMember().getMemberSecondProfiles(), MateType.STUDY)
+                            .orElseThrow(() -> new GeneralHandler(ErrorCode.PROFILE2_NOT_FOUND)))
+                    .toList();
+
+            List<RecommendDto.StudyRecommendDto> studyRecommendDtos = memberSecondProfiles.stream().map(
+                    memberSecondProfile -> {
+                        Member member = memberSecondProfile.getMember();
+                        MemberProfile memberProfile = member.getMemberProfile();
+
+                        return RecommendDto.StudyRecommendDto.builder()
+                                .memberSecondProfileId(memberSecondProfile.getId())
+                                .studentNumber(memberProfile.getStudentNumber() + "학번")
+                                .studyType(memberSecondProfile.getStudyType())
+                                .majorName(memberSecondProfile.getMajorName())
+                                .professorName(memberSecondProfile.getProfessorName())
+                                .isOnline(memberSecondProfile.getIsOnline())
+                                .studyTimes(memberSecondProfile.getStudyTimes())
+                                .gender(member.getGender().getKoreanName())
+                                .mbti(memberProfile.getMBTI())
+                                .nickName(memberProfile.getNickname())
+                                .place(memberSecondProfile.getPlace())
+                                .build();
+                    }
+            ).toList();
+
+            return RecommendDto.StudyRecommendPageDto.builder()
+                    .studyRecommendDtos(studyRecommendDtos)
+                    .hasNextPage(false)
+                    .currentPage(0)
+                    .build();
+        }
+    }
+

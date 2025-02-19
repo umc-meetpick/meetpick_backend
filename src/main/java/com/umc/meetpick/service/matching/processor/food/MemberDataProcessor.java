@@ -3,7 +3,7 @@ package com.umc.meetpick.service.matching.processor.food;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
-import com.umc.meetpick.entity.matchingdata.food.MemberData;
+import com.umc.meetpick.entity.matchingdata.food.MemberDataFood;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.Gender;
 import com.umc.meetpick.repository.food.MemberDataRepository;
@@ -22,7 +22,7 @@ public class MemberDataProcessor {
         Member member = memberSecondProfile.getMember();
         MemberProfile memberProfile = member.getMemberProfile();
 
-        MemberData memberData = MemberData.builder().build();
+        MemberDataFood memberData = MemberDataFood.builder().build();
         setGender(memberData, member.getGender());
         setAge(memberData, member.getAge());
         setMbti(memberData, memberProfile.getMBTI().toString());
@@ -35,7 +35,7 @@ public class MemberDataProcessor {
     }
 
 
-    private void setGender(MemberData memberData, Gender gender){
+    private void setGender(MemberDataFood memberData, Gender gender){
         switch (gender) {
             case MALE -> memberData.setGender(0.0);
             case FEMALE -> memberData.setGender(3.0);
@@ -43,11 +43,11 @@ public class MemberDataProcessor {
         };
     }
 
-    private void setAge(MemberData memberData, Integer Age){
+    private void setAge(MemberDataFood memberData, Integer Age){
         memberData.setAge((double) (Age));
     }
 
-    private void setMbti(MemberData memberData, String mbti){
+    private void setMbti(MemberDataFood memberData, String mbti){
 
         if(mbti.charAt(0) == 'I'){
             memberData.setIE(0.8);
@@ -66,7 +66,7 @@ public class MemberDataProcessor {
         }
     }
 
-    private void setMajor(MemberData memberData, String majorName){
+    private void setMajor(MemberDataFood memberData, String majorName){
                     switch (majorName) {
                         case "공학 계열":
                             memberData.setEngineering(0.5);
@@ -87,7 +87,7 @@ public class MemberDataProcessor {
                     }
     }
 
-    private void setFoodType(MemberData memberData, Set< FoodType > foodType){
+    private void setFoodType(MemberDataFood memberData, Set< FoodType > foodType){
         foodType.forEach(
                 type -> {
                     switch (type) {
