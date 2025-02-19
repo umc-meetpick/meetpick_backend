@@ -232,6 +232,10 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = memberSecondProfile.getMember();
 
+        if(member == null){
+            throw new GeneralHandler(ErrorCode.PROFILE2_MEMBER_MISMATCH);
+        }
+
         validateContact(member);
 
         MemberProfile memberProfile = member.getMemberProfile();
