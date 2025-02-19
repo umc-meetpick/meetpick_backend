@@ -26,6 +26,7 @@ public class LikeDtoFactory {
                             .profileId(memberSecondProfile.getId())
                             .nickName(memberProfile.getNickname())
                             .gender(member.getGender().getKoreanName())
+                            .profileAge(member.getAge() + "살")
                             .studentNumber(memberProfile.getStudentNumber() + "학번")
                             .mbti(memberProfile.getMBTI().toString())
                             .build();
@@ -55,6 +56,7 @@ public class LikeDtoFactory {
                     LikeResponseDto.MemberProfileDto memberProfileDto = LikeResponseDto.MemberProfileDto.builder()
                             .profileId(memberSecondProfile.getId())
                             .nickName(memberProfile.getNickname())
+                            .profileAge(member.getAge() + "살")
                             .gender(member.getGender().getKoreanName())
                             .studentNumber(memberProfile.getStudentNumber() + "학번")
                             .mbti(memberProfile.getMBTI().toString())
@@ -85,6 +87,7 @@ public class LikeDtoFactory {
                     LikeResponseDto.MemberProfileDto memberProfileDto = LikeResponseDto.MemberProfileDto.builder()
                             .profileId(memberSecondProfile.getId())
                             .nickName(memberProfile.getNickname())
+                            .profileAge(member.getAge() + "살")
                             .gender(member.getGender().getKoreanName())
                             .studentNumber(memberProfile.getStudentNumber() + "학번")
                             .mbti(memberProfile.getMBTI().toString())
