@@ -66,7 +66,7 @@ public class FoodContentsFiltering implements MatchingAlgorithm<RecommendDto.Foo
                 // .map(memberDistance -> (MemberDataFood) memberDistance.getMemberData()) // MemberDistance에서 MemberData 추출
                 .collect(Collectors.toList());
 
-        return MatchingDtoFactory.memberSecondProfileToFoodRecommendtDto(top5MemberData);
+        return MatchingDtoFactory.memberSecondProfileToFoodRecommendDto(top5MemberData);
     }
 
     private double calculateDistance(MemberRequestDataFood requestData, MemberDataFood data) {

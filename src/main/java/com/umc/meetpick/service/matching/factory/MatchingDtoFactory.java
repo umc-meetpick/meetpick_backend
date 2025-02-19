@@ -93,7 +93,7 @@ public class MatchingDtoFactory {
                 .build();
     }
 
-    public static RecommendDto.FoodRecommendPageDto memberSecondProfileToFoodRecommendtDto(List<MemberDataFood> memberList) {
+    public static RecommendDto.FoodRecommendPageDto memberSecondProfileToFoodRecommendDto(List<MemberDataFood> memberList) {
 
         List<MemberSecondProfile> memberSecondProfiles = memberList.stream()
                 .map(memberData -> findByMateType(memberData.getMember().getMemberSecondProfiles(), MateType.MEAL).orElseThrow(()-> new GeneralHandler(ErrorCode.PROFILE2_NOT_FOUND)))

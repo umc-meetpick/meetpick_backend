@@ -6,6 +6,7 @@ import com.umc.meetpick.dto.RequestDTO;
 import com.umc.meetpick.service.request.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class RequestController {
 
     @Operation(summary = "매칭 추가")
     @PostMapping("/add")
-    public ApiResponse<String> createRequest(@AuthUser Long memberId, @RequestBody RequestDTO.NewRequestDTO newRequest) {
+    public ApiResponse<String> createRequest(@AuthUser Long memberId, @Valid @RequestBody RequestDTO.NewRequestDTO newRequest) {
 
         log.info("매칭 추가 : {}", memberId);
 
