@@ -13,6 +13,7 @@ import com.umc.meetpick.repository.food.FoodMemberRequestDataRepository;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.service.matching.factory.MatchingDtoFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Component("혼밥")
 @RequiredArgsConstructor
+@Slf4j
 public class FoodContentsFiltering implements MatchingAlgorithm<RecommendDto.FoodRecommendPageDto>{
 
     private final FoodMemberDataRepository foodMemberDataRepository;

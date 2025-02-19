@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface FoodMemberRequestDataRepository extends JpaRepository<MemberRequestDataFood,Long> {
+
     Optional<MemberRequestDataFood> findByMember(@Param("member") Member member);
+
     void deleteByMember(Member member);
 }
