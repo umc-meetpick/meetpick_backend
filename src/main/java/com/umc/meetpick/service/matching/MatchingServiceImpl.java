@@ -58,13 +58,12 @@ public class MatchingServiceImpl implements MatchingService {
     private Pageable pageable = PageRequest.of(page, pageSize);
 
     @Override
-    public Object match(Long memberId, String mateType){
+    public Object match(Long memberId, String mateType) {
 
         MateType type = MateType.fromString(mateType);
 
-        switch (type){
+        switch (type) {
             case MEAL -> {
-
                 List<RecommendDto.FoodRecommendDto> foodRecommendDtos = new ArrayList<>();
 
                 foodRecommendDtos.add(RecommendDto.FoodRecommendDto.builder()
@@ -78,23 +77,23 @@ public class MatchingServiceImpl implements MatchingService {
                         .build());
 
                 foodRecommendDtos.add(RecommendDto.FoodRecommendDto.builder()
-                        .memberSecondProfileId(1L)
-                        .nickName("예시1")
-                        .studentNumber("100학번")
-                        .foodTypes(Set.of("양식", "중식", "어쩌구"))
-                        .gender("남성")
+                        .memberSecondProfileId(2L)
+                        .nickName("예시2")
+                        .studentNumber("101학번")
+                        .foodTypes(Set.of("한식", "일식"))
+                        .gender("여성")
                         .imageUrl("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
-                        .mbti(MBTI.ENFJ)
+                        .mbti(MBTI.INFJ)
                         .build());
 
                 foodRecommendDtos.add(RecommendDto.FoodRecommendDto.builder()
-                        .memberSecondProfileId(1L)
-                        .nickName("예시1")
-                        .studentNumber("100학번")
-                        .foodTypes(Set.of("양식", "중식", "어쩌구"))
+                        .memberSecondProfileId(3L)
+                        .nickName("예시3")
+                        .studentNumber("102학번")
+                        .foodTypes(Set.of("분식", "디저트"))
                         .gender("남성")
                         .imageUrl("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
-                        .mbti(MBTI.ENFJ)
+                        .mbti(MBTI.ESFP)
                         .build());
 
                 return RecommendDto.FoodRecommendPageDto.builder()
@@ -103,9 +102,88 @@ public class MatchingServiceImpl implements MatchingService {
                         .hasNextPage(false)
                         .build();
             }
+            case EXERCISE -> {
+                List<RecommendDto.ExerciseRecommendDto> exerciseRecommendDtos = new ArrayList<>();
+
+                exerciseRecommendDtos.add(RecommendDto.ExerciseRecommendDto.builder()
+                        .memberSecondProfileId(4L)
+                        .nickName("운동예시1")
+                        .studentNumber("103학번")
+                        .gender("남성")
+                        .mbti(MBTI.ISTJ)
+                        .imageUrl("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
+                        .exerciseType("헬스")
+                        .build());
+
+                exerciseRecommendDtos.add(RecommendDto.ExerciseRecommendDto.builder()
+                        .memberSecondProfileId(5L)
+                        .nickName("운동예시2")
+                        .studentNumber("104학번")
+                        .gender("여성")
+                        .mbti(MBTI.INFP)
+                        .imageUrl("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
+                        .exerciseType("요가")
+                        .build());
+
+                exerciseRecommendDtos.add(RecommendDto.ExerciseRecommendDto.builder()
+                        .memberSecondProfileId(6L)
+                        .nickName("운동예시3")
+                        .studentNumber("105학번")
+                        .gender("남성")
+                        .mbti(MBTI.ESTP)
+                        .imageUrl("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
+                        .exerciseType("조깅")
+                        .build());
+
+                return RecommendDto.ExerciseRecommendPageDto.builder()
+                        .exerciseRecommendDtos(exerciseRecommendDtos)
+                        .currentPage(0)
+                        .hasNextPage(false)
+                        .build();
+            }
+            case STUDY -> {
+                List<RecommendDto.StudyRecommendDto> studyRecommendDtos = new ArrayList<>();
+
+                studyRecommendDtos.add(RecommendDto.StudyRecommendDto.builder()
+                        .memberSecondProfileId(7L)
+                        .nickName("공부예시1")
+                        .studentNumber("106학번")
+                        .gender("여성")
+                        .mbti(MBTI.INTP)
+                        .studyType("수학")
+                        .imageUrl("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
+                        .build());
+
+                studyRecommendDtos.add(RecommendDto.StudyRecommendDto.builder()
+                        .memberSecondProfileId(8L)
+                        .nickName("공부예시2")
+                        .studentNumber("107학번")
+                        .gender("남성")
+                        .mbti(MBTI.ENTJ)
+                        .studyType("영어")
+                        .imageUrl("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
+                        .build());
+
+                studyRecommendDtos.add(RecommendDto.StudyRecommendDto.builder()
+                        .memberSecondProfileId(9L)
+                        .nickName("공부예시3")
+                        .studentNumber("108학번")
+                        .gender("여성")
+                        .mbti(MBTI.ISFJ)
+                        .studyType("교양")
+                        .imageUrl("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
+                        .build());
+
+                return RecommendDto.StudyRecommendPageDto.builder()
+                        .studyRecommendDtos(studyRecommendDtos)
+                        .currentPage(0)
+                        .hasNextPage(false)
+                        .build();
+            }
         }
         return null;
     }
+
 
     @Override
     public MatchPageDto getMatchRequests(Long memberId, String mateType, Pageable pageable) {
