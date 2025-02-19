@@ -113,6 +113,7 @@ public class MatchingDtoFactory {
                             .gender(member.getGender().getKoreanName())
                             .mbti(memberProfile.getMBTI())
                             .nickName(memberProfile.getNickname())
+                            .imageUrl(memberProfile.getProfileImage())
                             .build();
                 }
         ).toList();
