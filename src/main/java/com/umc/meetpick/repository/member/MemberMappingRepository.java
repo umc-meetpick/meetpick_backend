@@ -19,6 +19,7 @@ public interface MemberMappingRepository extends JpaRepository<MemberSecondProfi
 
     boolean existsByMemberSecondProfileAndMember(MemberSecondProfile memberSecondProfile, Member member);
 
+    void deleteAllByMemberSecondProfile(MemberSecondProfile memberSecondProfile);
 
     Page<MemberSecondProfileMapping> findAllByMemberSecondProfile_MemberAndMemberSecondProfile_MateTypeAndIsAccepted(@Param("member")Member member, MateType mateType, Pageable pageable, @Param("isAccepted") Boolean isAccepted);
 

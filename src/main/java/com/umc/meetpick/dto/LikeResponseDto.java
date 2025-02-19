@@ -15,10 +15,12 @@ public class LikeResponseDto {
     @AllArgsConstructor
     public static class MemberProfileDto {
         private Long profileId;
+        private String profileAge;
         private String nickName;
         private String gender;
         private String studentNumber;
         private String mbti;
+        private Boolean isLiked;
     }
 
     @Getter
@@ -32,6 +34,8 @@ public class LikeResponseDto {
         private String age;
         private String isPeer;
         private String gender;
+        private Integer currentPeople;
+        private Integer maxPeople;
     }
 
     @Getter
@@ -45,6 +49,8 @@ public class LikeResponseDto {
         private String age;
         private String isPeer;
         private String gender;
+        private Integer currentPeople;
+        private Integer maxPeople;
     }
 
     @Getter
@@ -58,6 +64,8 @@ public class LikeResponseDto {
         private String age;
         private String isPeer;
         private String gender;
+        private Integer currentPeople;
+        private Integer maxPeople;
     }
 
 }
