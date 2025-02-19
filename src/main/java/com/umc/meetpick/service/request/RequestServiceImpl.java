@@ -391,14 +391,14 @@ public class RequestServiceImpl implements RequestService {
 //                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭"));
 
         MemberSecondProfileMapping memberSecondProfileMapping = memberMappingRepository.findById(matchingRequestId)
-                .orElseThrow(()-> new EntityNotFoundException("신청을 찾을 수 없음"));
+                .orElseThrow(()-> new GeneralHandler(ErrorCode.REQUEST_NOT_FOUND));
 
         if(!memberSecondProfileMapping.getMemberSecondProfile().getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("권한 없음");
+            throw new GeneralHandler(ErrorCode._UNAUTHORIZED);
         }
 
         if(memberSecondProfileMapping.getStatus()){
-            throw new IllegalArgumentException("이미 수락 or 거절됨");
+            throw new GeneralHandler(ErrorCode.REQUEST_ALREADY_ACCEPTED);
         }
 
         memberSecondProfileMapping.setStatus(true);
