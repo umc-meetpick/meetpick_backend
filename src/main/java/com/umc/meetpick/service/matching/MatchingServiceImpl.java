@@ -105,15 +105,7 @@ public class MatchingServiceImpl implements MatchingService {
             case EXERCISE -> {
                 List<RecommendDto.ExerciseRecommendDto> exerciseRecommendDtos = new ArrayList<>();
 
-                exerciseRecommendDtos.add(RecommendDto.ExerciseRecommendDto.builder()
-                        .memberSecondProfileId(4L)
-                        .nickName("운동예시1")
-                        .studentNumber("103학번")
-                        .gender("남성")
-                        .mbti(MBTI.ISTJ)
-                        .imageUrl("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
-                        .exerciseType("헬스")
-                        .build());
+                int conditionMatching = 0;
 
                 exerciseRecommendDtos.add(RecommendDto.ExerciseRecommendDto.builder()
                         .memberSecondProfileId(5L)
