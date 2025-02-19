@@ -46,6 +46,12 @@ public enum ErrorCode implements BaseErrorCode {
     INVALID_MATE_TYPE(HttpStatus.BAD_REQUEST, "TYPE4000", "유효하지 않은 메이트 타입입니다"),
     INVALID_ENUM(HttpStatus.BAD_REQUEST, "TYPE4001", "유효하지 않은 enum입니다"),
 
+    // 신청 관련
+    AGE_NOT_SATISFIED(HttpStatus.BAD_REQUEST, "REQUEST4000", "나이 조건이 맞지 않습니다"),
+    GENDER_NOT_SATISFIED(HttpStatus.BAD_REQUEST, "REQUEST4000", "성별 조건이 맞지 않습니다"),
+    STUDENT_NUMBER_NOT_SATISFIED(HttpStatus.BAD_REQUEST, "REQUEST4000", "학번 조건이 맞지 않습니다"),
+
+
 
     // 학번 관련 에러
     INVALID_STUDENT_NUMBER(HttpStatus.BAD_REQUEST, "STUDENT_NUMBER4001", "숫자만 입력하세요."),
