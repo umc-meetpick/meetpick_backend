@@ -338,6 +338,10 @@ public class RequestServiceImpl implements RequestService {
             throw new IllegalArgumentException("이미 좋아요 누르셨습니다.");
         }
 
+        if(memberId.equals(request.getMember().getId())){
+            throw new IllegalArgumentException("본인 매칭에 좋아요 불가");
+        }
+
         MemberSecondProfileLikes memberLikes = MemberSecondProfileLikes.builder()
                 .member(member)
                 .memberSecondProfile(request)
@@ -385,6 +389,11 @@ public class RequestServiceImpl implements RequestService {
         memberSecondProfileMapping.setIsAccepted(isAccepted);
 
         MemberSecondProfileMapping updatedMapping = memberMappingRepository.save(memberSecondProfileMapping);
+
+        MemberSecondProfile request = memberSecondProfileRepository.findById(memberSecondProfileMapping.getMemberSecondProfile().getId())
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 매칭"));
+
+        request.addPerson();
 
         return RequestDTO.isAcceptedDTO.builder()
                 .matchingRequestId(updatedMapping.getId())
