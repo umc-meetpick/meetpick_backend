@@ -44,27 +44,6 @@ public class TestAPI {
     @Autowired
     private MemberSecondProfileRepository memberSecondProfileRepository;
 
-    @BeforeEach
-    void setUp() {
-        List<Member> members = MemberFactory.createRandomMultiple(10);
-
-        memberRepository.saveAll(members);
-
-        List<MemberSecondProfile> memberSecondProfileFactories = MemberSecondProfileFactory.createMultiple(members);
-
-        memberSecondProfileRepository.saveAll(memberSecondProfileFactories);
-
-        MemberSecondProfileMapping mapping = MemberSecondProfileMapping.builder()
-                .member(members.get(3))
-                .memberSecondProfile(memberSecondProfileFactories.get(1))
-                .status(false)
-                .build();
-
-        System.out.println(memberSecondProfileFactories.get(1).getMember().getId());
-
-        memberMappingRepository.save(mapping);
-
-    }
 
     /*@Test
     void testAPI(){
