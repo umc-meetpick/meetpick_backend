@@ -77,6 +77,9 @@ public class MemberController {
     @Operation(summary = "멤버 연락처 정보 반환")
     @GetMapping("/contact-info/{requestId}")
     public ApiResponse<ContactResponseDto> getContactInfo(@AuthUser Long memberId, @PathVariable Long requestId) {
+
+        log.info("멤버 연락처 정보 반환 : {}", memberId);
+
         return ApiResponse.onSuccess(memberService.getContactInfo(memberId, requestId));  // ProfileService로 호출
     }
 
