@@ -9,12 +9,12 @@ import com.umc.meetpick.enums.ExerciseType;
 import com.umc.meetpick.enums.Gender;
 
 import com.umc.meetpick.repository.exercise.ExerciseMemberDataRepository;
+import com.umc.meetpick.service.matching.processor.MemberDataProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
-public class ExerciseMemberDataProcessor {
+public class ExerciseMemberDataProcessor implements MemberDataProcessor {
 
     private final ExerciseMemberDataRepository exerciseMemberDataRepository;
 

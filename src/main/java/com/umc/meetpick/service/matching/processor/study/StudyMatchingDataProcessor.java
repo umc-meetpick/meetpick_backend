@@ -8,15 +8,15 @@ import com.umc.meetpick.entity.matchingdata.study.MemberRequestDataStudy;
 import com.umc.meetpick.enums.StudyType;
 import com.umc.meetpick.enums.Gender;
 import com.umc.meetpick.repository.study.StudyMemberRequestDataRepository;
+import com.umc.meetpick.service.matching.processor.MatchingDataProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 
-@Component
 @RequiredArgsConstructor
-public class StudyMatchingDataProcessor {
+public class StudyMatchingDataProcessor implements MatchingDataProcessor {
 
     private final StudyMemberRequestDataRepository studyMemberRequestDataRepository;
 
@@ -62,19 +62,19 @@ public class StudyMatchingDataProcessor {
     // setMbti
     private void setMbti(MemberRequestDataStudy memberRequestData, String mbti){
         if(mbti.charAt(0) == 'I'){
-            memberRequestData.setIE(0.0);
+            memberRequestData.setIE(0.5);
         }
 
         if(mbti.charAt(1) == 'S'){
-            memberRequestData.setSN(0.0);
+            memberRequestData.setSN(0.5);
         }
 
         if(mbti.charAt(2) == 'T'){
-            memberRequestData.setTF(0.0);
+            memberRequestData.setTF(0.5);
         }
 
         if(mbti.charAt(3) == 'J'){
-            memberRequestData.setJP(0.0);
+            memberRequestData.setJP(0.5);
         }
     }
 

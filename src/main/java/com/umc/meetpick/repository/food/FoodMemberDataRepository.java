@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface MemberDataRepository extends JpaRepository<MemberDataFood, Long> {
+public interface FoodMemberDataRepository extends JpaRepository<MemberDataFood, Long> {
     List<MemberDataFood> findAllByUniversity(@Param("university") University university);
     void deleteByMember(Member member);
 }

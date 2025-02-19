@@ -21,7 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@Component("운동")
 @RequiredArgsConstructor
 public class ExerciseContentsFiltering implements MatchingAlgorithm<RecommendDto.ExerciseRecommendPageDto> {
 

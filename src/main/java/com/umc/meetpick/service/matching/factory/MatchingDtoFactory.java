@@ -138,12 +138,12 @@ public class MatchingDtoFactory {
                         return RecommendDto.ExerciseRecommendDto.builder()
                                 .memberSecondProfileId(memberSecondProfile.getId())
                                 .studentNumber(memberProfile.getStudentNumber() + "학번")
-                                .exerciseType(memberSecondProfile.getExerciseType())
-                                .isSchool(memberSecondProfile.getIsSchool())
+                                .exerciseType(memberSecondProfile.getExerciseType().getDisplayName())
                                 .gender(member.getGender().getKoreanName())
                                 .mbti(memberProfile.getMBTI())
                                 .nickName(memberProfile.getNickname())
-                                .place(memberSecondProfile.getPlace())
+                                .imageUrl(memberProfile.getProfileImage())
+                                .exerciseType(memberSecondProfile.getExerciseType().getDisplayName())
                                 .build();
                     }
             ).toList();
@@ -169,15 +169,11 @@ public class MatchingDtoFactory {
                         return RecommendDto.StudyRecommendDto.builder()
                                 .memberSecondProfileId(memberSecondProfile.getId())
                                 .studentNumber(memberProfile.getStudentNumber() + "학번")
-                                .studyType(memberSecondProfile.getStudyType())
-                                .majorName(memberSecondProfile.getMajorName())
-                                .professorName(memberSecondProfile.getProfessorName())
-                                .isOnline(memberSecondProfile.getIsOnline())
-                                .studyTimes(memberSecondProfile.getStudyTimes())
                                 .gender(member.getGender().getKoreanName())
                                 .mbti(memberProfile.getMBTI())
                                 .nickName(memberProfile.getNickname())
-                                .place(memberSecondProfile.getPlace())
+                                .studyType(memberSecondProfile.getStudyType().getKoreanName())
+                                .imageUrl(memberProfile.getProfileImage())
                                 .build();
                     }
             ).toList();

@@ -11,5 +11,6 @@ import java.util.List;
 
 public interface ExerciseMemberDataRepository extends JpaRepository<MemberDataExercise, Long> {
     List<MemberDataExercise> findAllByUniversity(@Param("university") University university);
+    Boolean existsByMember(@Param("member") Member member);
     void deleteByMember(Member member);
 }

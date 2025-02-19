@@ -8,8 +8,8 @@ import com.umc.meetpick.entity.matchingdata.MemberDistance;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.entity.matchingdata.food.MemberDataFood;
 import com.umc.meetpick.entity.matchingdata.food.MemberRequestDataFood;
-import com.umc.meetpick.repository.food.MemberDataRepository;
-import com.umc.meetpick.repository.food.MemberRequestDataRepository;
+import com.umc.meetpick.repository.food.FoodMemberDataRepository;
+import com.umc.meetpick.repository.food.FoodMemberRequestDataRepository;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.service.matching.factory.MatchingDtoFactory;
 import lombok.RequiredArgsConstructor;
@@ -20,22 +20,22 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@Component("혼밥")
 @RequiredArgsConstructor
 public class FoodContentsFiltering implements MatchingAlgorithm<RecommendDto.FoodRecommendPageDto>{
 
-    private final MemberDataRepository memberDataRepository;
-    private final MemberRequestDataRepository memberRequestDataRepository;
+    private final FoodMemberDataRepository foodMemberDataRepository;
+    private final FoodMemberRequestDataRepository foodMemberRequestDataRepository;
     private final MemberMappingRepository memberMappingRepository;
 
     @Override
     public RecommendDto.FoodRecommendPageDto recommend(Member member) {
 
-        MemberRequestDataFood memberRequestData = memberRequestDataRepository.findByMember(member)
+        MemberRequestDataFood memberRequestData = foodMemberRequestDataRepository.findByMember(member)
                 .orElseThrow(() -> new GeneralHandler(ErrorCode.MEMBER_DATA_NOT_PRESENT));
 
         // 같은 대학만 추출
-        List<MemberDataFood> memberDataList = memberDataRepository.findAllByUniversity(member.getUniversity());
+        List<MemberDataFood> memberDataList = foodMemberDataRepository.findAllByUniversity(member.getUniversity());
 
         // 본인과 매칭 완료된 MemberData 제거
         memberDataList = memberDataList.stream()

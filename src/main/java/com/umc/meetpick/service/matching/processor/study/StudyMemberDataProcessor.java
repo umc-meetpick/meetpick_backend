@@ -1,7 +1,5 @@
 package com.umc.meetpick.service.matching.processor.study;
 
-
-
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
@@ -9,13 +7,12 @@ import com.umc.meetpick.entity.matchingdata.study.MemberDataStudy;
 import com.umc.meetpick.enums.StudyType;
 import com.umc.meetpick.enums.Gender;
 import com.umc.meetpick.repository.study.StudyMemberDataRepository;
+import com.umc.meetpick.service.matching.processor.MemberDataProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-
-@Component
 @RequiredArgsConstructor
-public class StudyMemberDataProcessor {
+public class StudyMemberDataProcessor implements MemberDataProcessor {
 
     private final StudyMemberDataRepository studyMemberDataRepository;
 
@@ -58,19 +55,19 @@ public class StudyMemberDataProcessor {
 
     private void setMbti(MemberDataStudy memberData, String mbti){
         if(mbti.charAt(0) == 'I'){
-            memberData.setIE(0.0);
+            memberData.setIE(0.5);
         }
 
         if(mbti.charAt(1) == 'S'){
-            memberData.setSN(0.0);
+            memberData.setSN(0.5);
         }
 
         if(mbti.charAt(2) == 'T'){
-            memberData.setTF(0.0);
+            memberData.setTF(0.5);
         }
 
         if(mbti.charAt(3) == 'J'){
-            memberData.setJP(0.0);
+            memberData.setJP(0.5);
         }
     }
 

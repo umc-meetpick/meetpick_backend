@@ -1,6 +1,8 @@
 package com.umc.meetpick.service.matching;
 
 
+import com.umc.meetpick.common.exception.handler.GeneralHandler;
+import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.*;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
@@ -29,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -53,37 +56,17 @@ public class MatchingServiceImpl implements MatchingService {
     private final MemberMappingRepository memberMappingRepository;
     private final MemberLikesRepository memberLikesRepository;// 좋아요 여부 확인용
     private final MemberProfileRepository memberProfileRepository;// 프로필 정보 조회용
-    private final int minCondition = 3;
-    private int page = 0;
-    private final int pageSize = 100;
-    private Pageable pageable = PageRequest.of(page, pageSize);
+    private final Map<String, MatchingAlgorithm<?>> algorithms;
 
     @Override
-    public Object match(Long memberId, MateType mateType){
+    public Object match(Long memberId, String mateType){
 
-        Member member = memberRepository.findMemberById(memberId);
+        Member member = memberRepository.findById(memberId).orElseThrow(()-> new GeneralHandler(ErrorCode.MEMBER_NOT_FOUND));
 
-        MatchingAlgorithm<?> matchingAlgorithms;
+        MatchingAlgorithm<?> algorithm = algorithms.get(mateType);
 
-        switch (mateType) {
-            case MEAL:
-                matchingAlgorithms = matchingAlgorithm.get(MateType.MEAL);
-                break;
-            case EXERCISE:
-                matchingAlgorithm = matchingAlgorithms.get(MateType.EXERCISE);
-                break;
-            case STUDY:
-                matchingAlgorithm = matchingAlgorithms.get(MateType.STUDY);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid MateType: " + mateType);
-        }
+        return algorithm.recommend(member);
 
-        if (matchingAlgorithm == null) {
-            throw new IllegalStateException("No matching algorithm found for type: " + mateType);
-        }
-
-        return matchingAlgorithm.recommend(member);
     }
 
     @Override
@@ -98,10 +81,6 @@ public class MatchingServiceImpl implements MatchingService {
 
         // 3. 최종 응답 DTO 생성
         return memberSecondProfileToMatchPageDto(memberProfile);
-    }
-
-    private List<MemberSecondProfile> getMatchingType(MateType mateType){
-        return memberSecondProfileRepository.findMemberSecondProfilesByMateType(mateType, pageable).getContent();
     }
 
     // TODO 디자인 패턴 적용 및 내용 수정

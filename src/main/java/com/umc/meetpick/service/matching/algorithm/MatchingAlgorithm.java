@@ -2,7 +2,9 @@ package com.umc.meetpick.service.matching.algorithm;
 
 import com.umc.meetpick.dto.RecommendDto;
 import com.umc.meetpick.entity.Member;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface MatchingAlgorithm<T> {
 
     T recommend(Member member);

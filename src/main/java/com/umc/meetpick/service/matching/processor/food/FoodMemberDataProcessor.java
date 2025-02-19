@@ -6,16 +6,16 @@ import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.matchingdata.food.MemberDataFood;
 import com.umc.meetpick.enums.FoodType;
 import com.umc.meetpick.enums.Gender;
-import com.umc.meetpick.repository.food.MemberDataRepository;
+import com.umc.meetpick.repository.food.FoodMemberDataRepository;
+import com.umc.meetpick.service.matching.processor.MemberDataProcessor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+
 import java.util.Set;
 
-@Component
 @RequiredArgsConstructor
-public class MemberDataProcessor {
+public class FoodMemberDataProcessor implements MemberDataProcessor {
 
-    private final MemberDataRepository memberDataRepository;
+    private final FoodMemberDataRepository foodMemberDataRepository;
 
     public void process(MemberSecondProfile memberSecondProfile){
 
@@ -31,7 +31,7 @@ public class MemberDataProcessor {
         memberData.setMember(member);
         memberData.setUniversity(member.getUniversity());
 
-        memberDataRepository.save(memberData);
+        foodMemberDataRepository.save(memberData);
     }
 
 
@@ -50,19 +50,19 @@ public class MemberDataProcessor {
     private void setMbti(MemberDataFood memberData, String mbti){
 
         if(mbti.charAt(0) == 'I'){
-            memberData.setIE(0.8);
+            memberData.setIE(0.5);
         }
 
         if(mbti.charAt(1) == 'S'){
-            memberData.setSN(0.8);
+            memberData.setSN(0.5);
         }
 
         if(mbti.charAt(2) == 'T'){
-            memberData.setTF(0.8);
+            memberData.setTF(0.5);
         }
 
         if(mbti.charAt(3) == 'J'){
-            memberData.setJP(0.8);
+            memberData.setJP(0.5);
         }
     }
 

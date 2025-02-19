@@ -8,14 +8,14 @@ import com.umc.meetpick.entity.matchingdata.exercise.MemberRequestDataExercise;
 import com.umc.meetpick.enums.ExerciseType;
 import com.umc.meetpick.enums.Gender;
 import com.umc.meetpick.repository.exercise.ExerciseMemberRequestDataRepository;
+import com.umc.meetpick.service.matching.processor.MatchingDataProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 @RequiredArgsConstructor
-public class ExerciseMatchingDataProcessor {
+public class ExerciseMatchingDataProcessor implements MatchingDataProcessor {
 
     private final ExerciseMemberRequestDataRepository exerciseMemberRequestDataRepository;
 
