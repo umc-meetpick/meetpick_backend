@@ -1,6 +1,7 @@
 package com.umc.meetpick.service.request;
 
-import com.umc.meetpick.common.annotation.TrackExecutionTime;
+import com.umc.meetpick.common.exception.handler.GeneralHandler;
+import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.MatchResponseDto;
 import com.umc.meetpick.dto.RequestDTO;
 import com.umc.meetpick.entity.*;
@@ -18,6 +19,8 @@ import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.*;
 import com.umc.meetpick.repository.member.*;
 import com.umc.meetpick.service.matching.factory.MatchQueryStrategyFactory;
+import com.umc.meetpick.service.matching.processor.MatchingDataProcessorFactory;
+import com.umc.meetpick.service.matching.processor.MemberDataProcessorFactory;
 import com.umc.meetpick.service.matching.strategy.MatchQueryStrategy;
 import com.umc.meetpick.service.request.factory.LikeQueryStrategyFactory;
 import com.umc.meetpick.service.request.strategy.LikeQueryStrategy;
@@ -38,7 +41,6 @@ import static com.umc.meetpick.enums.StudentNumber.*;
 @RequiredArgsConstructor
 @Slf4j
 public class RequestServiceImpl implements RequestService {
-    private final NewRequestRepository newRequestRepository;
     private final MemberRepository memberRepository;
     private final SubMajorRepository subMajorRepository;
     private final MemberMappingRepository memberMappingRepository;
@@ -46,6 +48,8 @@ public class RequestServiceImpl implements RequestService {
     private final MemberSecondProfileRepository memberSecondProfileRepository;
     private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
     private final MemberSecondProfileSubMajorRepository memberSecondProfileSubMajorRepository;
+    private final MatchingDataProcessorFactory matchingDataProcessorFactory;
+    private final MemberDataProcessorFactory memberDataProcessorFactory;
 
     @Override
     public RequestDTO.NewRequestDTO createNewRequest(Long memberId, RequestDTO.NewRequestDTO newRequest) {
@@ -87,7 +91,24 @@ public class RequestServiceImpl implements RequestService {
 
 
         // studentNumber 변환 -> 프론트에서 받은 string을 enum으로
-        StudentNumber studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
+
+        Gender gender;
+
+        if(newRequest.getGender() == null) {
+            gender = Gender.ALL;
+        } else {
+            gender = newRequest.getGender();
+        }
+
+        StudentNumber studentNumberEnum;
+
+        if(newRequest.getStudentNumber() == null){
+            studentNumberEnum = StudentNumber.ALL;
+        } else {
+            studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
+        }
+
+
 
         ExerciseType exerciseTypes = null;
         Set<FoodType> foodTypes = Collections.emptySet();
@@ -97,6 +118,7 @@ public class RequestServiceImpl implements RequestService {
         Boolean isOnline = null;
 
         MateType requestMateType = newRequest.getType();
+
         if (requestMateType == EXERCISE){
             // 운동 타입 변환 (nullable 처리)
 //        Set<ExerciseType> exerciseTypes = Optional.ofNullable(newRequest.getExerciseTypes())
@@ -143,29 +165,30 @@ public class RequestServiceImpl implements RequestService {
         // 새로운 MemberSecondProfile 생성
         MemberSecondProfile newMemberSecondProfile = MemberSecondProfile.builder()
                 .member(writer)
-                .gender(newRequest.getGender())
+                .gender(gender)
                 .studentNumber(studentNumberEnum)
-                .mbti(newRequest.getMbti())
-                .minAge(newRequest.getMinAge())
-                .maxAge(newRequest.getMaxAge())
-                .maxPeople(newRequest.getMaxPeople())
+                .mbti(newRequest.getMbti() == null ? "INFJ" : newRequest.getMbti())
+                .minAge(newRequest.getMinAge() == null ? 20 : newRequest.getMinAge())
+                .maxAge(newRequest.getMaxAge() == null ? 30 : newRequest.getMaxAge())
+                .maxPeople(newRequest.getMaxPeople() == 0 ? 0 : newRequest.getMaxPeople())
                 .currentPeople(0)
                 //.personality(savedPersonality)
-                .isHobbySame(newRequest.getIsHobbySame())
-                .comment(newRequest.getComment())
-                .mateType(newRequest.getType())
+                .isHobbySame(newRequest.getIsHobbySame() != null && newRequest.getIsHobbySame())
+                .comment(newRequest.getComment() == null ? "밋픽 파이팅!" : newRequest.getComment())
+                .mateType(newRequest.getType() == null ? null : newRequest.getType())
                 .foodTypes(foodTypes)
                 .exerciseType(exerciseTypes)
-                .isSchool(newRequest.getIsSchool())
+                .isSchool(newRequest.getIsSchool() != null && newRequest.getIsSchool())
                 .studyType(studyType)
                 .majorName(majorName)
                 .professorName(professorName)
                 .isOnline(isOnline)
-                .studyTimes(newRequest.getStudyTimes())
-                .place(newRequest.getPlace())
+                .studyTimes(newRequest.getStudyTimes() == 0 ? 1 : newRequest.getStudyTimes())
+                .place(newRequest.getPlace() == null ? null : newRequest.getPlace())
                 .build();
 
         MemberSecondProfile savedProfile = memberSecondProfileRepository.save(newMemberSecondProfile);
+
 
         // memberSecondProfileTimes 변환 및 저장
         List<MemberSecondProfileTimes> timesList = newRequest.getMemberSecondProfileTimes().stream()
@@ -199,7 +222,8 @@ public class RequestServiceImpl implements RequestService {
 
         memberSecondProfileSubMajorRepository.saveAll(subMajorList);
 
-
+        matchingDataProcessorFactory.getMatchingDataProcessor(newMemberSecondProfile, newMemberSecondProfile.getMateType());
+        memberDataProcessorFactory.getMemberDataProcessor(newMemberSecondProfile, newMemberSecondProfile.getMateType());
 
         return RequestDTO.NewRequestDTO.builder()
                 //.writerId(memberId)
@@ -393,14 +417,14 @@ public class RequestServiceImpl implements RequestService {
 //                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 매칭"));
 
         MemberSecondProfileMapping memberSecondProfileMapping = memberMappingRepository.findById(matchingRequestId)
-                .orElseThrow(()-> new EntityNotFoundException("신청을 찾을 수 없음"));
+                .orElseThrow(()-> new GeneralHandler(ErrorCode.REQUEST_NOT_FOUND));
 
         if(!memberSecondProfileMapping.getMemberSecondProfile().getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("권한 없음");
+            throw new GeneralHandler(ErrorCode._UNAUTHORIZED);
         }
 
         if(memberSecondProfileMapping.getStatus()){
-            throw new IllegalArgumentException("이미 수락 or 거절됨");
+            throw new GeneralHandler(ErrorCode.REQUEST_ALREADY_ACCEPTED);
         }
 
         memberSecondProfileMapping.setStatus(true);
@@ -422,7 +446,6 @@ public class RequestServiceImpl implements RequestService {
 
     //TODO 다시 코딩
     @Override
-    @TrackExecutionTime
     public List<Object> getLikes(Long memberId, String mateType) {
 
         Member member = memberRepository.findMemberById(memberId);

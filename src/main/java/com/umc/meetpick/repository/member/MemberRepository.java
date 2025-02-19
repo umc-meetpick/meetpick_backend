@@ -4,6 +4,7 @@ import java.util.Optional;
 import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.enums.SocialType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -14,4 +15,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findById(Long id); // ✅ Member 엔티티 조회용
     //TODO 삭제 예정
     Member findFirstBy();
+    Optional<Member> findFirstByName(@Param("name") String name);
 }

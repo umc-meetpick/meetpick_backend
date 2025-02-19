@@ -48,8 +48,8 @@ public class MatchController {
 
     @Operation(summary = "추천 매칭 목록 조회", description = "사용자에게 적절한 메이트를 추천해줍니다") // [변경 2]
     @GetMapping("/recommendation")
-    public ApiResponse<List<MatchResponseDto>> getRecommendation(
-            @PathParam("mateType") MateType mateType, @AuthUser Long memberId)
+    public ApiResponse<Object> getRecommendation(
+            @PathParam("mateType") String mateType, @AuthUser Long memberId)
     {
         return ApiResponse.onSuccess(matchingService.match(memberId, mateType));
     }
@@ -74,6 +74,8 @@ public class MatchController {
             @ModelAttribute PageRequestDto pageRequestDto, @AuthUser Long memberId)
     {
 
+        log.info("매칭이 완료된 리스트 받아오기 : {}", memberId);
+
         Pageable pageable = pageRequestDto.toPageable();
 
         return ApiResponse.onSuccess(matchingService.getCompletedMatches(memberId, pageRequestDto.getMateType(), pageable));
@@ -82,13 +84,15 @@ public class MatchController {
     @Operation(summary = "찜한 목록 가져오기")
     @GetMapping("/like")
     public ApiResponse<List<Object>> getLikeRequest(@AuthUser Long memberId, @PathParam("mateType") String mateType) {
+
+        log.info("찜한 목록 가져오기 실행 : {}", mateType);
+
         return ApiResponse.onSuccess(requestService.getLikes(memberId, mateType));
     }
 
 
     //getAllProfiles
     @Operation(summary = "프로필 목록 조회", description = "메이트 타입별 전체 프로필 목록을 필터링하여 조회합니다.")
-
     @GetMapping("/profiles")
     public ApiResponse<ProfileDetailListResponseDto> getAllProfiles(
             //필수
@@ -118,6 +122,9 @@ public class MatchController {
             @PageableDefault(size = 10) Pageable pageable
             //@ParameterObject @PageableDefault(size = 10) Pageable pageable //Swagger 파라미터 처리
     ) {
+
+        log.info("전체 프로필 목록 조회 : {}", memberId);
+
         MateType mateType = MateType.fromString(mateTypeStr); // String -> Enum 변환
 
         // Set<String> -> Set<ExerciseType> 변환

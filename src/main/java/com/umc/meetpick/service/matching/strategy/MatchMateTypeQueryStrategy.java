@@ -5,16 +5,21 @@ import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
 import com.umc.meetpick.enums.MateType;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
+@Slf4j
 public class MatchMateTypeQueryStrategy implements MatchQueryStrategy{
 
     private final MemberMappingRepository memberMappingRepository;
 
     @Override
     public Page<MemberSecondProfileMapping> getMemberProfiles(Member member, MateType mateType, Pageable pageable, Boolean isAccepted) {
+
+        log.info("getMemberProfiles: {}, {}, {}, {}", member, mateType, pageable, isAccepted);
+
         return memberMappingRepository.findAllByMemberSecondProfile_MemberAndMemberSecondProfile_MateTypeAndIsAccepted(member, mateType, pageable, isAccepted);
     }
 
