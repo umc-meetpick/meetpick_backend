@@ -6,10 +6,7 @@ import com.umc.meetpick.entity.Member;
 import com.umc.meetpick.entity.MemberProfiles.MemberProfile;
 import com.umc.meetpick.entity.MemberProfiles.MemberSecondProfile;
 import com.umc.meetpick.entity.mapping.MemberSecondProfileMapping;
-import com.umc.meetpick.enums.FoodType;
-import com.umc.meetpick.enums.Hobby;
-import com.umc.meetpick.enums.MateType;
-import com.umc.meetpick.enums.SubjectType;
+import com.umc.meetpick.enums.*;
 import com.umc.meetpick.repository.member.MemberMappingRepository;
 import com.umc.meetpick.repository.member.MemberRepository;
 import com.umc.meetpick.repository.member.MemberSecondProfileRepository;
@@ -31,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -60,52 +58,53 @@ public class MatchingServiceImpl implements MatchingService {
     private Pageable pageable = PageRequest.of(page, pageSize);
 
     @Override
-    public List<MatchResponseDto> match(Long memberId, MateType mateType){
+    public Object match(Long memberId, String mateType){
 
-        Member member = memberRepository.findMemberById(memberId);
+        MateType type = MateType.fromString(mateType);
 
-        List<MatchResponseDto> matchResponseDtoList = new ArrayList<>();
+        switch (type){
+            case MEAL -> {
 
-        int recommendationNumber = 5;
+                List<RecommendDto.FoodRecommendDto> foodRecommendDtos = new ArrayList<>();
 
-        while(page < 5) {
+                foodRecommendDtos.add(RecommendDto.FoodRecommendDto.builder()
+                        .memberSecondProfileId(1L)
+                        .nickName("예시1")
+                        .studentNumber("100학번")
+                        .foodTypes(Set.of("양식", "중식", "어쩌구"))
+                        .gender("남성")
+                        .imageUrl("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
+                        .mbti(MBTI.ENFJ)
+                        .build());
 
-            List<MemberSecondProfile> requestList = getMatchingType(mateType);
+                foodRecommendDtos.add(RecommendDto.FoodRecommendDto.builder()
+                        .memberSecondProfileId(1L)
+                        .nickName("예시1")
+                        .studentNumber("100학번")
+                        .foodTypes(Set.of("양식", "중식", "어쩌구"))
+                        .gender("남성")
+                        .imageUrl("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
+                        .mbti(MBTI.ENFJ)
+                        .build());
 
-            //TODO 추천 로직 변경하기
-            requestList.forEach(memberSecondProfile -> {
+                foodRecommendDtos.add(RecommendDto.FoodRecommendDto.builder()
+                        .memberSecondProfileId(1L)
+                        .nickName("예시1")
+                        .studentNumber("100학번")
+                        .foodTypes(Set.of("양식", "중식", "어쩌구"))
+                        .gender("남성")
+                        .imageUrl("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png")
+                        .mbti(MBTI.ENFJ)
+                        .build());
 
-                int conditionMatching = 0;
-
-                // 나이 조건 체크
-                if((memberSecondProfile.getMinAge() <= member.getAge() && memberSecondProfile.getMaxAge() >= member.getAge()) || memberSecondProfile.getMaxAge() == null){
-                    conditionMatching++;
-                }
-
-                // 성별 조건 체크
-                if(memberSecondProfile.getGender() == member.getGender() || memberSecondProfile.getGender() == null){
-                    conditionMatching++;
-                }
-
-                // MBTI 조건 체크
-                if(memberSecondProfile.getMbti() == null || memberSecondProfile.getMbti().contains(member.getMemberProfile().getMBTI().name())){
-                    conditionMatching++;
-                }
-
-                // 조건이 충족되면 matchResponseDtoList에 추가
-                if(conditionMatching >= minCondition){
-                    matchResponseDtoList.add(requestToMatchResponseDto(member, memberSecondProfile));
-                }
-            });
-
-            // 페이지를 넘어가면 다음 페이지로 이동
-            if (matchResponseDtoList.size() < recommendationNumber) {
-                page++;
-                pageable = PageRequest.of(page, pageSize);
+                return RecommendDto.FoodRecommendPageDto.builder()
+                        .foodRecommendDtos(foodRecommendDtos)
+                        .currentPage(0)
+                        .hasNextPage(false)
+                        .build();
             }
         }
-
-        return matchResponseDtoList;
+        return null;
     }
 
     @Override
