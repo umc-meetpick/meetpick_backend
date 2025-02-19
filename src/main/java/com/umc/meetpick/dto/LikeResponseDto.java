@@ -21,6 +21,7 @@ public class LikeResponseDto {
         private String studentNumber;
         private String mbti;
         private Boolean isLiked;
+        private String imageUrl;
     }
 
     @Getter
