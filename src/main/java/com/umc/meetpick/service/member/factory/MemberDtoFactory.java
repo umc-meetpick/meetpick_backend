@@ -199,7 +199,7 @@ public class MemberDtoFactory {
 
     public static MemberDetailResponseDto.MemberStudyDetailDto memberStudyDetailDto (MemberSecondProfile memberSecondProfile){
 
-        String study = memberSecondProfile.getMateType().getKoreanName();
+        String study = memberSecondProfile.getStudyType().getKoreanName();
 
         Set<String> subMajorNames = staticmemberSecondProfileSubMajorRepository
                 .findAllByMemberSecondProfile(memberSecondProfile)
