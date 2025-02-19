@@ -38,6 +38,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.umc.meetpick.service.member.factory.MemberDtoFactory.memberToProfileDto;
+import static com.umc.meetpick.service.member.validator.MemberValidator.validateContact;
 
 @Service
 @Slf4j
@@ -223,21 +224,27 @@ public class MemberServiceImpl implements MemberService {
 
     // TODO 리팩토링 필요
     @Override
-    public ContactResponseDto getContactInfo(Long memberId, Long mappingId) {
+    public ContactResponseDto getContactInfo(Long memberId, Long requestId) {
 
         // memberId로 회원 조회
-        Member member = memberRepository.findMemberById(memberId);
+        MemberSecondProfile memberSecondProfile = memberSecondProfileRepository.findMemberSecondProfileById(requestId)
+                .orElseThrow(()-> new GeneralHandler(ErrorCode.PROFILE2_NOT_FOUND));
+
+        Member member = memberSecondProfile.getMember();
+
+        validateContact(member);
+
+        MemberProfile memberProfile = member.getMemberProfile();
 
         // 회원 검증 (예: 권한 확인 등)
-        memberValidator.validateContact(member, mappingId);
+//        memberValidator.validateContact(member, mappingId);
 
         // mappingId로 MemberMapping을 조회한 후, 변환하여 ContactResponseDto로 반환.
-        return memberMappingRepository.findById(mappingId)
-                .map(mapping -> ContactResponseDto.builder()
-                        .contactName(mapping.getMember().getMemberProfile().getContactInfo())
-                        .contactType(mapping.getMember().getMemberProfile().getContact().getKoreanName())
-                        .build())
-                .orElseThrow(() -> new GeneralHandler(ErrorCode._BAD_REQUEST));
+
+        return ContactResponseDto.builder()
+                .contactName(memberProfile.getContactInfo())
+                .contactType(memberProfile.getContact().getKoreanName())
+                .build();
     }
 
     private String setImage(int input){

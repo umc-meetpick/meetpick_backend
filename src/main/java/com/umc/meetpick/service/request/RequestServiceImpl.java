@@ -39,7 +39,6 @@ import static com.umc.meetpick.enums.StudentNumber.*;
 @RequiredArgsConstructor
 @Slf4j
 public class RequestServiceImpl implements RequestService {
-    private final NewRequestRepository newRequestRepository;
     private final MemberRepository memberRepository;
     private final SubMajorRepository subMajorRepository;
     private final MemberMappingRepository memberMappingRepository;
