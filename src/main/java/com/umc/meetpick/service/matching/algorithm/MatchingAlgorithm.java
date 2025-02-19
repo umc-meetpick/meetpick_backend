@@ -11,4 +11,3 @@ public interface MatchingAlgorithm<T> {
     //public <T> T recommend(Member member);
     //public RecommendDto.FoodRecommendPageDto recommend(Member member);
 }
-

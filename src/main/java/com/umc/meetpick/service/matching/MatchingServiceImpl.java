@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -52,17 +53,40 @@ public class MatchingServiceImpl implements MatchingService {
     private final MemberRepository memberRepository;
     private final MemberMappingRepository memberMappingRepository;
     private final MemberLikesRepository memberLikesRepository;// 좋아요 여부 확인용
-    private final MatchingAlgorithm matchingAlgorithm;
+    //private final MatchingAlgorithm<?> matchingAlgorithm;
+
     private final MemberProfileRepository memberProfileRepository;// 프로필 정보 조회용
     private final int minCondition = 3;
     private int page = 0;
     private final int pageSize = 100;
     private Pageable pageable = PageRequest.of(page, pageSize);
 
+    private final Map<MateType, MatchingAlgorithm<?>> matchingAlgorithms;
+
     @Override
-    public RecommendDto.FoodRecommendPageDto match(Long memberId, MateType mateType){
+    public Object match(Long memberId, MateType mateType){
 
         Member member = memberRepository.findMemberById(memberId);
+
+        MatchingAlgorithm<?> matchingAlgorithm;
+
+        switch (mateType) {
+            case MEAL:
+                matchingAlgorithm = matchingAlgorithms.get(MateType.MEAL);
+                break;
+            case EXERCISE:
+                matchingAlgorithm = matchingAlgorithms.get(MateType.EXERCISE);
+                break;
+            case STUDY:
+                matchingAlgorithm = matchingAlgorithms.get(MateType.STUDY);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid MateType: " + mateType);
+        }
+
+        if (matchingAlgorithm == null) {
+            throw new IllegalStateException("No matching algorithm found for type: " + mateType);
+        }
 
         return matchingAlgorithm.recommend(member);
     }
