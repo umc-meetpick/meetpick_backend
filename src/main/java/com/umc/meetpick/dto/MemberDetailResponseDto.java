@@ -29,6 +29,7 @@ public class MemberDetailResponseDto {
         String major;
         String subMajor;
         Set<String> hobbies;
+        String nickName;
     }
 
     @Getter
