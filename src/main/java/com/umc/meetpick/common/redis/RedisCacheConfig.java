@@ -20,7 +20,7 @@ public class RedisCacheConfig {
 
     @Bean
     @Primary
-    public CacheManager MemberCacheManager(RedisConnectionFactory redisConnectionFactory) {
+    public CacheManager GeneralCacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration redisCacheConfiguration = generateCacheConfiguration()
                 .entryTtl(Duration.ofHours(5L));
 

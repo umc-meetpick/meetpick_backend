@@ -119,7 +119,7 @@ public class ProfileModifyService {
         } catch (IllegalArgumentException e) {
             return ApiResponse.onFailure(ErrorCode.INVALID_MBTI.getCode(), "유효하지 않은 MBTI 값입니다.", null);
         }
-
+        log.info("memberId ----------------------" + memberId );
         // 프로필 조회 (없으면 PROFILE_NOT_FOUND 반환)
         MemberProfile memberProfile = getMemberProfileOrThrow(memberId);
 

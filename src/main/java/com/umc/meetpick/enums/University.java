@@ -1,10 +1,14 @@
 package com.umc.meetpick.enums;
 
+import com.umc.meetpick.common.exception.handler.GeneralHandler;
+import com.umc.meetpick.common.response.status.ErrorCode;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Slf4j
 public enum University {
 
     //TODO 진짜 있는건지 확인 필요
@@ -62,10 +66,11 @@ public enum University {
     public static University fromString(String universityName) {
         for (University university : University.values()) {
             if (university.universityName.equalsIgnoreCase(universityName.trim())) {
+                log.info(university.universityName);
                 return university;
             }
         }
-        return SEOUL_NATIONAL_UNIVERSITY; // ✅ 존재하지 않는 경우 안전하게 기본값 반환
+        throw new GeneralHandler(ErrorCode.INVALID_UNIVERSITY_NAME);
     }
 
     public String getKoreanName() {

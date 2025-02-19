@@ -55,7 +55,7 @@ public class RegisterDTO {
         private int imageNumber;
 
         @Pattern(regexp = "^[1-9][0-9]$", message = "닉네임은 두 자리 숫자여야 합니다.")
-        private int studentNumber;
+        private String studentNumber;
 
         private MBTI mbti;
 

@@ -1,5 +1,6 @@
 package com.umc.meetpick.service.member;
 
+import com.umc.meetpick.common.annotation.TrackExecutionTime;
 import com.umc.meetpick.common.exception.handler.GeneralHandler;
 import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.dto.*;
@@ -59,6 +60,7 @@ public class MemberServiceImpl implements MemberService {
     private final MajorRepository majorRepository;
 
     @Override
+    @TrackExecutionTime
     public Map<String, Object> getMemberDetail(Long memberSecondProfileId) {
 
         MemberSecondProfile memberSecondProfile = memberSecondProfileRepository.findById(memberSecondProfileId).orElseThrow(()-> new GeneralHandler(ErrorCode.PROFILE2_NOT_FOUND));
@@ -72,7 +74,9 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public RegisterDTO.SignupSuccessDTO saveMember(Long memberId, RegisterDTO.SignUpDTO signUpDTO) {
-
+        if (memberRepository.findById(memberId).isPresent()) {
+            throw new GeneralHandler(ErrorCode.MEMBER_ALREADY_EXISTS);  // 중복 ID 예외 발생
+        }
             Member member = memberRepository.findMemberById(memberId);
 
             if(member.isVerified()){
@@ -92,6 +96,18 @@ public class MemberServiceImpl implements MemberService {
     public RegisterDTO.SignupSuccessDTO saveMemberProfile(Long memberId, RegisterDTO.SignUpProfileDTO signUpProfileDTO) {
 
         //TODO 유효성 검사 및 이미지 처리 로직 구현
+        if (memberProfileRepository.findById(memberId).isPresent()) {
+            throw new GeneralHandler(ErrorCode.MEMBER_PROFILE_ALREADY_EXISTS);
+        }
+
+        String studentNumberStr = String.valueOf(signUpProfileDTO.getStudentNumber());
+
+        if (!studentNumberStr.matches("^[1-9][0-9]$")) {
+            System.out.println("dzsdzsdzsdszdzsd");
+            throw new GeneralHandler(ErrorCode.STUDENT_NUMBER_NOT_SATISFIED);
+        }
+
+        int studentNumber = Integer.parseInt(studentNumberStr);
 
         SubMajor subMajor = subMajorRepository.findByName(signUpProfileDTO.getSubMajor()).orElseThrow(()-> new GeneralHandler(ErrorCode.SUBMAJOR_NOT_EXSIT));
 
@@ -104,7 +120,7 @@ public class MemberServiceImpl implements MemberService {
             MemberProfile memberProfile = MemberProfile.builder()
                     .nickname(signUpProfileDTO.getNickName())
                     .profileImage(setImage(signUpProfileDTO.getImageNumber()))
-                    .studentNumber(signUpProfileDTO.getStudentNumber())
+                    .studentNumber(studentNumber)
                     .MBTI(signUpProfileDTO.getMbti())
                     .subMajor(subMajor)
                     .hobbies(hobbies)
@@ -128,6 +144,8 @@ public class MemberServiceImpl implements MemberService {
         if (!isValidUniversityName(requestDTO.getUnivName())) {
             throw new GeneralHandler(ErrorCode.INVALID_UNIVERSITY);
         }
+
+        University.fromString(requestDTO.getUnivName());
 
         // TODO 함수화 혹은 webclient
         // TODO 이건 그냥 만들어진 api 쓰면 됨. 사이트 참고
@@ -213,6 +231,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @TrackExecutionTime
     public MyProfileDto getMyProfile(Long memberId) {
 
         log.info("Service : getMyProfile 호출 {}", memberId);
@@ -291,8 +310,6 @@ public class MemberServiceImpl implements MemberService {
                 .subMajors(majorInfoDtoList)
                 .build();
     }
-
-
     /**
      * 대학교명 형식 검증
      */
