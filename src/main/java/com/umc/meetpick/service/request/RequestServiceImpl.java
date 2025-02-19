@@ -92,6 +92,14 @@ public class RequestServiceImpl implements RequestService {
 
         // studentNumber 변환 -> 프론트에서 받은 string을 enum으로
 
+        Gender gender;
+
+        if(newRequest.getGender() == null) {
+            gender = Gender.ALL;
+        } else {
+            gender = newRequest.getGender();
+        }
+
         StudentNumber studentNumberEnum;
 
         if(newRequest.getStudentNumber() == null){
@@ -99,6 +107,8 @@ public class RequestServiceImpl implements RequestService {
         } else {
             studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
         }
+
+
 
         ExerciseType exerciseTypes = null;
         Set<FoodType> foodTypes = Collections.emptySet();
@@ -155,26 +165,26 @@ public class RequestServiceImpl implements RequestService {
         // 새로운 MemberSecondProfile 생성
         MemberSecondProfile newMemberSecondProfile = MemberSecondProfile.builder()
                 .member(writer)
-                .gender(newRequest.getGender())
+                .gender(gender)
                 .studentNumber(studentNumberEnum)
-                .mbti(newRequest.getMbti())
-                .minAge(newRequest.getMinAge())
-                .maxAge(newRequest.getMaxAge())
-                .maxPeople(newRequest.getMaxPeople())
+                .mbti(newRequest.getMbti() == null ? "INFJ" : newRequest.getMbti())
+                .minAge(newRequest.getMinAge() == null ? null : newRequest.getMinAge())
+                .maxAge(newRequest.getMaxAge() == null ? null : newRequest.getMaxAge())
+                .maxPeople(newRequest.getMaxPeople() == 0 ? 0 : newRequest.getMaxPeople())
                 .currentPeople(0)
                 //.personality(savedPersonality)
-                .isHobbySame(newRequest.getIsHobbySame())
-                .comment(newRequest.getComment())
-                .mateType(newRequest.getType())
+                .isHobbySame(newRequest.getIsHobbySame() != null && newRequest.getIsHobbySame())
+                .comment(newRequest.getComment() == null ? "밋픽 파이팅!" : newRequest.getComment())
+                .mateType(newRequest.getType() == null ? null : newRequest.getType())
                 .foodTypes(foodTypes)
                 .exerciseType(exerciseTypes)
-                .isSchool(newRequest.getIsSchool())
+                .isSchool(newRequest.getIsSchool() != null && newRequest.getIsSchool())
                 .studyType(studyType)
                 .majorName(majorName)
                 .professorName(professorName)
                 .isOnline(isOnline)
-                .studyTimes(newRequest.getStudyTimes())
-                .place(newRequest.getPlace())
+                .studyTimes(newRequest.getStudyTimes() == 0 ? 1 : newRequest.getStudyTimes())
+                .place(newRequest.getPlace() == null ? null : newRequest.getPlace())
                 .build();
 
         MemberSecondProfile savedProfile = memberSecondProfileRepository.save(newMemberSecondProfile);
