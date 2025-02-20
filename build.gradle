@@ -29,7 +29,7 @@ dependencies {
 
     // Lombok 설정
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2' // H2
+    runtimeOnly 'com.h2database:h2:2.2.220'
     annotationProcessor 'org.projectlombok:lombok'
 
     // MySQL 드라이버
