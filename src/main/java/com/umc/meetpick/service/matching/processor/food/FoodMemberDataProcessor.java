@@ -31,7 +31,7 @@ public class FoodMemberDataProcessor implements MemberDataProcessor {
         memberData.setMember(member);
         memberData.setUniversity(member.getUniversity());
 
-        foodMemberDataRepository.save(memberData);
+        if(memberData.getMember() != null) foodMemberDataRepository.save(memberData);
     }
 
 

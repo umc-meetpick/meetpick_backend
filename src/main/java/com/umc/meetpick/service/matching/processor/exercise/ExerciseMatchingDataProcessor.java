@@ -20,6 +20,7 @@ public class ExerciseMatchingDataProcessor implements MatchingDataProcessor {
     private final ExerciseMemberRequestDataRepository exerciseMemberRequestDataRepository;
 
     public void process(MemberSecondProfile memberSecondProfile){
+
         Member member = memberSecondProfile.getMember();
 
         MemberRequestDataExercise memberRequestData = MemberRequestDataExercise.builder().build();
@@ -35,7 +36,8 @@ public class ExerciseMatchingDataProcessor implements MatchingDataProcessor {
         memberRequestData.setMember(memberSecondProfile.getMember());
         memberRequestData.setUniversity(member.getUniversity());
 
-        exerciseMemberRequestDataRepository.save(memberRequestData);
+        // TODO 나중에는 예외처리
+        if(memberRequestData.getMember() != null) exerciseMemberRequestDataRepository.save(memberRequestData);
     }
 
     // setGender

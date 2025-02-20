@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface ExerciseMemberRequestDataRepository extends JpaRepository<MemberRequestDataExercise, Long> {
     Optional<MemberRequestDataExercise> findByMember(@Param("member") Member member);
 
+    MemberRequestDataExercise findFirstByMember(@Param("member") Member member);
+
     Boolean existsByMember(@Param("member") Member member);
 
     void deleteByMember(Member member);

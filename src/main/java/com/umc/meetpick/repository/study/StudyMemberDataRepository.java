@@ -12,4 +12,6 @@ import java.util.List;
 public interface StudyMemberDataRepository extends JpaRepository<MemberDataStudy, Long> {
     List<MemberDataStudy> findAllByUniversity(@Param("university") University university);
     void deleteByMember(Member member);
+
+    MemberDataStudy findFirstByMember(@Param("member") Member member);
 }

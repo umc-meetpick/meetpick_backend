@@ -8,7 +8,9 @@ public enum Week {
     TUE ("화"),
     WED ("수"),
     THRU ("목"),
-    FRI ("금");
+    FRI ("금"),
+    SAT("토"),
+    SUN("일");
 
     Week(String koreanName) {
         this.koreanName = koreanName;

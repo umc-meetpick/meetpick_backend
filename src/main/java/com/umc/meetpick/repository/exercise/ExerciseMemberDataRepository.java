@@ -13,4 +13,6 @@ public interface ExerciseMemberDataRepository extends JpaRepository<MemberDataEx
     List<MemberDataExercise> findAllByUniversity(@Param("university") University university);
     Boolean existsByMember(@Param("member") Member member);
     void deleteByMember(Member member);
+
+    MemberDataExercise findFirstByMember(@Param("member") Member member);
 }

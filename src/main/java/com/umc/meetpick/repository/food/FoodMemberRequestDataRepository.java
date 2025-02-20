@@ -11,5 +11,7 @@ public interface FoodMemberRequestDataRepository extends JpaRepository<MemberReq
 
     Optional<MemberRequestDataFood> findByMember(@Param("member") Member member);
 
+    MemberRequestDataFood findFirstByMember(@Param("member") Member member);
+
     void deleteByMember(Member member);
 }
