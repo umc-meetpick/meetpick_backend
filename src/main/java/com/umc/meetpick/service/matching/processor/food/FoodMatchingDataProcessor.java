@@ -33,7 +33,7 @@ public class FoodMatchingDataProcessor implements MatchingDataProcessor {
         memberRequestData.setMember(memberSecondProfile.getMember());
         memberRequestData.setUniversity(member.getUniversity());
 
-        foodMemberRequestDataRepository.save(memberRequestData);
+        if(memberRequestData.getMember() != null) foodMemberRequestDataRepository.save(memberRequestData);
 
     }
 

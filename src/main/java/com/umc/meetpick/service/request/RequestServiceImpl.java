@@ -24,13 +24,16 @@ import com.umc.meetpick.service.matching.processor.MatchingDataProcessorFactory;
 import com.umc.meetpick.service.matching.processor.MemberDataDeleteFactory;
 import com.umc.meetpick.service.matching.processor.MemberDataProcessorFactory;
 import com.umc.meetpick.service.matching.strategy.MatchQueryStrategy;
+import com.umc.meetpick.service.request.factory.CreateRequestFactory;
 import com.umc.meetpick.service.request.factory.LikeQueryStrategyFactory;
 import com.umc.meetpick.service.request.strategy.LikeQueryStrategy;
+import com.umc.meetpick.service.request.template.CreateRequest;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -56,190 +59,221 @@ public class RequestServiceImpl implements RequestService {
     private final MemberDataDeleteFactory memberDataDeleteFactory;
 
     @Override
+    @Transactional
     public RequestDTO.NewRequestDTO createNewRequest(Long memberId, RequestDTO.NewRequestDTO newRequest) {
         // 작성자가 실제 존재하는지 검증
         Member writer = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다." + memberId));
+
+        MateType mateType = newRequest.getType();
+
         // 프론트로부터 받은 전공이 전공 테이블에 존재하는지 검증
 //        Major major = majorRepository.findByName(newRequest.getMajorName())
 //                .orElseThrow(()-> new EntityNotFoundException("등록된 전공이 아닙니다." + newRequest.getMajorName()));
 
         // 나이 범위 검증
-        if (newRequest.getMinAge() != null && newRequest.getMaxAge() != null && newRequest.getMinAge() >= newRequest.getMaxAge()) {
-            throw new IllegalArgumentException("나이 범위 에러");
-        }
-
-        // 동일 작성자 동일 타입 중복 요청 체크
-        if (memberSecondProfileRepository.existsByMemberIdAndMateType(writer.getId(), newRequest.getType())) {
-            throw new IllegalArgumentException("이미 요청이 존재");
-        }
-
-         //동일 작성자인 경우
-//        if (memberSecondProfileRepository.existsByMemberId(writer.getId())){
-//            throw new IllegalArgumentException("하나의 요청만 가능합니다.");
-//        }
-
-        // Personality 변환 및 저장
-//        if (newRequest.getPersonality().size() != 4) {
-//            throw new IllegalArgumentException("personality는 4개가 입력되어야 함");
+//        if (newRequest.getMinAge() != null && newRequest.getMaxAge() != null && newRequest.getMinAge() >= newRequest.getMaxAge()) {
+//            throw new IllegalArgumentException("나이 범위 에러");
 //        }
 //
-//        Personality personality = new Personality(
-//                PersonalityEnum.valueOf(newRequest.getPersonality().get(0)), // groupA
-//                PersonalityEnum.valueOf(newRequest.getPersonality().get(1)), // groupB
-//                PersonalityEnum.valueOf(newRequest.getPersonality().get(2)), // groupC
-//                PersonalityEnum.valueOf(newRequest.getPersonality().get(3))  // groupD
-//        );
+//        // 동일 작성자 동일 타입 중복 요청 체크
+//        if (memberSecondProfileRepository.existsByMemberIdAndMateType(writer.getId(), newRequest.getType())) {
+//            throw new IllegalArgumentException("이미 요청이 존재");
+//        }
 //
-//        Personality savedPersonality = personalityRepository.save(personality);
+//         //동일 작성자인 경우
+////        if (memberSecondProfileRepository.existsByMemberId(writer.getId())){
+////            throw new IllegalArgumentException("하나의 요청만 가능합니다.");
+////        }
+//
+//        // Personality 변환 및 저장
+////        if (newRequest.getPersonality().size() != 4) {
+////            throw new IllegalArgumentException("personality는 4개가 입력되어야 함");
+////        }
+////
+////        Personality personality = new Personality(
+////                PersonalityEnum.valueOf(newRequest.getPersonality().get(0)), // groupA
+////                PersonalityEnum.valueOf(newRequest.getPersonality().get(1)), // groupB
+////                PersonalityEnum.valueOf(newRequest.getPersonality().get(2)), // groupC
+////                PersonalityEnum.valueOf(newRequest.getPersonality().get(3))  // groupD
+////        );
+////
+////        Personality savedPersonality = personalityRepository.save(personality);
+//
+//
+//        // studentNumber 변환 -> 프론트에서 받은 string을 enum으로
+//
+//        Gender gender;
+//
+//        if(newRequest.getGender() == null) {
+//            gender = Gender.ALL;
+//        } else {
+//            gender = newRequest.getGender();
+//        }
+//
+//        StudentNumber studentNumberEnum;
+//
+//        if(newRequest.getStudentNumber() == null){
+//            studentNumberEnum = StudentNumber.ALL;
+//        } else {
+//            studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
+//        }
+//
+//
+//
+//        ExerciseType exerciseTypes = null;
+//        Set<FoodType> foodTypes = Collections.emptySet();
+//        StudyType studyType = null;
+//        String majorName = null;
+//        String professorName = null;
+//        Boolean isOnline = null;
+//
+//        MateType requestMateType = newRequest.getType();
+//
+//        if (requestMateType == EXERCISE){
+//            // 운동 타입 변환 (nullable 처리)
+////        Set<ExerciseType> exerciseTypes = Optional.ofNullable(newRequest.getExerciseTypes())
+////                .map(types -> Arrays.stream(types.split(","))
+////                        .map(String::trim)
+////                        .map(ExerciseType::fromString)
+////                        .collect(Collectors.toSet()))
+////                .orElse(Collections.emptySet());
+//            //ExerciseType exerciseTypes = null;
+//            if (newRequest.getExerciseTypes() != null) {
+//                exerciseTypes = ExerciseType.fromString(newRequest.getExerciseTypes());
+//            }
+//        }else if(requestMateType == MEAL){
+//            // 음식 타입 변환 (nullable 처리)
+//            foodTypes = Optional.ofNullable(newRequest.getFood())
+//                    .orElse(Collections.emptyList())  // food가 null이면 빈 리스트 처리
+//                    .stream()
+//                    .map(FoodType::fromString)
+//                    .collect(Collectors.toSet());
+//        }else if(requestMateType == STUDY){
+//            // 스터디 타입 변환
+//            if (newRequest.getStudyType() != null) {
+//                studyType = StudyType.fromString(newRequest.getStudyType());
+//            }
+//
+//            // 과목/교수 파싱 후 각각 넣기
+//            if(newRequest.getMajorNameAndProfessorName() != null) {
+//                String[] parts = newRequest.getMajorNameAndProfessorName().split("-");
+//                majorName = parts[0];
+//                professorName = parts[1];
+//            }
+//
+//            // 공부 관련 온라인 여부
+//            if(newRequest.getIsOnline() != null) {
+//                if(newRequest.getIsOnline().equals("오프라인")){
+//                    isOnline = false;
+//                } else {
+//                    isOnline = true;
+//                }
+//            }
+//        }
 
 
-        // studentNumber 변환 -> 프론트에서 받은 string을 enum으로
+//        // 새로운 MemberSecondProfile 생성
+//        MemberSecondProfile newMemberSecondProfile = MemberSecondProfile.builder()
+//                .member(writer)
+//                .gender(gender)
+//                .studentNumber(studentNumberEnum)
+//                .mbti(newRequest.getMbti() == null ? "INFJ" : newRequest.getMbti())
+//                .minAge(newRequest.getMinAge() == null ? 18 : newRequest.getMinAge())
+//                .maxAge(newRequest.getMaxAge() == null ? 28 : newRequest.getMaxAge())
+//                .maxPeople(newRequest.getMaxPeople() == 0 ? 1 : newRequest.getMaxPeople())
+//                .currentPeople(0)
+//                //.personality(savedPersonality)
+//                .isHobbySame(newRequest.getIsHobbySame() != null && newRequest.getIsHobbySame())
+//                .comment(newRequest.getComment() == null ? "밋픽 파이팅!" : newRequest.getComment())
+//                .mateType(newRequest.getType() == null ? null : newRequest.getType())
+//                .foodTypes(foodTypes)
+//                .exerciseType(exerciseTypes)
+//                .isSchool(newRequest.getIsSchool() != null && newRequest.getIsSchool())
+//                .studyType(studyType)
+//                .majorName(majorName)
+//                .professorName(professorName)
+//                .isOnline(isOnline)
+//                .studyTimes(newRequest.getStudyTimes() == 0 ? 1 : newRequest.getStudyTimes())
+//                .place(newRequest.getPlace() == null ? null : newRequest.getPlace())
+//                .build();
 
-        Gender gender;
+        CreateRequestFactory createRequestFactory = new CreateRequestFactory();
+        CreateRequest createRequest = createRequestFactory.getCreateRequest(mateType);
+        MemberSecondProfile memberSecondProfile = createRequest.execute(newRequest, writer);
 
-        if(newRequest.getGender() == null) {
-            gender = Gender.ALL;
+        if(memberSecondProfileRepository.existsByMemberIdAndMateType(memberId, mateType)) {
+            log.info("삭제 됨");
+
+            deleteRequest(memberSecondProfileRepository.findByMemberIdAndMateType(memberId, mateType).getId(), memberId);
+
+            memberSecondProfileRepository.save(memberSecondProfile);
+            // memberSecondProfileTimes 변환 및 저장
+
+            convertToTimes(newRequest, memberSecondProfile);
+            // List<String>으로 받은 세부전공을 엔티티도 변환
+
+            convertToSubMajor(newRequest, memberSecondProfile);
+
+            matchingDataProcessorFactory.getMatchingDataProcessor(memberSecondProfile, memberSecondProfile.getMateType());
+
+            memberDataProcessorFactory.getMemberDataProcessor(memberSecondProfile, memberSecondProfile.getMateType());
         } else {
-            gender = newRequest.getGender();
+            log.info("새로 만들기");
+            memberSecondProfileRepository.save(memberSecondProfile);
+            // memberSecondProfileTimes 변환 및 저장
+            convertToTimes(newRequest, memberSecondProfile);
+            // List<String>으로 받은 세부전공을 엔티티도 변환
+            convertToSubMajor(newRequest, memberSecondProfile);
+            matchingDataProcessorFactory.getMatchingDataProcessor(memberSecondProfile, memberSecondProfile.getMateType());
+            memberDataProcessorFactory.getMemberDataProcessor(memberSecondProfile, memberSecondProfile.getMateType());
         }
 
-        StudentNumber studentNumberEnum;
-
-        if(newRequest.getStudentNumber() == null){
-            studentNumberEnum = StudentNumber.ALL;
-        } else {
-            studentNumberEnum = StudentNumber.fromString(newRequest.getStudentNumber());
-        }
-
-
-
-        ExerciseType exerciseTypes = null;
-        Set<FoodType> foodTypes = Collections.emptySet();
-        StudyType studyType = null;
-        String majorName = null;
-        String professorName = null;
-        Boolean isOnline = null;
-
-        MateType requestMateType = newRequest.getType();
-
-        if (requestMateType == EXERCISE){
-            // 운동 타입 변환 (nullable 처리)
-//        Set<ExerciseType> exerciseTypes = Optional.ofNullable(newRequest.getExerciseTypes())
-//                .map(types -> Arrays.stream(types.split(","))
-//                        .map(String::trim)
-//                        .map(ExerciseType::fromString)
-//                        .collect(Collectors.toSet()))
-//                .orElse(Collections.emptySet());
-            //ExerciseType exerciseTypes = null;
-            if (newRequest.getExerciseTypes() != null) {
-                exerciseTypes = ExerciseType.fromString(newRequest.getExerciseTypes());
-            }
-        }else if(requestMateType == MEAL){
-            // 음식 타입 변환 (nullable 처리)
-            foodTypes = Optional.ofNullable(newRequest.getFood())
-                    .orElse(Collections.emptyList())  // food가 null이면 빈 리스트 처리
-                    .stream()
-                    .map(FoodType::fromString)
-                    .collect(Collectors.toSet());
-        }else if(requestMateType == STUDY){
-            // 스터디 타입 변환
-            if (newRequest.getStudyType() != null) {
-                studyType = StudyType.fromString(newRequest.getStudyType());
-            }
-
-            // 과목/교수 파싱 후 각각 넣기
-            if(newRequest.getMajorNameAndProfessorName() != null) {
-                String[] parts = newRequest.getMajorNameAndProfessorName().split("-");
-                majorName = parts[0];
-                professorName = parts[1];
-            }
-
-            // 공부 관련 온라인 여부
-            if(newRequest.getIsOnline() != null) {
-                if(newRequest.getIsOnline().equals("오프라인")){
-                    isOnline = false;
-                } else {
-                    isOnline = true;
-                }
-            }
-        }
-
-
-        // 새로운 MemberSecondProfile 생성
-        MemberSecondProfile newMemberSecondProfile = MemberSecondProfile.builder()
-                .member(writer)
-                .gender(gender)
-                .studentNumber(studentNumberEnum)
-                .mbti(newRequest.getMbti() == null ? "INFJ" : newRequest.getMbti())
-                .minAge(newRequest.getMinAge() == null ? 18 : newRequest.getMinAge())
-                .maxAge(newRequest.getMaxAge() == null ? 28 : newRequest.getMaxAge())
-                .maxPeople(newRequest.getMaxPeople() == 0 ? 1 : newRequest.getMaxPeople())
-                .currentPeople(0)
-                //.personality(savedPersonality)
-                .isHobbySame(newRequest.getIsHobbySame() != null && newRequest.getIsHobbySame())
-                .comment(newRequest.getComment() == null ? "밋픽 파이팅!" : newRequest.getComment())
-                .mateType(newRequest.getType() == null ? null : newRequest.getType())
-                .foodTypes(foodTypes)
-                .exerciseType(exerciseTypes)
-                .isSchool(newRequest.getIsSchool() != null && newRequest.getIsSchool())
-                .studyType(studyType)
-                .majorName(majorName)
-                .professorName(professorName)
-                .isOnline(isOnline)
-                .studyTimes(newRequest.getStudyTimes() == 0 ? 1 : newRequest.getStudyTimes())
-                .place(newRequest.getPlace() == null ? null : newRequest.getPlace())
-                .build();
-
-        MemberSecondProfile savedProfile = memberSecondProfileRepository.save(newMemberSecondProfile);
-
-
-        // memberSecondProfileTimes 변환 및 저장
-        List<MemberSecondProfileTimes> timesList = newRequest.getMemberSecondProfileTimes().stream()
-                .map(dto -> MemberSecondProfileTimes.builder()
-                        .week(Week.fromString(dto.getWeek()))  // ✅ week 변환
-                        .times(dto.getTimes())
-                        .memberSecondProfile(savedProfile)
-                        .build())
-                .toList();
-
-
-        memberSecondProfileTimesRepository.saveAll(timesList);
-
-        // List<String>으로 받은 세부전공을 엔티티도 변환
-        List<MemberSecondProfileSubMajor> subMajorList = new ArrayList<>();
-        if(newRequest.getSubMajorName() != null) {
-            subMajorList = newRequest.getSubMajorName().stream()
-                    .map(name -> {
-                        // 프론트에서 받은 subMajorName으로 SubMajor entity 찾기
-                        SubMajor subMajor = subMajorRepository.findByName(name)
-                                .orElseThrow(()-> new EntityNotFoundException("등록 전공 아님"));
-
-                        // MemberSecondProfileSubMajor 생성
-                        return MemberSecondProfileSubMajor.builder()
-                                .memberSecondProfile(savedProfile)
-                                .subMajor(subMajor)
-                                .build();
-                    })
-                    .toList();
-        }
-
-        memberSecondProfileSubMajorRepository.saveAll(subMajorList);
-
-        matchingDataProcessorFactory.getMatchingDataProcessor(newMemberSecondProfile, newMemberSecondProfile.getMateType());
-        memberDataProcessorFactory.getMemberDataProcessor(newMemberSecondProfile, newMemberSecondProfile.getMateType());
 
         return RequestDTO.NewRequestDTO.builder()
                 //.writerId(memberId)
                 //.requestId(savedProfile.getId())  // 추가
-                .studentNumber(savedProfile.getStudentNumber().name())
-                .mbti(savedProfile.getMbti())
-                .minAge(savedProfile.getMinAge())
-                .maxAge(savedProfile.getMaxAge())
-                .maxPeople(savedProfile.getMaxPeople())
-                .type(savedProfile.getMateType())
+                .studentNumber(memberSecondProfile.getStudentNumber().name())
+                .mbti(memberSecondProfile.getMbti())
+                .minAge(memberSecondProfile.getMinAge())
+                .maxAge(memberSecondProfile.getMaxAge())
+                .maxPeople(memberSecondProfile.getMaxPeople())
+                .type(memberSecondProfile.getMateType())
                 .build();
 
+    }
+
+    private void convertToSubMajor(RequestDTO.NewRequestDTO newRequest, MemberSecondProfile memberSecondProfile) {
+        if (newRequest.getSubMajorName() != null) {
+             List<MemberSecondProfileSubMajor> subMajorList = newRequest.getSubMajorName().stream()
+                    .map(name -> {
+                        // 프론트에서 받은 subMajorName으로 SubMajor entity 찾기
+                        SubMajor subMajor = subMajorRepository.findByName(name)
+                                .orElseThrow(() -> new EntityNotFoundException("등록 전공 아님"));
+
+                        // MemberSecondProfileSubMajor 생성
+                        return MemberSecondProfileSubMajor.builder()
+                                .memberSecondProfile(memberSecondProfile)
+                                .subMajor(subMajor)
+                                .build();
+                    })
+                    .toList();
+            memberSecondProfileSubMajorRepository.saveAll(subMajorList);
+        }
+    }
+
+    private void convertToTimes(RequestDTO.NewRequestDTO newRequest, MemberSecondProfile memberSecondProfile){
+        if(newRequest.getMemberSecondProfileTimes() != null){
+            List<MemberSecondProfileTimes> timesList = newRequest.getMemberSecondProfileTimes().stream()
+                    .map(dto -> MemberSecondProfileTimes.builder()
+                            .week(Week.fromString(dto.getWeek()))  // ✅ week 변환
+                            .times(dto.getTimes())
+                            .memberSecondProfile(memberSecondProfile)
+                            .build())
+                    .toList();
+
+            memberSecondProfileTimesRepository.saveAll(timesList);
+        }
     }
 
     // 매칭에 참가하기 api
@@ -346,8 +380,9 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW) // db에 즉시 반영
     public void deleteRequest(Long requestId, Long memberId){
+
         MemberSecondProfile request = memberSecondProfileRepository.findById(requestId)
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않는 매칭에 대한 요청"));
 

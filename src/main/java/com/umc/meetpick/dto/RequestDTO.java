@@ -31,7 +31,7 @@ public class RequestDTO {
         private String mbti;
         private Boolean isHobbySame;
         private List<MemberSecondProfileTimesDTO> memberSecondProfileTimes;
-        private int maxPeople;
+        private Integer maxPeople;
         private String comment;
         private String exerciseTypes;
         private Boolean isSchool;
@@ -39,7 +39,7 @@ public class RequestDTO {
         private String studyType;
         private String majorNameAndProfessorName;
         private String isOnline;
-        private int studyTimes;
+        private Integer studyTimes;
         private String place;
 
         @NotNull

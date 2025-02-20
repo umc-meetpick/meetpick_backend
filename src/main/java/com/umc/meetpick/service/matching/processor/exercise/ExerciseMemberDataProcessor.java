@@ -37,7 +37,7 @@ public class ExerciseMemberDataProcessor implements MemberDataProcessor {
         memberData.setMember(member);
         memberData.setUniversity(member.getUniversity());
 
-        exerciseMemberDataRepository.save(memberData);
+        if(memberData.getMember() != null) exerciseMemberDataRepository.save(memberData);
     }
 
     // setGender

@@ -11,10 +11,12 @@ import com.umc.meetpick.service.matching.processor.food.FoodMatchingDataProcesso
 import com.umc.meetpick.service.matching.processor.food.FoodMemberDataProcessor;
 import com.umc.meetpick.service.matching.processor.study.StudyMatchingDataProcessor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class MatchingDataProcessorFactory {
 
     private final StudyMemberRequestDataRepository studyMemberRequestDataRepository;
@@ -22,6 +24,9 @@ public class MatchingDataProcessorFactory {
     private final ExerciseMemberRequestDataRepository exerciseMemberRequestDataRepository;
 
     public void getMatchingDataProcessor(MemberSecondProfile memberSecondProfile, MateType mateType) {
+
+        log.info("getMatchingDataProcessor {}", memberSecondProfile.getId());
+
         switch (mateType) {
             case MEAL -> new FoodMatchingDataProcessor(foodMemberRequestDataRepository).process(memberSecondProfile);
             case STUDY -> new StudyMatchingDataProcessor(studyMemberRequestDataRepository).process(memberSecondProfile);

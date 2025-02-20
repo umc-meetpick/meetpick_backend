@@ -36,7 +36,7 @@ public class StudyMemberDataProcessor implements MemberDataProcessor {
         memberData.setMember(member);
         memberData.setUniversity(member.getUniversity());
 
-        studyMemberDataRepository.save(memberData);
+        if(memberData.getMember() != null) studyMemberDataRepository.save(memberData);
     }
 
 

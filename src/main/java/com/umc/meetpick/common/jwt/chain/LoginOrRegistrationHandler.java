@@ -44,7 +44,7 @@ public class LoginOrRegistrationHandler implements AuthenticationHandler {
         Member member = memberRepository.findBySocialId(socialId)
                 .map(m -> {
                     log.info("🎯 기존 회원 로그인 성공! memberId={}", m.getId());
-                    context.setNewMember(false);
+                    context.setNewMember(!m.isVerified()); // verified되지 않은 사용자는 회원가입 진행
                     return m;
                 })
                 .orElseGet(() -> {
@@ -57,6 +57,7 @@ public class LoginOrRegistrationHandler implements AuthenticationHandler {
                     log.info("🎉 신규 회원 가입 진행! memberId={}", newMember.getId());
                     return newMember;
                 });
+
 
         context.setMember(member);
 

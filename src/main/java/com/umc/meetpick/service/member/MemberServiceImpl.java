@@ -74,9 +74,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public RegisterDTO.SignupSuccessDTO saveMember(Long memberId, RegisterDTO.SignUpDTO signUpDTO) {
-        if (memberRepository.findById(memberId).isPresent()) {
-            throw new GeneralHandler(ErrorCode.MEMBER_ALREADY_EXISTS);  // 중복 ID 예외 발생
-        }
+
             Member member = memberRepository.findMemberById(memberId);
 
             if(member.isVerified()){

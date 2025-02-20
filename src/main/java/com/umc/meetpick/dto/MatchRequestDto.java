@@ -26,6 +26,7 @@ public class MatchRequestDto {
     private Integer age;           // 나이
     private String mateType;       // 미팅 타입
     private String createdAt;      // yyyy-MM-dd 형식 날짜
+    private String imageUrl;
 
 }
 

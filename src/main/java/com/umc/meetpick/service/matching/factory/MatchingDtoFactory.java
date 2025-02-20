@@ -76,6 +76,7 @@ public class MatchingDtoFactory {
                 .age(member.getAge())
                 .mateType(memberSecondProfile.getMateType().getKoreanName())
                 .createdAt(formattedDate)
+                .imageUrl(memberProfile.getProfileImage())
                 .build();
     }
 

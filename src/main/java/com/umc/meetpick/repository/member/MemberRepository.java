@@ -16,4 +16,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     //TODO 삭제 예정
     Member findFirstBy();
     Optional<Member> findFirstByName(@Param("name") String name);
+    Optional<Member> findMemberByMemberProfile_Nickname(@Param("Nickname") String Nickname);
 }

@@ -33,9 +33,11 @@ public class RedirectHandler implements AuthenticationHandler {
 
         if (context.isNewMember()) {
             // 신규 회원이면 회원가입 페이지로 리디렉션
+            log.info("신규입니다");
             redirectUrl = url + "/signup?token=" + token;
         } else {
             // 기존 회원이면 메인 페이지로 리디렉션
+            log.info("기존회원입니다");
             redirectUrl = url + "/looking?token=" + token;
         }
 

@@ -41,7 +41,7 @@ public class StudyMatchingDataProcessor implements MatchingDataProcessor {
         memberRequestData.setMember(memberSecondProfile.getMember());
         memberRequestData.setUniversity(member.getUniversity());
 
-        studyMemberRequestDataRepository.save(memberRequestData);
+        if(memberRequestData.getMember() != null) studyMemberRequestDataRepository.save(memberRequestData);
     }
 
 

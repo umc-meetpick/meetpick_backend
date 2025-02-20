@@ -1,6 +1,7 @@
 package com.umc.meetpick.repository.food;
 
 import com.umc.meetpick.entity.Member;
+import com.umc.meetpick.entity.matchingdata.exercise.MemberDataExercise;
 import com.umc.meetpick.entity.matchingdata.food.MemberDataFood;
 import com.umc.meetpick.enums.University;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,6 @@ import java.util.List;
 public interface FoodMemberDataRepository extends JpaRepository<MemberDataFood, Long> {
     List<MemberDataFood> findAllByUniversity(@Param("university") University university);
     void deleteByMember(Member member);
+
+    MemberDataFood findFirstByMember(@Param("member") Member member);
 }
