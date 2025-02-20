@@ -128,7 +128,7 @@ public class MemberDtoFactory {
                 .foodTypes(foodTypeNames)
                 .currentPeople(currentPeople)
                 .major(subMajorNames)
-                .MBTI(memberSecondProfile.getMbti())
+                .MBTI(memberSecondProfile.getMbti() == null ? "" : memberSecondProfile.getMbti())
                 .hobby(hobby)
                 .weekAndTime(weekAndTime)
                 .comment(memberSecondProfile.getComment())
@@ -159,7 +159,7 @@ public class MemberDtoFactory {
                 .map(msps -> msps.getSubMajor().getName())
                 .collect(Collectors.toSet());
 
-        String MBTI = memberSecondProfile.getMbti();
+        String MBTI = memberSecondProfile.getMbti() == null ? "INFJ" : memberSecondProfile.getMbti();
 
         String hobby = Boolean.TRUE.equals(memberSecondProfile.getIsHobbySame()) ? "같아야 돼!" : "";
 
@@ -239,7 +239,7 @@ public class MemberDtoFactory {
 
         String currentPeople = getPeople(memberSecondProfile);
 
-        String MBTI = memberSecondProfile.getMbti();
+        String MBTI = memberSecondProfile.getMbti() == null ? "INFJ" : memberSecondProfile.getMbti();
 
         String place = "";
         if(memberSecondProfile.getPlace() != null){
