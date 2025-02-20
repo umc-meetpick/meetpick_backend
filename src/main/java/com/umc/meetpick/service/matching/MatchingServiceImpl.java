@@ -130,6 +130,9 @@ public class MatchingServiceImpl implements MatchingService {
                 // 기본 필터: mateType
                 predicates.add(builder.equal(root.get("mateType"), mateType));
 
+                //본인 제외
+                predicates.add(builder.notEqual(root.get("member").get("id"), memberId));
+
                 // 공통 필터
                 // 1. 성별 필터
                 if (filterRequest.getGender() != null) {
