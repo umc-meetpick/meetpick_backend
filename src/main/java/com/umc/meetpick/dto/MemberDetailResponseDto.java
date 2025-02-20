@@ -21,7 +21,7 @@ public class MemberDetailResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MemberCommonDetailDto{
-        long memberId;
+        Long memberId;
         String age;
         String studentNumber;
         String gender;
@@ -30,6 +30,7 @@ public class MemberDetailResponseDto {
         String subMajor;
         Set<String> hobbies;
         String nickName;
+        String imageUrl;
     }
 
     @Getter

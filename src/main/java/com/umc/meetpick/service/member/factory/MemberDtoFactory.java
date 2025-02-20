@@ -70,6 +70,7 @@ public class MemberDtoFactory {
                 .hobbies(memberProfile.getHobbies().stream()
                         .map(Hobby::getKoreanName)
                         .collect(Collectors.toSet()))
+                .imageUrl(memberProfile.getProfileImage())
                 .build();
     }
 
