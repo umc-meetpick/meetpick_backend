@@ -140,7 +140,6 @@ public class DataInitializer implements CommandLineRunner {
 
         // 사용자 기본값 저장
         if (memberRepository.count() == 0) {
-            if (memberRepository.count() == 0) {
 
                 List<String> images = List.of("boxing.png", "earphone.png", "graduate.png", "hamburger.png", "hoody.png", "magician.png", "muffler.png", "study.png");
                 Random random = new Random();
@@ -5363,6 +5362,5 @@ public class DataInitializer implements CommandLineRunner {
 
             }
         }
-    }
 }
 
