@@ -14,7 +14,6 @@ public class AllStrategy implements MemberQueryStrategy {
 
     @Override
     public MemberSecondProfile findRandomMember(MateType mateType) {
-
-        return memberSecondProfileRepository.findFirstBy().orElseThrow(()-> new GeneralHandler(ErrorCode.MEMBER_NOT_FOUND));
+        return memberSecondProfileRepository.findFirstByOrderByIdAsc().orElseThrow(() -> new GeneralHandler(ErrorCode.MEMBER_NOT_FOUND));
     }
 }
