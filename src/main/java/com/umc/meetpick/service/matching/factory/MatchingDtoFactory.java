@@ -78,6 +78,8 @@ public class MatchingDtoFactory {
                 .mateType(memberSecondProfile.getMateType().getKoreanName())
                 .createdAt(formattedDate)
                 .imageUrl(memberProfile.getProfileImage())
+                .gender(member.getGender().getKoreanName())
+                .nickName(member.getMemberProfile().getNickname())
                 .build();
     }
 
