@@ -478,6 +478,7 @@ public class RequestServiceImpl implements RequestService {
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 매칭"));
 
         request.addPerson();
+        memberSecondProfileRepository.save(request);
 
         return RequestDTO.isAcceptedDTO.builder()
                 .matchingRequestId(updatedMapping.getId())

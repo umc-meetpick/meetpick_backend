@@ -1,5 +1,7 @@
 package com.umc.meetpick.entity.MemberProfiles;
 
+import com.umc.meetpick.common.exception.handler.GeneralHandler;
+import com.umc.meetpick.common.response.status.ErrorCode;
 import com.umc.meetpick.entity.BaseTimeEntity;
 import com.umc.meetpick.entity.Member;
 //import com.umc.meetpick.entity.Personality;
@@ -120,7 +122,7 @@ public class MemberSecondProfile extends BaseTimeEntity {
     // 인원 수 초과 방지
     public void addPerson() {
         if (currentPeople + 1 > maxPeople) {
-            throw new IllegalArgumentException("현재 인원이 최대 인원을 초과할 수 없습니다.");
+            throw new GeneralHandler(ErrorCode.MEMBER_FULL);
         }
         currentPeople++;
     }

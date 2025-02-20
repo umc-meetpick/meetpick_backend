@@ -55,6 +55,7 @@ public enum ErrorCode implements BaseErrorCode {
     STUDENT_NUMBER_NOT_SATISFIED(HttpStatus.BAD_REQUEST, "REQUEST4000", "학번 조건이 맞지 않습니다"),
     REQUEST_NOT_FOUND(HttpStatus.BAD_REQUEST, "REQUEST4001", "신청 정보가 없습니다."),
     REQUEST_ALREADY_ACCEPTED(HttpStatus.BAD_REQUEST, "REQUEST4002", "이미 수락 or 거절됨"),
+    MEMBER_FULL(HttpStatus.BAD_REQUEST, "REQUEST4003", "현재인원은 최대인원을 초과 할 수 없습니다."),
 
     // 학번 관련 에러
     INVALID_STUDENT_NUMBER(HttpStatus.BAD_REQUEST, "STUDENT_NUMBER4001", "숫자만 입력하세요."),
