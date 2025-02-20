@@ -97,14 +97,14 @@ public class MemberDtoFactory {
                 })
                 .toList();
 
-        // 4. 성별 정보 처리: null 이거나 한국어 이름이 없으면 "상관 없어" 처리
-        String gender = "상관 없어";
+        // 4. 성별 정보 처리: null 이거나 한국어 이름이 없으면 "" 처리
+        String gender = "";
         if (memberSecondProfile.getGender() != null && memberSecondProfile.getGender().getKoreanName() != null) {
             gender = memberSecondProfile.getGender().getKoreanName();
         }
 
-        // 5. 연령 및 학번 정보 처리: 최소 연령이 null이면 "상관 없어"로 처리
-        String ageAndPeer = "상관 없어";
+        // 5. 연령 및 학번 정보 처리: 최소 연령이 null이면 ""로 처리
+        String ageAndPeer = "";
         if (memberSecondProfile.getMinAge() != null && memberSecondProfile.getMaxAge() != null && memberSecondProfile.getStudentNumber() != null) {
             ageAndPeer = memberSecondProfile.getMinAge() + "~" + memberSecondProfile.getMaxAge() + "/" + memberSecondProfile.getStudentNumber().getKoreanName();
         }
@@ -119,7 +119,7 @@ public class MemberDtoFactory {
         String currentPeople = getPeople(memberSecondProfile);
 
         // 8. 취미 조건 처리 (true면 "같아야 돼!", 아니면 "상관없어")
-        String hobby = Boolean.TRUE.equals(memberSecondProfile.getIsHobbySame()) ? "같아야 돼!" : "상관 없어";
+        String hobby = Boolean.TRUE.equals(memberSecondProfile.getIsHobbySame()) ? "같아야 돼!" : "";
 
         // 9. DTO 빌더에 데이터 세팅 후 반환
         return MemberDetailResponseDto.MemberFoodDetailDto.builder()
@@ -142,13 +142,13 @@ public class MemberDtoFactory {
         String currentPeople = getPeople(memberSecondProfile);
 
         // TODO 중복되는거 함수 처리
-        String gender = "상관 없어";
+        String gender = "";
         if (memberSecondProfile.getGender() != null && memberSecondProfile.getGender().getKoreanName() != null) {
             gender = memberSecondProfile.getGender().getKoreanName();
         }
 
-        // 5. 연령 및 학번 정보 처리: 최소 연령이 null이면 "상관 없어"로 처리
-        String ageAndPeer = "상관 없어";
+        // 5. 연령 및 학번 정보 처리: 최소 연령이 null이면 ""로 처리
+        String ageAndPeer = "";
         if (memberSecondProfile.getMinAge() != null && memberSecondProfile.getMaxAge() != null && memberSecondProfile.getStudentNumber() != null) {
             ageAndPeer = memberSecondProfile.getMinAge() + "~" + memberSecondProfile.getMaxAge() + "/" + memberSecondProfile.getStudentNumber().getKoreanName();
         }
@@ -161,7 +161,7 @@ public class MemberDtoFactory {
 
         String MBTI = memberSecondProfile.getMbti();
 
-        String hobby = Boolean.TRUE.equals(memberSecondProfile.getIsHobbySame()) ? "같아야 돼!" : "상관 없어";
+        String hobby = Boolean.TRUE.equals(memberSecondProfile.getIsHobbySame()) ? "같아야 돼!" : "";
 
         List<WeekPair<String, String>> weekAndTime = staticmemberSecondProfileTimesRepository
                 .findByMemberSecondProfile(memberSecondProfile)
@@ -176,7 +176,7 @@ public class MemberDtoFactory {
                 })
                 .toList();
 
-        String place = "상관 없어";
+        String place = "";
         if(memberSecondProfile.getPlace() != null) {
             place = memberSecondProfile.getPlace();
         }
@@ -208,17 +208,17 @@ public class MemberDtoFactory {
                 .map(msps -> msps.getSubMajor().getName())
                 .collect(Collectors.toSet());
 
-        String courseName = "상관 없어";
+        String courseName = "";
         if(memberSecondProfile.getMajorName() != null){
             courseName = memberSecondProfile.getMajorName();
         }
 
-        String professorName = "상관 없어";
+        String professorName = "";
         if(memberSecondProfile.getProfessorName() != null){
             professorName = memberSecondProfile.getProfessorName();
         }
 
-        String studyTimes = memberSecondProfile.getStudyTimes() + "-" + memberSecondProfile.getStudyTimes() + 1 + "회";
+        String studyTimes = memberSecondProfile.getStudyTimes() + "-" + (memberSecondProfile.getStudyTimes() + 1) + "회";
 
         String isOnline;
         if(memberSecondProfile.getIsOnline()){
@@ -227,7 +227,7 @@ public class MemberDtoFactory {
             isOnline = "오프라인";
         }
 
-        String gender = "상관 없어";
+        String gender = "";
         if (memberSecondProfile.getGender() != null && memberSecondProfile.getGender().getKoreanName() != null) {
             gender = memberSecondProfile.getGender().getKoreanName();
         }
@@ -241,7 +241,7 @@ public class MemberDtoFactory {
 
         String MBTI = memberSecondProfile.getMbti();
 
-        String place = "상관 없어";
+        String place = "";
         if(memberSecondProfile.getPlace() != null){
             place = memberSecondProfile.getPlace();
         }
@@ -260,7 +260,7 @@ public class MemberDtoFactory {
                 })
                 .toList();
 
-        String hobby = Boolean.TRUE.equals(memberSecondProfile.getIsHobbySame()) ? "같아야 돼!" : "상관 없어";
+        String hobby = Boolean.TRUE.equals(memberSecondProfile.getIsHobbySame()) ? "같아야 돼!" : "";
 
         String comment = memberSecondProfile.getComment();
 
