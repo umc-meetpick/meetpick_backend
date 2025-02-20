@@ -144,9 +144,6 @@ public class DataInitializer implements CommandLineRunner {
                 List<String> images = List.of("boxing.png", "earphone.png", "graduate.png", "hamburger.png", "hoody.png", "magician.png", "muffler.png", "study.png");
                 Random random = new Random();
 
-                List<String> images = List.of("boxing.png", "earphone.png", "graduate.png", "hamburger.png", "hoody.png", "magician.png", "muffler.png", "study.png");
-                Random random = new Random();
-
                 MemberProfile profile1= MemberProfile.builder()
                         .nickname("베티")
                         .profileImage("https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/graduate.png")
