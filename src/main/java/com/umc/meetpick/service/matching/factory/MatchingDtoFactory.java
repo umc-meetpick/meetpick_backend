@@ -15,10 +15,11 @@ import com.umc.meetpick.entity.matchingdata.exercise.MemberDataExercise;
 import com.umc.meetpick.entity.matchingdata.food.MemberDataFood;
 import com.umc.meetpick.entity.matchingdata.study.MemberDataStudy;
 import com.umc.meetpick.enums.FoodType;
-import com.umc.meetpick.enums.MateType;
+import com.umc.meetpick.enums.StudyType;
 import org.springframework.data.domain.Page;
 
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -110,7 +111,11 @@ public class MatchingDtoFactory {
                     return RecommendDto.FoodRecommendDto.builder()
                             .requestId(memberSecondProfile.getId())
                             .studentNumber(memberProfile.getStudentNumber() + "학번")
-                            .foodTypes(memberSecondProfile.getFoodTypes().stream().map(FoodType::getKoreanName).collect(Collectors.toSet()))
+                            .foodTypes(
+                                    memberSecondProfile.getFoodTypes().isEmpty() ?
+                                            new HashSet<>()
+                                    : memberSecondProfile.getFoodTypes().stream().map(FoodType::getKoreanName).collect(Collectors.toSet())
+                            )
                             .gender(member.getGender().getKoreanName())
                             .mbti(memberProfile.getMBTI())
                             .nickName(memberProfile.getNickname())
@@ -140,12 +145,11 @@ public class MatchingDtoFactory {
                         return RecommendDto.ExerciseRecommendDto.builder()
                                 .requestId(memberSecondProfile.getId())
                                 .studentNumber(memberProfile.getStudentNumber() + "학번")
-                                .exerciseType(memberSecondProfile.getExerciseType().getDisplayName())
+                                .exerciseType(memberSecondProfile.getExerciseType() == null ? "기타" : memberSecondProfile.getExerciseType().getDisplayName())
                                 .gender(member.getGender().getKoreanName())
                                 .mbti(memberProfile.getMBTI())
                                 .nickName(memberProfile.getNickname())
                                 .imageUrl(memberProfile.getProfileImage())
-                                .exerciseType(memberSecondProfile.getExerciseType().getDisplayName())
                                 .build();
                     }
             ).toList();
@@ -174,7 +178,7 @@ public class MatchingDtoFactory {
                                 .gender(member.getGender().getKoreanName())
                                 .mbti(memberProfile.getMBTI())
                                 .nickName(memberProfile.getNickname())
-                                .studyType(memberSecondProfile.getStudyType().getKoreanName())
+                                .studyType(memberSecondProfile.getStudyType().getKoreanName() == null ? StudyType.STUDY.getKoreanName() : memberSecondProfile.getStudyType().getKoreanName())
                                 .imageUrl(memberProfile.getProfileImage())
                                 .build();
                     }

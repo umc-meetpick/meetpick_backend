@@ -31,6 +31,7 @@ public class DataInitializer implements CommandLineRunner {
     private final MemberSecondProfileTimesRepository memberSecondProfileTimesRepository;
     private final MatchingDataProcessorFactory matchingDataProcessorFactory;
     private final MemberDataProcessorFactory memberDataProcessorFactory;
+    private final MemberSecondProfileSubManjorRepository memberSecondProfileSubManjorRepository;
 
     /*@PostConstruct
     public void init() {
@@ -139,7 +140,9 @@ public class DataInitializer implements CommandLineRunner {
 
         // 사용자 기본값 저장
         if (memberRepository.count() == 0) {
-            if (memberRepository.count() == 0) {
+
+                List<String> images = List.of("boxing.png", "earphone.png", "graduate.png", "hamburger.png", "hoody.png", "magician.png", "muffler.png", "study.png");
+                Random random = new Random();
 
                 List<String> images = List.of("boxing.png", "earphone.png", "graduate.png", "hamburger.png", "hoody.png", "magician.png", "muffler.png", "study.png");
                 Random random = new Random();
@@ -5121,13 +5124,49 @@ public class DataInitializer implements CommandLineRunner {
                 memberSecondProfileRepository.save(secondProfile99);
                 memberSecondProfileRepository.save(secondProfile100);
 
-                MemberSecondProfileTimes memberSecondProfileTimes = MemberSecondProfileTimes.builder()
-                        .week(Week.MON)
-                        .times(Set.of(1,2,3))
-                        .memberSecondProfile(secondProfile11)
-                        .build();
+                List<MemberSecondProfileTimes> timesList = new ArrayList<>();
+                List<MemberSecondProfileSubMajor> subMajorList = new ArrayList<>();
 
-                memberSecondProfileTimesRepository.save(memberSecondProfileTimes);
+                List<MemberSecondProfile> secondProfiles = List.of(
+                        secondProfile2, secondProfile3, secondProfile4, secondProfile5,
+                        secondProfile6, secondProfile7, secondProfile8, secondProfile9, secondProfile10,
+                        secondProfile11, secondProfile12, secondProfile13,
+                        secondProfile21, secondProfile22, secondProfile23, secondProfile24, secondProfile25,
+                        secondProfile26, secondProfile27, secondProfile28, secondProfile29, secondProfile30,
+                        secondProfile31, secondProfile32, secondProfile33, secondProfile34, secondProfile35,
+                        secondProfile36, secondProfile37, secondProfile38, secondProfile39, secondProfile40,
+                        secondProfile41, secondProfile42, secondProfile43, secondProfile44, secondProfile45,
+                        secondProfile46, secondProfile47, secondProfile48, secondProfile49, secondProfile50,
+                        secondProfile51, secondProfile52, secondProfile53, secondProfile54, secondProfile55,
+                        secondProfile56, secondProfile57, secondProfile58, secondProfile59, secondProfile60,
+                        secondProfile61, secondProfile62, secondProfile63, secondProfile64, secondProfile65,
+                        secondProfile66, secondProfile67, secondProfile68, secondProfile69, secondProfile70,
+                        secondProfile71, secondProfile72, secondProfile73, secondProfile74, secondProfile75,
+                        secondProfile76, secondProfile77, secondProfile78, secondProfile79, secondProfile80,
+                        secondProfile81, secondProfile82, secondProfile83, secondProfile84, secondProfile85,
+                        secondProfile86, secondProfile87, secondProfile88, secondProfile89, secondProfile90,
+                        secondProfile91, secondProfile92, secondProfile93, secondProfile94, secondProfile95,
+                        secondProfile96, secondProfile97, secondProfile98, secondProfile99, secondProfile100
+                );
+
+                for (MemberSecondProfile profile : secondProfiles) {
+                    MemberSecondProfileTimes times = MemberSecondProfileTimes.builder()
+                            .week(Week.MON)
+                            .times(Set.of(1, 2, 3))
+                            .memberSecondProfile(profile)
+                            .build();
+
+                    MemberSecondProfileSubMajor subMajor = MemberSecondProfileSubMajor.builder()
+                            .memberSecondProfile(profile)
+                            .subMajor(profile.getMember().getMemberProfile().getSubMajor())
+                            .build();
+
+                    timesList.add(times);
+                    subMajorList.add(subMajor);
+                }
+
+                memberSecondProfileTimesRepository.saveAll(timesList);
+                memberSecondProfileSubManjorRepository.saveAll(subMajorList);
 
                 memberMappingRepository.save(MemberSecondProfileMapping.builder()
                         .member(member2)
@@ -5326,6 +5365,5 @@ public class DataInitializer implements CommandLineRunner {
 
             }
         }
-    }
 }
 
