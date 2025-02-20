@@ -21,14 +21,10 @@ public interface MemberSecondProfileRepository extends JpaRepository<MemberSecon
 
     Optional<MemberSecondProfile> findFirstByMateTypeOrderByCreatedAtDesc(@Param("mateType") MateType mateType);
 
-    @Query("SELECT m FROM MemberSecondProfile m " +
-            "JOIN MemberSecondProfileMapping mm ON m = mm.memberSecondProfile " +
-            "WHERE m.member.id = :memberId " +
-            "ORDER BY m.createdAt DESC")
-
-    Optional<MemberSecondProfile>   findFirstBy();
 
     Optional<MemberSecondProfile> findMemberSecondProfileById(Long id);
+
+    Optional<MemberSecondProfile> findFirstByOrderByIdAsc();
 
     Boolean existsByMemberId(Long id);
 
