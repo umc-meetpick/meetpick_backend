@@ -26,7 +26,7 @@ public interface MemberSecondProfileRepository extends JpaRepository<MemberSecon
             "WHERE m.member.id = :memberId " +
             "ORDER BY m.createdAt DESC")
 
-    Optional<MemberSecondProfile> findFirstBy();
+    Optional<MemberSecondProfile>   findFirstBy();
 
     Optional<MemberSecondProfile> findMemberSecondProfileById(Long id);
 

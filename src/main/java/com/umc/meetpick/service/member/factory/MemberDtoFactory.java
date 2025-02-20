@@ -88,7 +88,7 @@ public class MemberDtoFactory {
                 .findByMemberSecondProfile(memberSecondProfile)
                 .stream()
                 .map(timeEntity -> {
-                    String week = timeEntity.getWeek().toString();
+                    String week = timeEntity.getWeek().getKoreanName();
                     String joinedTimes = timeEntity.getTimes()
                             .stream()
                             .map(String::valueOf)
@@ -167,7 +167,7 @@ public class MemberDtoFactory {
                 .findByMemberSecondProfile(memberSecondProfile)
                 .stream()
                 .map(timeEntity -> {
-                    String week = timeEntity.getWeek().toString();
+                    String week = timeEntity.getWeek().getKoreanName();
                     String joinedTimes = timeEntity.getTimes()
                             .stream()
                             .map(String::valueOf)
@@ -251,7 +251,7 @@ public class MemberDtoFactory {
                 .findByMemberSecondProfile(memberSecondProfile)
                 .stream()
                 .map(timeEntity -> {
-                    String week = timeEntity.getWeek().toString();
+                    String week = timeEntity.getWeek().getKoreanName();
                     String joinedTimes = timeEntity.getTimes()
                             .stream()
                             .map(String::valueOf)
