@@ -24,10 +24,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOriginPatterns("*") // 모든 도메인 허용 (allowCredentials 사용 가능)
-                .allowedMethods("OPTIONS","GET","POST","PUT","DELETE")
-                .allowedHeaders("*")
+        registry.addMapping("/api/**")
+                .allowedOrigins("https://meetpick.click")  // 허용할 출처
+                .allowedMethods("GET", "POST", "PUT", "DELETE")  // 허용할 HTTP 메서드
                 .allowCredentials(true);
     }
 
