@@ -34,7 +34,7 @@ spring:
     secret: MBmyRKy5ewzjVqQ5mDiXkeK4ECmByFUax6I0iWgiFzs=
 
 front:
-  redirect-url: "http://localhost:5173"
+  redirect-url: "https://meetpick.click"
 
 logging:
   level:
